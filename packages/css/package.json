@@ -5,14 +5,14 @@
   "type": "module",
   "license": "MIT",
   "author": "Bruce Starlove",
-  "homepage": "https://github.com/brucestarlove/starscape-ui-system-v3/tree/master/packages/css",
+  "homepage": "https://github.com/brucestarlove/ui/tree/master/packages/css",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brucestarlove/starscape-ui-system-v3.git",
+    "url": "git+https://github.com/brucestarlove/ui.git",
     "directory": "packages/css"
   },
   "bugs": {
-    "url": "https://github.com/brucestarlove/starscape-ui-system-v3/issues"
+    "url": "https://github.com/brucestarlove/ui/issues"
   },
   "keywords": [
     "css",
