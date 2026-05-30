@@ -21,8 +21,64 @@ import {
   useTheme,
   useTooltipPlacement,
 } from '@starlove/ui-react';
+import { ShellDemo } from './ShellDemo';
+import { SidebarDemo } from './SidebarDemo';
+
+type DemoView = 'components' | 'shell' | 'sidebar';
+
+const DEMO_VIEWS: { id: DemoView; label: string }[] = [
+  { id: 'components', label: 'components' },
+  { id: 'shell', label: 'shell' },
+  { id: 'sidebar', label: 'sidebar' },
+];
+
+function initialView(): DemoView {
+  if (typeof window === 'undefined') return 'components';
+  const h = window.location.hash.replace('#', '') as DemoView;
+  return DEMO_VIEWS.some((v) => v.id === h) ? h : 'components';
+}
 
 export function App() {
+  const [view, setView] = useState<DemoView>(initialView);
+
+  // Deep-link: ?theme=light|dark forces the theme (handy for sharing/screenshots).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const t = new URLSearchParams(window.location.search).get('theme');
+    if (t === 'light' || t === 'dark') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  }, []);
+
+  // Keep the URL hash in sync with the selected view.
+  useEffect(() => {
+    if (typeof window !== 'undefined') window.location.hash = view;
+  }, [view]);
+
+  return (
+    <>
+      <nav className="demo-view-switch" aria-label="Demo view">
+        {DEMO_VIEWS.map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            className="demo-view-switch-btn"
+            data-active={view === v.id ? '' : undefined}
+            aria-pressed={view === v.id}
+            onClick={() => setView(v.id)}
+          >
+            {v.label}
+          </button>
+        ))}
+      </nav>
+      {view === 'components' && <ComponentsGallery />}
+      {view === 'shell' && <ShellDemo />}
+      {view === 'sidebar' && <SidebarDemo />}
+    </>
+  );
+}
+
+function ComponentsGallery() {
   const theme = useTheme();
   const motion = useMotion();
   const [direction, setDirection] = useState<Direction>('ltr');

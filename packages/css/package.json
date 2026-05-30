@@ -1,6 +1,6 @@
 {
   "name": "@starlove/ui",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Starscape v3 — pure CSS design system (tokens, base, backgrounds, components)",
   "type": "module",
   "license": "MIT",
@@ -29,6 +29,9 @@
   "sideEffects": [
     "*.css"
   ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
   "files": [
     "src",
     "README.md",
@@ -57,6 +60,13 @@
     "./components/check":         "./src/components/check.css",
     "./components/card":          "./src/components/card.css",
     "./components/lane":          "./src/components/lane.css",
+    "./components/state-pill":    "./src/components/state-pill.css",
+    "./components/priority-pill": "./src/components/priority-pill.css",
+    "./components/activity-dot":  "./src/components/activity-dot.css",
+    "./components/agent-dot":     "./src/components/activity-dot.css",
+    "./components/unread-dot":    "./src/components/activity-dot.css",
+    "./components/search-results": "./src/components/search-results.css",
+    "./components/lightbox":      "./src/components/lightbox.css",
     "./components/topbar":        "./src/components/topbar.css",
     "./components/topbar-btn":    "./src/components/topbar-btn.css",
     "./components/topbar-search": "./src/components/topbar-search.css",
@@ -102,6 +112,9 @@
     "./components/terminal":      "./src/components/terminal.css",
     "./components/section":       "./src/components/section.css",
     "./components/dialog":        "./src/components/dialog.css",
+    "./templates":                "./src/templates/index.css",
+    "./templates/shell":          "./src/templates/shell.css",
+    "./templates/sidebar":        "./src/templates/sidebar.css",
     "./starscape": {
       "types": "./src/starscape.d.ts",
       "default": "./src/starscape.js"

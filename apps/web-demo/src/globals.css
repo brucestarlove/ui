@@ -106,3 +106,49 @@ body {
 
 /* The Arc Lab's collapsible styling was promoted into the library as the
    `.accordion-epic` component (CSS) + <EpicAccordion> (React). */
+
+/* ----- Demo view switcher (components / shell / sidebar) ----- */
+.demo-view-switch {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  box-shadow: var(--flyout-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.demo-view-switch-btn {
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.demo-view-switch-btn:hover {
+  color: var(--ink);
+  background: var(--subtle-bg);
+}
+
+.demo-view-switch-btn[data-active] {
+  color: var(--accent);
+  background: var(--accent-active);
+}
+
+.demo-view-switch-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}

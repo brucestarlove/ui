@@ -5,7 +5,7 @@
  * lives in button-arc.css and layers on by selector. No background glow.
  *
  * Variants:
- *   <button>                       → primary ARC chip: soft accent/amber bevel
+ *   <button>, [data-variant="primary"] → primary ARC chip: soft accent/amber bevel
  *                                    (light) or cyan/violet (dark); sweep ring
  *                                    fades in on hover; press-invert on :active
  *   .btn-secondary                 → solid teal→blue surface (the blue stays),
@@ -26,7 +26,8 @@
  * light, system-resolved-dark, and explicit dark.
  */
 
-button {
+button,
+button[data-variant="primary"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,6 +67,7 @@ button:active {
  * DEFAULT variant only (no data-variant, none of the alias classes) so it
  * never leaks onto secondary / ghost / cta / command / plus / the epic
  * accordion toggle, which own their :active surfaces. */
+button[data-variant="primary"]:active,
 button:not([data-variant]):not(.btn-secondary):not(.ghost):not(.btn-sun):not(.btn-plus):not(.accordion-epic-toggle):not(.number-step):active {
   background: var(--btn-active-gradient);
   color: var(--btn-active-color);
@@ -77,20 +79,29 @@ button:focus-visible {
   box-shadow: var(--btn-shadow), var(--accent-ring);
 }
 
-button:disabled {
+button:disabled,
+button[data-disabled],
+button[aria-disabled="true"],
+button.is-disabled {
   cursor: not-allowed;
   filter: saturate(0.55) brightness(0.95);
   opacity: 0.55;
   box-shadow: none;
 }
 
-[data-theme="dark"] button:disabled {
+[data-theme="dark"] button:disabled,
+[data-theme="dark"] button[data-disabled],
+[data-theme="dark"] button[aria-disabled="true"],
+[data-theme="dark"] button.is-disabled {
   filter: saturate(0.5) brightness(1.15);
   opacity: 0.45;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) button:disabled {
+  :root:not([data-theme="light"]) button:disabled,
+  :root:not([data-theme="light"]) button[data-disabled],
+  :root:not([data-theme="light"]) button[aria-disabled="true"],
+  :root:not([data-theme="light"]) button.is-disabled {
     filter: saturate(0.5) brightness(1.15);
     opacity: 0.45;
   }
@@ -332,4 +343,25 @@ button[data-variant="plus"]:hover {
     background: rgba(var(--starlight-rgb), 0.1);
     border-color: rgba(var(--starlight-rgb), 0.22);
   }
+}
+
+/* Disabled aliases are repeated last so variant surfaces cannot reintroduce
+ * hover shadows or active-looking chroma after the generic disabled block. */
+button:disabled,
+button[data-disabled],
+button[aria-disabled="true"],
+button.is-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: saturate(0.55) brightness(0.95);
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+[data-theme="dark"] button:disabled,
+[data-theme="dark"] button[data-disabled],
+[data-theme="dark"] button[aria-disabled="true"],
+[data-theme="dark"] button.is-disabled {
+  filter: saturate(0.5) brightness(1.15);
+  opacity: 0.45;
 }

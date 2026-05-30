@@ -116,6 +116,19 @@ export { Topbar, TopbarBrand, TopbarNav, TopbarSpacer } from './components/Topba
 export type { TopbarProps } from './components/Topbar';
 export { Lane, LaneGrid } from './components/Lane';
 export type { LaneProps } from './components/Lane';
+
+// Page templates
+export { PageShell } from './components/PageShell';
+export type { PageShellProps } from './components/PageShell';
+export { PageSidebar } from './components/PageSidebar';
+export type {
+  PageSidebarProps,
+  PageSidebarHeaderProps,
+  PageSidebarBrandProps,
+  PageSidebarSectionProps,
+  PageSidebarNavItemProps,
+  PageSidebarNavGroupProps,
+} from './components/PageSidebar';
 export { MediaCard } from './components/MediaCard';
 export type { MediaCardProps, MediaPlayState } from './components/MediaCard';
 export { Segmented } from './components/Segmented';

@@ -1,0 +1,552 @@
+/* @starlove/ui — `sidebar` page template.
+ *
+ * Two-column application layout: a collapsible left navigation rail and a
+ * content region. The rail carries a brand header, an optional search field,
+ * labelled nav sections (icons + optional count badges), expandable nav groups,
+ * a footer (user card / version), and a collapse toggle. Styling is fully
+ * tokenized onto the @starlove theme so it follows light/dark.
+ *
+ *   <div class="page-sidebar-app">                  (add data-collapsed to fold)
+ *     <aside class="page-sidebar">
+ *       <div class="page-sidebar-header">
+ *         <div class="page-sidebar-logo">✦</div>
+ *         <div class="page-sidebar-titles">
+ *           <span class="page-sidebar-title">aeva</span>
+ *           <span class="page-sidebar-subtitle">command deck</span>
+ *         </div>
+ *       </div>
+ *       <div class="page-sidebar-search"><input class="input" …></div>
+ *       <nav class="page-sidebar-nav">
+ *         <div class="page-sidebar-section">
+ *           <div class="page-sidebar-section-label">workspace</div>
+ *           <button class="page-sidebar-nav-item" data-active>
+ *             <span class="page-sidebar-nav-icon">…</span>
+ *             <span class="page-sidebar-nav-label">overview</span>
+ *             <span class="page-sidebar-nav-badge">3</span>
+ *           </button>
+ *           <div class="page-sidebar-nav-group" data-expanded>
+ *             <button class="page-sidebar-nav-item page-sidebar-nav-parent">…
+ *               <span class="page-sidebar-nav-chevron">›</span>
+ *             </button>
+ *             <div class="page-sidebar-nav-children">
+ *               <div class="page-sidebar-nav-children-inner">…</div>
+ *             </div>
+ *           </div>
+ *         </div>
+ *       </nav>
+ *       <div class="page-sidebar-footer">…</div>
+ *       <div class="page-sidebar-toggle-wrap"><button class="page-sidebar-toggle">…</button></div>
+ *     </aside>
+ *     <main class="page-sidebar-main">…</main>
+ *   </div>
+ *
+ * The React layer ships <PageSidebar> (+ .Header/.Search/.Section/.NavItem/
+ * .NavGroup/.NavDivider/.Footer) which manages collapse + group-expand state.
+ *
+ * Pair with `import '@starlove/ui/templates/sidebar';`.
+ */
+
+.page-sidebar-app {
+  --page-sidebar-w: 264px;
+  --page-sidebar-w-collapsed: 72px;
+  --page-sidebar-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- *
+ * The rail
+ * ---------------------------------------------------------------- */
+
+.page-sidebar {
+  position: sticky;
+  top: 0;
+  flex: 0 0 var(--page-sidebar-w);
+  width: var(--page-sidebar-w);
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-inline-end: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 20;
+  transition:
+    flex-basis 260ms var(--page-sidebar-ease),
+    width 260ms var(--page-sidebar-ease);
+}
+
+[data-motion="reduce"] .page-sidebar,
+[data-motion="reduce"] .page-sidebar * {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .page-sidebar,
+  :root:not([data-motion="full"]) .page-sidebar * {
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Header / brand
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1.05rem 1.05rem 0.85rem;
+  min-height: 64px;
+}
+
+.page-sidebar-logo {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2, var(--blue, var(--accent))));
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.35);
+}
+
+.page-sidebar-titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.page-sidebar-title {
+  font-family: var(--font-stack);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-sidebar-subtitle {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Legacy brand block (kept for back-compat with <PageSidebar.Brand>). */
+.page-sidebar-brand {
+  padding: 1.05rem 1.05rem 0.85rem;
+}
+.page-sidebar-brand h1 {
+  margin: 0;
+  font-family: var(--font-stack);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.page-sidebar-brand-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- *
+ * Search
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-search {
+  padding: 0.15rem 0.85rem 0.65rem;
+}
+.page-sidebar-search .input,
+.page-sidebar-search input {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- *
+ * Nav
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0.35rem 0.65rem 0.65rem;
+}
+
+.page-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.page-sidebar-section + .page-sidebar-section {
+  margin-top: 0.9rem;
+}
+
+.page-sidebar-section-label {
+  padding: 0.35rem 0.75rem 0.25rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.72;
+}
+
+.page-sidebar-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: start;
+  white-space: nowrap;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.page-sidebar-nav-item:hover {
+  background: var(--subtle-bg);
+  color: var(--ink);
+}
+
+.page-sidebar-nav-item:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.page-sidebar-nav-item[data-active] {
+  background: var(--accent-active);
+  color: var(--ink);
+  border-color: var(--accent-border);
+  font-weight: 600;
+}
+
+/* Active accent rail. */
+.page-sidebar-nav-item[data-active]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  translate: 0 -50%;
+  height: 1.15rem;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+}
+
+.page-sidebar-nav-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: color 160ms ease;
+}
+.page-sidebar-nav-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.page-sidebar-nav-item:hover .page-sidebar-nav-icon,
+.page-sidebar-nav-item[data-active] .page-sidebar-nav-icon {
+  color: var(--accent);
+}
+
+.page-sidebar-nav-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-sidebar-nav-badge {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding: 0.05rem 0.42rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.4;
+  border-radius: var(--radius-pill);
+  background: var(--subtle-bg);
+  color: var(--muted);
+}
+.page-sidebar-nav-item[data-active] .page-sidebar-nav-badge {
+  background: var(--accent-active);
+  color: var(--accent);
+}
+
+.page-sidebar-nav-chevron {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  display: inline-flex;
+  color: var(--muted);
+  transition: transform 200ms var(--page-sidebar-ease);
+}
+.page-sidebar-nav-group[data-expanded] > .page-sidebar-nav-parent .page-sidebar-nav-chevron {
+  transform: rotate(90deg);
+}
+
+/* Nested group — animated expand via grid-template-rows. */
+.page-sidebar-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.page-sidebar-nav-children {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms var(--page-sidebar-ease);
+}
+.page-sidebar-nav-group[data-expanded] > .page-sidebar-nav-children {
+  grid-template-rows: 1fr;
+}
+
+.page-sidebar-nav-children-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 2px 0 4px 1.55rem;
+  padding-inline-start: 0.55rem;
+  border-inline-start: 1px solid var(--line);
+}
+
+.page-sidebar-nav-children-inner .page-sidebar-nav-item {
+  font-size: 0.84rem;
+  padding: 0.42rem 0.7rem;
+}
+.page-sidebar-nav-children-inner .page-sidebar-nav-item[data-active]::before {
+  display: none;
+}
+
+.page-sidebar-nav-divider {
+  height: 1px;
+  margin: 0.6rem 0.75rem;
+  background: var(--line);
+}
+
+/* ---------------------------------------------------------------- *
+ * Footer + collapse toggle
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.9rem;
+  border-top: 1px solid var(--line);
+}
+.page-sidebar-footer-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+.page-sidebar-footer-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-sidebar-footer-meta {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Legacy single-line foot. */
+.page-sidebar-foot {
+  padding: 0.5rem 1.05rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.page-sidebar-toggle-wrap {
+  padding: 0.55rem 0.75rem 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.page-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.page-sidebar-toggle:hover {
+  background: var(--subtle-bg);
+  color: var(--ink);
+}
+.page-sidebar-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+.page-sidebar-toggle-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+}
+
+/* ---------------------------------------------------------------- *
+ * Collapsed state
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-app[data-collapsed] .page-sidebar {
+  flex-basis: var(--page-sidebar-w-collapsed);
+  width: var(--page-sidebar-w-collapsed);
+}
+
+.page-sidebar-app[data-collapsed] .page-sidebar-titles,
+.page-sidebar-app[data-collapsed] .page-sidebar-subtitle,
+.page-sidebar-app[data-collapsed] .page-sidebar-search,
+.page-sidebar-app[data-collapsed] .page-sidebar-section-label,
+.page-sidebar-app[data-collapsed] .page-sidebar-nav-label,
+.page-sidebar-app[data-collapsed] .page-sidebar-nav-badge,
+.page-sidebar-app[data-collapsed] .page-sidebar-nav-chevron,
+.page-sidebar-app[data-collapsed] .page-sidebar-toggle-label,
+.page-sidebar-app[data-collapsed] .page-sidebar-footer-text,
+.page-sidebar-app[data-collapsed] .page-sidebar-brand-sub {
+  display: none;
+}
+
+.page-sidebar-app[data-collapsed] .page-sidebar-header,
+.page-sidebar-app[data-collapsed] .page-sidebar-brand {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.page-sidebar-app[data-collapsed] .page-sidebar-nav-item,
+.page-sidebar-app[data-collapsed] .page-sidebar-toggle,
+.page-sidebar-app[data-collapsed] .page-sidebar-footer {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+/* Keep groups folded while collapsed (their labels are hidden anyway). */
+.page-sidebar-app[data-collapsed] .page-sidebar-nav-children {
+  grid-template-rows: 0fr;
+}
+
+/* ---------------------------------------------------------------- *
+ * Content
+ * ---------------------------------------------------------------- */
+
+.page-sidebar-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: hidden;
+  padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1.25rem, 4vw, 3.25rem) 5rem;
+}
+
+/* ---------------------------------------------------------------- *
+ * Responsive — collapse the rail into a horizontal top bar.
+ * ---------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .page-sidebar-app {
+    flex-direction: column;
+  }
+
+  .page-sidebar {
+    position: sticky;
+    top: 0;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-inline-end: none;
+    border-block-end: 1px solid var(--line);
+  }
+
+  .page-sidebar-header {
+    padding: 0.25rem 0.4rem;
+    min-height: 0;
+  }
+
+  .page-sidebar-search,
+  .page-sidebar-section-label,
+  .page-sidebar-footer,
+  .page-sidebar-toggle-wrap {
+    display: none;
+  }
+
+  .page-sidebar-nav {
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 0.25rem;
+    padding: 0.25rem;
+  }
+
+  .page-sidebar-section {
+    flex-direction: row;
+    gap: 0.25rem;
+  }
+  .page-sidebar-section + .page-sidebar-section {
+    margin-top: 0;
+  }
+
+  /* Nested groups don't fit a top bar; surface their items flat instead. */
+  .page-sidebar-nav-group {
+    display: none;
+  }
+
+  .page-sidebar-nav-item {
+    padding: 0.4rem 0.7rem;
+  }
+  .page-sidebar-nav-item[data-active]::before {
+    display: none;
+  }
+
+  .page-sidebar-main {
+    padding: 1.5rem 1.1rem 3rem;
+  }
+}

@@ -45,6 +45,25 @@
   border-color: var(--orbit-column-border);
 }
 
+/* Accent extension: set `data-accent` plus an optional RGB channel value.
+ * Example: <section class="lane" data-accent style="--lane-accent-rgb: 168, 85, 247">.
+ * Built-in: data-accent="ai-ready" maps to the Orbit agent queue violet. */
+.lane[data-accent],
+.column--ai-ready {
+  --lane-accent-rgb: var(--purple-rgb, 168, 85, 247);
+  --lane-accent-border-alpha: 0.28;
+  --lane-accent-wash-alpha: 0.06;
+  border-color: rgba(var(--lane-accent-rgb), var(--lane-accent-border-alpha));
+  background:
+    linear-gradient(180deg, rgba(var(--lane-accent-rgb), var(--lane-accent-wash-alpha)), transparent 28%),
+    var(--orbit-column);
+}
+
+.lane[data-accent="ai-ready"],
+.column--ai-ready {
+  --lane-accent-rgb: 168, 85, 247;
+}
+
 .lane-head {
   display: flex;
   flex-shrink: 0;
@@ -111,10 +130,22 @@
     0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
+[data-theme="dark"] .lane[data-accent],
+[data-theme="dark"] .column--ai-ready {
+  --lane-accent-border-alpha: 0.32;
+  --lane-accent-wash-alpha: 0.09;
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .lane {
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
       0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  :root:not([data-theme="light"]) .lane[data-accent],
+  :root:not([data-theme="light"]) .column--ai-ready {
+    --lane-accent-border-alpha: 0.32;
+    --lane-accent-wash-alpha: 0.09;
   }
 }

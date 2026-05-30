@@ -1,0 +1,8 @@
+/* @starlove/ui — page templates.
+ *
+ * Ready-made full-page layouts. Barrel import; for à-la-carte use the subpath
+ * exports (`@starlove/ui/templates/shell`, `@starlove/ui/templates/sidebar`).
+ */
+
+@import "./shell.css";
+@import "./sidebar.css";

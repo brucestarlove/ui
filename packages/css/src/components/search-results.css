@@ -1,0 +1,82 @@
+/* Starscape v3 — command-palette/search result list.
+ *
+ * This component intentionally excludes state-specific status colors; pair
+ * `.search-hit-state` with state-pill.css when status badges are needed.
+ */
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: min(24rem, calc(100vh - 5rem));
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow);
+}
+
+.search-results[hidden] {
+  display: none;
+}
+
+.search-hit {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.85rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-align: start;
+  font: inherit;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.search-hit:last-child {
+  border-bottom: 0;
+}
+
+.search-hit-main {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.search-hit-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-hit-state {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  border-radius: var(--radius-pill, 999px);
+  color: #3657c8;
+  background-color: rgba(96, 165, 250, 0.12);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.search-hit:hover {
+  background: var(--accent-hover);
+}
+
+[data-theme="dark"] .search-results {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}

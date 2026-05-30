@@ -1,0 +1,46 @@
+/* @starlove/ui — `shell` page template.
+ *
+ * The single-column app shell used by the preview app: an optional animated
+ * Starscape background, a fixed `.topbar`, and a scrollable content region.
+ * Ported from the web-demo's bespoke `.demo-shell` / `.demo-main` helpers and
+ * promoted into the library so any app can drop into the same layout.
+ *
+ *   <div class="page-shell">
+ *     <a class="skip-link" href="#main">Skip to content</a>
+ *     <!-- optional <div class="starscape"> background -->
+ *     <header class="topbar">…</header>
+ *     <main id="main" class="page-shell-main">…</main>
+ *   </div>
+ *
+ * The React layer ships <PageShell> which wires the skip link, the <Starscape>
+ * mount, and the topbar/footer slots for you.
+ *
+ * Pair with `import '@starlove/ui/templates/shell';`. The topbar + skip-link
+ * utilities ship separately (`@starlove/ui/components/topbar`,
+ * `@starlove/ui/utilities/skip-link`); the kitchen-sink import includes all.
+ */
+
+.page-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Reserve space for the fixed `.topbar` (≈3.05rem min-height + padding) so the
+ * content doesn't slide underneath it. Side/bottom padding scales with the
+ * viewport. */
+.page-shell-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 5.5rem;
+  padding-inline: clamp(1rem, 3vw, 2rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+/* Apps that don't mount a topbar can opt the leading gap out. */
+.page-shell[data-no-topbar] .page-shell-main {
+  padding-top: clamp(1rem, 3vw, 2rem);
+}

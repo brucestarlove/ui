@@ -18,7 +18,7 @@
  * file supplies the ring + press-invert grammar on top. Themes for free (warm
  * teal+amber light, cyan+violet dark).
  *
- *   • <button>                    — primary: ring fades in on hover.
+ *   • <button> / [data-variant="primary"] — primary: ring fades in on hover.
  *   • .btn-secondary / .ghost     — same hover ring over their own surfaces.
  *   • [data-variant="arc"]        — the Arc Lab variant (uppercase identity).
  *   • .btn-sun / [data-variant="cta"] — epic tier: quiet by default; opt into
@@ -114,7 +114,10 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-
   animation-play-state: running;   /* sweep only while the ring is shown */
 }
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[data-disabled]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[aria-disabled="true"]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])).is-disabled::after {
   animation: none;
   opacity: 0;
 }

@@ -29,6 +29,11 @@
 @import "./components/check.css";
 @import "./components/card.css";
 @import "./components/lane.css";
+@import "./components/state-pill.css";
+@import "./components/priority-pill.css";
+@import "./components/activity-dot.css";
+@import "./components/search-results.css";
+@import "./components/lightbox.css";
 @import "./components/topbar.css";
 @import "./components/tabs.css";
 @import "./components/segmented.css";
@@ -68,6 +73,8 @@
 @import "./components/terminal.css";
 @import "./components/section.css";
 @import "./components/dialog.css";
+
+@import "./templates/index.css";
 
 @import "./utilities/index.css";
 

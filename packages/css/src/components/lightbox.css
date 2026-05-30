@@ -1,0 +1,62 @@
+/* Starscape v3 — lightbox overlay.
+ *
+ * Generic API:
+ *   <div class="lightbox"><div class="lightbox-panel">…</div></div>
+ *
+ * Orbit compatibility aliases:
+ *   .attachment-lightbox, .attachment-lightbox-panel, .attachment-lightbox-close
+ */
+
+.lightbox,
+.attachment-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(2, 6, 23, 0.82);
+}
+
+.lightbox-panel,
+.attachment-lightbox-panel {
+  position: relative;
+  display: grid;
+  gap: 0.6rem;
+  max-width: min(92vw, 72rem);
+  max-height: 92vh;
+  color: white;
+}
+
+.lightbox-panel img,
+.attachment-lightbox-panel img {
+  max-width: 100%;
+  max-height: 82vh;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.lightbox-panel p,
+.attachment-lightbox-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  text-align: center;
+}
+
+.lightbox-close,
+.attachment-lightbox-close {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.75rem;
+  display: inline-grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-pill, 999px);
+  background: rgba(15, 23, 42, 0.92);
+  color: white;
+  font-size: 1.4rem;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
