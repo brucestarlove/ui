@@ -35,6 +35,7 @@ test("CSS package exposes Orbit cockpit extensions", () => {
     "./components/activity-dot": "./src/components/activity-dot.css",
     "./components/agent-dot": "./src/components/activity-dot.css",
     "./components/unread-dot": "./src/components/activity-dot.css",
+    "./components/card-accordion": "./src/components/card-accordion.css",
     "./components/search-results": "./src/components/search-results.css",
     "./components/lightbox": "./src/components/lightbox.css"
   })) {
@@ -53,21 +54,46 @@ test("button CSS supports explicit primary, secondary, ghost, and disabled ARC c
   assert.match(buttonCss, /button\[data-disabled\]/);
   assert.match(buttonCss, /button\.is-disabled/);
   assert.match(buttonCss, /button\[aria-disabled="true"\]/);
+  assert.match(buttonCss, /\.btn-sun\s+\.btn-plus/);
+  assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus/);
+  assert.match(buttonCss, /button:not\(\[data-variant\]\)[\s\S]*:not\(\.card-expand-trigger\)/);
+  assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus[\s\S]*transform:\s*translateY\(-0\.02em\)/);
   assert.match(arcCss, /\[data-variant="primary"\]/);
+  assert.match(arcCss, /:not\(\[data-variant="card-accordion"\]\)/);
+  assert.match(arcCss, /:not\(\[data-no-arc\]\)/);
   assert.match(arcCss, /\[data-disabled\]::after/);
   assert.match(arcCss, /\.is-disabled::after/);
+});
+
+test("topbar menu and compact card accordion stay split from default button chrome", () => {
+  const menuCss = readCss("src/components/menu-flyout.css");
+  const topbarChipCss = readCss("src/components/topbar-chip.css");
+  const cardAccordionCss = readCss("src/components/card-accordion.css");
+
+  assert.match(menuCss, /--menu-flyout-item-radius/);
+  assert.match(menuCss, /border-radius:\s*var\(--menu-flyout-item-radius/);
+  assert.match(menuCss, /\.menu-flyout-item:hover[\s\S]*transform:\s*none/);
+  assert.match(menuCss, /\.menu-flyout-item:hover[\s\S]*filter:\s*none/);
+  assert.match(topbarChipCss, /\.topbar-chip:hover[\s\S]*transform:\s*none/);
+  assert.match(topbarChipCss, /\.topbar-chip:hover[\s\S]*filter:\s*none/);
+  assert.match(cardAccordionCss, /button\.card-expand-trigger\[data-variant="card-accordion"\]/);
+  assert.match(cardAccordionCss, /button\.card-expand-trigger\[data-variant="card-accordion"\]::after[\s\S]*content:\s*none/);
+  assert.match(cardAccordionCss, /min-height:\s*0/);
+  assert.match(cardAccordionCss, /card-expand-trigger:not\(\.card-expand-trigger--static\):hover[\s\S]*transform:\s*none/);
+  assert.match(cardAccordionCss, /card-expand-trigger:not\(\.card-expand-trigger--static\):hover[\s\S]*filter:\s*none/);
 });
 
 test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitives", () => {
   const indexCss = readCss("src/index.css");
   const laneCss = readCss("src/components/lane.css");
+  const cardAccordionCss = readCss("src/components/card-accordion.css");
   const statePillCss = readCss("src/components/state-pill.css");
   const priorityPillCss = readCss("src/components/priority-pill.css");
   const activityDotCss = readCss("src/components/activity-dot.css");
   const searchCss = readCss("src/components/search-results.css");
   const lightboxCss = readCss("src/components/lightbox.css");
 
-  for (const component of ["state-pill", "priority-pill", "activity-dot", "search-results", "lightbox"]) {
+  for (const component of ["state-pill", "priority-pill", "activity-dot", "card-accordion", "search-results", "lightbox"]) {
     assert.match(indexCss, new RegExp(`@import "\\./components/${component}\\.css";`));
   }
 
@@ -75,6 +101,16 @@ test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitiv
   assert.match(laneCss, /\.lane\[data-accent="ai-ready"\]/);
   assert.match(laneCss, /--lane-accent-rgb/);
   assert.match(laneCss, /\.column--ai-ready/);
+  assert.match(cardAccordionCss, /\.card-meta/);
+  assert.match(cardAccordionCss, /\.card-expand-trigger/);
+  assert.match(cardAccordionCss, /button\.card-expand-trigger/);
+  assert.match(cardAccordionCss, /box-shadow:\s*none/);
+  assert.match(cardAccordionCss, /\.card-expand-trigger--static/);
+  assert.match(cardAccordionCss, /\.card-expandable/);
+  assert.match(cardAccordionCss, /\.card-type-id/);
+  assert.match(cardAccordionCss, /\.card-priority-id/);
+  assert.match(cardAccordionCss, /\.card-expand-chevron/);
+  assert.doesNotMatch(cardAccordionCss, /accordion-epic/);
   assert.match(statePillCss, /\.state-pill-ai-ready/);
   assert.match(statePillCss, /\.state-pill-in-progress/);
   assert.match(statePillCss, /\.state-pill-review/);

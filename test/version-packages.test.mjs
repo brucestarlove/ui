@@ -74,7 +74,7 @@ function makeFixture(overrides = {}) {
   return root;
 }
 
-test("version-packages updates root, CSS, React, and package-lock versions", () => {
+test("version-packages updates versions and npm-safe React dependency ranges", () => {
   const root = makeFixture();
   try {
     const result = spawnSync(process.execPath, [scriptPath, "2.3.4", "--root", root], {
@@ -87,7 +87,10 @@ test("version-packages updates root, CSS, React, and package-lock versions", () 
     assert.equal(readJson(join(root, "package.json")).version, "2.3.4");
     assert.equal(readJson(join(root, "package.json")).private, true);
     assert.equal(readJson(join(root, "packages/css/package.json")).version, "2.3.4");
-    assert.equal(readJson(join(root, "packages/react/package.json")).version, "2.3.4");
+
+    const reactPackage = readJson(join(root, "packages/react/package.json"));
+    assert.equal(reactPackage.version, "2.3.4");
+    assert.equal(reactPackage.dependencies["@starlove/ui"], "^2.3.4");
 
     const lock = readJson(join(root, "package-lock.json"));
     assert.equal(lock.version, "2.3.4");
@@ -95,6 +98,7 @@ test("version-packages updates root, CSS, React, and package-lock versions", () 
     assert.equal(lock.packages[""].private, true);
     assert.equal(lock.packages["packages/css"].version, "2.3.4");
     assert.equal(lock.packages["packages/react"].version, "2.3.4");
+    assert.equal(lock.packages["packages/react"].dependencies["@starlove/ui"], "^2.3.4");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

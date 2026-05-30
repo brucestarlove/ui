@@ -1,0 +1,242 @@
+/* Starscape v3 — compact card accordion.
+ *
+ * The dense Orbit kanban-card disclosure row: ticket number, type pill,
+ * priority pill, and a small chevron in one full-width control. This is
+ * intentionally not the big epic panel treatment: it stays small, rectangular,
+ * and cockpit-like so cards remain kanban items instead of hero panels.
+ *
+ *   <article class="card type-feature is-expanded">
+ *     <h3>Ship the thing</h3>
+ *     <div class="card-meta">
+ *       <button class="card-expand-trigger" aria-expanded="true">
+ *         <span class="ticket-number">#39</span>
+ *         <span class="card-type-id type-pill-feature">… FEATURE</span>
+ *         <span class="card-priority-id priority-pill priority-pill-low">LOW</span>
+ *         <svg class="card-expand-chevron">…</svg>
+ *       </button>
+ *     </div>
+ *     <div class="card-expandable">…</div>
+ *   </article>
+ */
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+button.card-expand-trigger,
+button.card-expand-trigger[data-variant="card-accordion"],
+.card-meta .card-expand-trigger {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 0;
+  padding: 0.25rem 0.4rem;
+  margin: 0 -0.4rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  filter: none;
+  font: inherit;
+  line-height: 1.2;
+  text-align: left;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 160ms ease;
+}
+
+button.card-expand-trigger[data-variant="card-accordion"]::after,
+button.card-expand-trigger::after {
+  content: none;
+  display: none;
+}
+
+button.card-expand-trigger:not(.card-expand-trigger--static):hover,
+.card-meta .card-expand-trigger:not(.card-expand-trigger--static):hover {
+  transform: none;
+  filter: none;
+  box-shadow: none;
+  background: rgba(var(--starlight-rgb), 0.08);
+}
+
+.card-meta .card-expand-trigger--static {
+  cursor: url('../cursors/live_arrow.cur'), default;
+}
+
+.ticket-number {
+  color: var(--orbit-text-muted, var(--muted));
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.card-type-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(var(--starlight-rgb), 0.08);
+  border: 1px solid rgba(var(--starlight-rgb), 0.12);
+  color: var(--orbit-text-muted, var(--muted));
+  font-size: 0.68rem;
+  font-weight: 800;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.card-type-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card-type-icon {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card-type-id.type-pill-epic {
+  background: rgba(var(--purple-rgb), 0.12);
+  border-color: rgba(var(--purple-rgb), 0.25);
+  color: #c084fc;
+}
+
+.card-type-id.type-pill-feature {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+}
+
+.card-type-id.type-pill-task {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.2);
+  color: #60a5fa;
+}
+
+.card-type-id.type-pill-bug {
+  background: rgba(var(--coral-rgb), 0.12);
+  border-color: rgba(var(--coral-rgb), 0.25);
+  color: #f87171;
+}
+
+/* Override generic `.priority-pill` capsule geometry when the priority is in
+ * the compact card accordion row. The colors still come from priority-pill.css. */
+.card-priority-id.priority-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card-priority-label {
+  line-height: 1;
+}
+
+.card-expand-chevron {
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.6;
+  transition: transform 180ms ease;
+}
+
+.card.is-expanded .card-expand-chevron,
+.card[data-expanded] .card-expand-chevron {
+  transform: rotate(180deg);
+}
+
+.card-expandable {
+  display: none;
+  margin-top: 0.4rem;
+}
+
+.card.is-expanded .card-expandable,
+.card[data-expanded] .card-expandable {
+  display: block;
+}
+
+.card-description,
+.card p {
+  display: -webkit-box;
+  margin-top: 0.4rem;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.parent-line,
+.child-count {
+  margin-top: 0.4rem;
+  color: var(--blue);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+[data-theme="dark"] .ticket-number {
+  color: var(--blue);
+}
+
+[data-theme="dark"] .card-meta,
+[data-theme="dark"] .card-expand-trigger {
+  color: var(--orbit-text-muted, var(--muted));
+}
+
+[data-theme="dark"] button.card-expand-trigger:not(.card-expand-trigger--static):hover,
+[data-theme="dark"] .card-meta .card-expand-trigger:not(.card-expand-trigger--static):hover {
+  background: rgba(var(--starlight-rgb), 0.1);
+  color: var(--orbit-text, var(--ink));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ticket-number {
+    color: var(--blue);
+  }
+
+  :root:not([data-theme="light"]) .card-meta,
+  :root:not([data-theme="light"]) .card-expand-trigger {
+    color: var(--orbit-text-muted, var(--muted));
+  }
+
+  :root:not([data-theme="light"]) button.card-expand-trigger:not(.card-expand-trigger--static):hover,
+  :root:not([data-theme="light"]) .card-meta .card-expand-trigger:not(.card-expand-trigger--static):hover {
+    background: rgba(var(--starlight-rgb), 0.1);
+    color: var(--orbit-text, var(--ink));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .card-expand-chevron {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .card-expand-chevron {
+  transition: none;
+}

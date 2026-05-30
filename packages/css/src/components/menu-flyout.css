@@ -20,6 +20,8 @@
  */
 
 .menu-flyout {
+  --menu-flyout-item-radius: var(--radius-surface, 14px);
+
   position: absolute;
   top: calc(100% + 0.28rem);
   inset-inline-start: 0;
@@ -76,7 +78,7 @@
   gap: 0.15rem;
   padding: 0.55rem 0.7rem;
   border: 1.5px solid rgba(var(--accent-rgb), 0.32);
-  border-radius: var(--radius-control);
+  border-radius: var(--menu-flyout-item-radius);
   color: var(--ink);
   text-align: start;
   background:
@@ -95,6 +97,8 @@
 }
 
 .menu-flyout-item:hover {
+  transform: none;
+  filter: none;
   border-color: rgba(var(--accent-rgb), 0.5);
   background:
     linear-gradient(135deg, rgba(var(--accent-rgb), 0.12), rgba(var(--paper-rgb), 0) 65%),

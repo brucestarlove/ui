@@ -1,6 +1,6 @@
 {
   "name": "starscape-ui-system-v3",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "private": true,
   "description": "Starscape UI System v3 — pure CSS library + optional React layer",
   "packageManager": "pnpm@11.1.3",

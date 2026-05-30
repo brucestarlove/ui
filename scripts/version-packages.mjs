@@ -8,6 +8,10 @@ const CSS_PACKAGE_NAME = "@starlove/ui";
 const REACT_PACKAGE_NAME = "@starlove/ui-react";
 const RELEASE_SCRIPT = "pnpm --filter @starlove/ui-react build && pnpm --filter ./packages/css publish --no-git-checks && pnpm --filter ./packages/react publish --no-git-checks";
 
+function cssDependencyRange(version) {
+  return `^${version}`;
+}
+
 function usage() {
   return `Usage: pnpm run version:packages -- <version> [--root <repo>]\n\nExample:\n  pnpm run version:packages -- 3.1.2\n`;
 }
@@ -98,6 +102,8 @@ function updatePackageLock(rootDir, rootPkg, version) {
     return false;
   }
 
+  const cssRange = cssDependencyRange(version);
+
   const lock = readJson(lockPath);
   lock.name = rootPkg.name;
   lock.version = version;
@@ -112,8 +118,13 @@ function updatePackageLock(rootDir, rootPkg, version) {
     lock.packages["packages/css"].version = version;
   }
   if (lock.packages?.["packages/react"]) {
-    lock.packages["packages/react"].name = REACT_PACKAGE_NAME;
-    lock.packages["packages/react"].version = version;
+    const reactLock = lock.packages["packages/react"];
+    reactLock.name = REACT_PACKAGE_NAME;
+    reactLock.version = version;
+    reactLock.dependencies = {
+      ...(reactLock.dependencies ?? {}),
+      [CSS_PACKAGE_NAME]: cssRange
+    };
   }
 
   writeJson(lockPath, lock);
@@ -146,7 +157,11 @@ export function bumpPackageVersions({ rootDir, version }) {
     return next;
   });
   updateTextFile(cssPackagePath, (text) => replaceStringProperty(text, "version", version, "packages/css/package.json"));
-  updateTextFile(reactPackagePath, (text) => replaceStringProperty(text, "version", version, "packages/react/package.json"));
+  updateTextFile(reactPackagePath, (text) => {
+    let next = replaceStringProperty(text, "version", version, "packages/react/package.json");
+    next = replaceStringProperty(next, CSS_PACKAGE_NAME, cssDependencyRange(version), "packages/react/package.json");
+    return next;
+  });
 
   const updatedLock = updatePackageLock(rootDir, { ...rootPkg, version, private: true }, version);
 
