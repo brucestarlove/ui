@@ -43,11 +43,13 @@
   white-space: nowrap;
 }
 
-.tag-remove {
+.tag-remove,
+button.tag-remove {
   display: inline-grid;
   place-items: center;
   width: 1.05rem;
   height: 1.05rem;
+  min-width: 0;
   min-height: 0;
   padding: 0;
   border: 0;
@@ -62,18 +64,26 @@
   transition: background 140ms ease, opacity 140ms ease;
 }
 
-.tag-remove:hover {
+.tag-remove:hover,
+button.tag-remove:hover {
   background: rgba(var(--coral-rgb), 0.16);
   color: var(--danger);
   opacity: 1;
   transform: none;
   filter: none;
+  box-shadow: none;
 }
 
-.tag-remove:focus-visible {
+.tag-remove:focus-visible,
+button.tag-remove:focus-visible {
   outline: none;
   opacity: 1;
   box-shadow: var(--accent-ring);
+}
+
+button.tag-remove::after {
+  content: none;
+  display: none;
 }
 
 .tag-input > input {

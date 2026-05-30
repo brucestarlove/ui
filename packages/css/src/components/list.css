@@ -32,10 +32,22 @@
 .list-numbered > li,
 .list-stars > li {
   position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.list-numbered > li {
   padding: 0.72rem 0;
   padding-inline-start: 2.65rem;
-  border-bottom: 1px solid var(--line);
   min-height: 2.6rem;
+}
+
+.list-stars > li {
+  min-height: 2.45rem;
+  padding: 0.58rem 0;
+  padding-inline-start: 2.45rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .list-numbered > li:last-child,
@@ -88,24 +100,26 @@
 .list-stars > li::before {
   content: "";
   position: absolute;
-  top: 0.85rem;
+  top: 50%;
   inset-inline-start: 0;
   display: block;
   width: 1.85rem;
   height: 1.85rem;
   border-radius: 8px;
   background: var(--btn-gradient);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
 .list-stars > li::after {
   content: "";
   position: absolute;
-  top: calc(0.85rem + (1.85rem - 1rem) / 2);
+  top: 50%;
   inset-inline-start: calc((1.85rem - 1rem) / 2);
   width: 1rem;
   height: 1rem;
   background: #ffffff;
+  transform: translateY(-50%);
   clip-path: polygon(
     50% 0%,   61% 34%,   98% 35%,   68% 56%,   79% 91%,
     50% 70%,  21% 91%,   32% 56%,    2% 35%,   39% 34%

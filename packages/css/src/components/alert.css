@@ -81,7 +81,8 @@
   gap: var(--space-2);
 }
 
-.alert-close {
+.alert-close,
+button.alert-close {
   flex-shrink: 0;
   margin-block-start: -0.15rem;
   margin-inline-end: -0.35rem;
@@ -104,15 +105,25 @@
   box-shadow: none;
 }
 
-.alert-close:hover {
+.alert-close:hover,
+button.alert-close:hover {
+  transform: none;
+  filter: none;
   background: var(--accent-hover);
   border-color: var(--accent-border);
   opacity: 1;
+  box-shadow: none;
 }
 
-.alert-close:focus-visible {
+.alert-close:focus-visible,
+button.alert-close:focus-visible {
   outline: none;
   box-shadow: var(--accent-ring);
+}
+
+button.alert-close::after {
+  content: none;
+  display: none;
 }
 
 /* ---------- Banner variant ---------- */

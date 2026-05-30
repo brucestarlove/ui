@@ -67,10 +67,13 @@
   min-width: 0;
 }
 
-.toast-close {
+.toast-close,
+button.toast-close {
   flex-shrink: 0;
   width: 1.25rem;
   height: 1.25rem;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,8 +89,17 @@
   transition: opacity 150ms;
 }
 
-.toast-close:hover {
+.toast-close:hover,
+button.toast-close:hover {
+  transform: none;
+  filter: none;
   opacity: 0.85;
+  box-shadow: none;
+}
+
+button.toast-close::after {
+  content: none;
+  display: none;
 }
 
 /* ---------- Light variants ---------- */

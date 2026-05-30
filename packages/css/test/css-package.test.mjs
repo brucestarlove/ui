@@ -56,10 +56,16 @@ test("button CSS supports explicit primary, secondary, ghost, and disabled ARC c
   assert.match(buttonCss, /button\[aria-disabled="true"\]/);
   assert.match(buttonCss, /\.btn-sun\s+\.btn-plus/);
   assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus/);
+  assert.match(buttonCss, /\.column-add-btn/);
+  assert.match(buttonCss, /\.add-card-phantom/);
+  assert.match(buttonCss, /button\.column-add-btn[\s\S]*border-radius:\s*var\(--radius-control/);
+  assert.match(buttonCss, /button\.add-card-phantom[\s\S]*border-radius:\s*var\(--radius-control/);
   assert.match(buttonCss, /button:not\(\[data-variant\]\)[\s\S]*:not\(\.card-expand-trigger\)/);
   assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus[\s\S]*transform:\s*translateY\(-0\.02em\)/);
   assert.match(arcCss, /\[data-variant="primary"\]/);
   assert.match(arcCss, /:not\(\[data-variant="card-accordion"\]\)/);
+  assert.match(arcCss, /:not\(\.column-add-btn\)/);
+  assert.match(arcCss, /:not\(\.add-card-phantom\)/);
   assert.match(arcCss, /:not\(\[data-no-arc\]\)/);
   assert.match(arcCss, /\[data-disabled\]::after/);
   assert.match(arcCss, /\.is-disabled::after/);
@@ -86,6 +92,8 @@ test("topbar menu and compact card accordion stay split from default button chro
 test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitives", () => {
   const indexCss = readCss("src/index.css");
   const laneCss = readCss("src/components/lane.css");
+  const listCss = readCss("src/components/list.css");
+  const epicAccordionCss = readCss("src/components/accordion-epic.css");
   const cardAccordionCss = readCss("src/components/card-accordion.css");
   const statePillCss = readCss("src/components/state-pill.css");
   const priorityPillCss = readCss("src/components/priority-pill.css");
@@ -101,6 +109,10 @@ test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitiv
   assert.match(laneCss, /\.lane\[data-accent="ai-ready"\]/);
   assert.match(laneCss, /--lane-accent-rgb/);
   assert.match(laneCss, /\.column--ai-ready/);
+  assert.match(listCss, /\.list-stars > li\s*\{[\s\S]*padding-inline-start:\s*2\.45rem/);
+  assert.match(listCss, /\.list-stars > li::before\s*\{[\s\S]*top:\s*50%[\s\S]*transform:\s*translateY\(-50%\)/);
+  assert.match(listCss, /\.list-stars > li::after\s*\{[\s\S]*top:\s*50%[\s\S]*transform:\s*translateY\(-50%\)/);
+  assert.doesNotMatch(epicAccordionCss, /accordion-epic-body\s+\.list-stars/);
   assert.match(cardAccordionCss, /\.card-meta/);
   assert.match(cardAccordionCss, /\.card-expand-trigger/);
   assert.match(cardAccordionCss, /button\.card-expand-trigger/);

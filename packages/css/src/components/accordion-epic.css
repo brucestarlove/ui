@@ -116,25 +116,6 @@
   padding: 0 0.15rem 0.15rem;
 }
 
-.accordion-epic-body .list-stars > li {
-  min-height: 2.45rem;
-  padding-block: 0.58rem;
-  padding-inline-start: 2.45rem;
-  color: var(--ink);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-
-.accordion-epic-body .list-stars > li::before {
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.accordion-epic-body .list-stars > li::after {
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 /* Reduced motion — flip the chevron instantly (state still toggles). */
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion="full"]) .accordion-epic-chevron {

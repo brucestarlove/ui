@@ -86,23 +86,44 @@
   letter-spacing: -0.03em;
 }
 
-.create-flyout-close {
+.create-flyout-close,
+button.create-flyout-close {
   display: inline-grid;
   place-items: center;
+  width: 2rem;
   min-width: 2rem;
   height: 2rem;
+  min-height: 0;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: calc(var(--radius-control) - 2px);
   background: var(--surface);
   color: var(--ink);
+  box-shadow: none;
   font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
   cursor: url('../cursors/live_link.cur'), pointer;
 }
 
-.create-flyout-close:hover {
+.create-flyout-close:hover,
+button.create-flyout-close:hover {
+  transform: none;
+  filter: none;
   background: var(--accent-hover);
   border-color: var(--accent-border);
+  box-shadow: none;
+}
+
+.create-flyout-close:focus-visible,
+button.create-flyout-close:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+button.create-flyout-close::after {
+  content: none;
+  display: none;
 }
 
 .create-flyout-form {

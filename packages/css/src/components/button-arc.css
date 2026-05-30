@@ -12,8 +12,8 @@
  *      feedback (token-swapped rather than filter:invert so it stays on-brand).
  *
  * The sweep ring is now the shared button grammar (§ "ring hosts" below):
- * every button hosts it EXCEPT command, plus, compact card accordions,
- * explicit opt-outs, and the clip-path shapes. So the default primary,
+ * every button hosts it EXCEPT command, plus, Orbit lane create controls,
+ * compact card accordions, explicit opt-outs, and the clip-path shapes. So the default primary,
  * .btn-secondary, .ghost, [data-variant="arc"], and the epic CTA all light up.
  * Each variant supplies its own surface (button.css); this file supplies the
  * ring + press-invert grammar on top. Themes for free (warm teal+amber light,
@@ -32,7 +32,7 @@
 /* ---------- Ring hosts — vars + stacking context (shared) ----------
  *
  * The sweep ring is now the shared button grammar: every button hosts it
- * EXCEPT the command, plus, compact card accordion, opt-out, and clip-path
+ * EXCEPT the command, plus, Orbit lane create controls, compact card accordion, opt-out, and clip-path
  * shape variants (which have their own treatment) — and EXCEPT [data-tooltip]
  * buttons: the CSS tooltip (tooltip.css) also lives on ::after, and an element
  * gets only one ::after, so a tooltip button yields its ::after to the bubble
@@ -46,7 +46,7 @@
  * and silence them. The same `:where(:not(…))` is reused verbatim for the
  * ::after ring, its hover/disabled triggers, and the dark rim colors. */
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
   /* Arc ring colors — overridable per-instance. Defaults: light theme. */
   --arc-c0: rgba(var(--accent-rgb), 0);
   --arc-c1: rgba(var(--accent-rgb), 0.95);
@@ -61,7 +61,7 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
 }
 
 /* The sweeping arc ring — a masked-border pseudo-element behind the host. */
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))::after {
   content: "";
   position: absolute;
   inset: var(--arc-inset);
@@ -109,17 +109,17 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
   mask-composite: exclude;
 }
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):hover::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):focus-visible::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):active::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):hover::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):focus-visible::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):active::after {
   opacity: 1;
   animation-play-state: running;   /* sweep only while the ring is shown */
 }
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[data-disabled]::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[aria-disabled="true"]::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])).is-disabled::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[data-disabled]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[aria-disabled="true"]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])).is-disabled::after {
   animation: none;
   opacity: 0;
 }
@@ -197,14 +197,14 @@ button[data-variant="arc"]:disabled {
 
 /* ---------- Dark: cyan + violet rim (ring vars, shared) ---------- */
 
-[data-theme="dark"] button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+[data-theme="dark"] button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
   --arc-c0: rgba(var(--cyan-rgb), 0);
   --arc-c1: rgba(var(--cyan-rgb), 0.95);
   --arc-c2: rgba(var(--violet-rgb), 0.9);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+  :root:not([data-theme="light"]) button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
     --arc-c0: rgba(var(--cyan-rgb), 0);
     --arc-c1: rgba(var(--cyan-rgb), 0.95);
     --arc-c2: rgba(var(--violet-rgb), 0.9);

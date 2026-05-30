@@ -175,7 +175,8 @@ label {
   display: none;
 }
 
-.input-search-clear {
+.input-search-clear,
+button.input-search-clear {
   position: absolute;
   inset-block: 0;
   inset-inline-end: 0.4rem;
@@ -207,14 +208,24 @@ label {
   pointer-events: auto;
 }
 
-.input-search-clear:hover {
+.input-search-clear:hover,
+button.input-search-clear:hover {
+  transform: none;
+  filter: none;
   background: var(--accent-hover);
   color: var(--ink);
+  box-shadow: none;
 }
 
-.input-search-clear:focus-visible {
+.input-search-clear:focus-visible,
+button.input-search-clear:focus-visible {
   outline: none;
   box-shadow: var(--accent-ring);
+}
+
+button.input-search-clear::after {
+  content: none;
+  display: none;
 }
 
 [data-theme="dark"] .input-search > input,
