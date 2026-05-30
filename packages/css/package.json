@@ -1,6 +1,6 @@
 {
   "name": "@starlove/ui",
-  "version": "3.0.2",
+  "version": "3.1.2",
   "description": "Starscape v3 — pure CSS design system (tokens, base, backgrounds, components)",
   "type": "module",
   "license": "MIT",

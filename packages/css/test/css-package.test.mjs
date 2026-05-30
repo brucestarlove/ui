@@ -8,15 +8,27 @@ const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const workspaceRoot = dirname(dirname(pkgRoot));
 const pkg = JSON.parse(readFileSync(join(pkgRoot, "package.json"), "utf8"));
 const rootPkg = JSON.parse(readFileSync(join(workspaceRoot, "package.json"), "utf8"));
+const reactPkg = JSON.parse(readFileSync(join(workspaceRoot, "packages/react/package.json"), "utf8"));
+const SEMVER_RE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 
 function readCss(relativePath) {
   return readFileSync(join(pkgRoot, relativePath), "utf8");
 }
 
-test("CSS package exposes Orbit cockpit extensions as v3.0.2", () => {
-  assert.equal(rootPkg.version, "3.0.2");
-  assert.equal(pkg.version, "3.0.2");
+test("workspace root cannot publish over the CSS package", () => {
+  assert.equal(rootPkg.name, "starscape-ui-system-v3");
+  assert.equal(rootPkg.private, true);
+  assert.notEqual(rootPkg.name, pkg.name);
+  assert.match(rootPkg.scripts.release, /--filter \.\/packages\/css publish/);
+});
 
+test("workspace packages are versioned together", () => {
+  assert.match(pkg.version, SEMVER_RE);
+  assert.equal(rootPkg.version, pkg.version);
+  assert.equal(reactPkg.version, pkg.version);
+});
+
+test("CSS package exposes Orbit cockpit extensions", () => {
   for (const [subpath, file] of Object.entries({
     "./components/state-pill": "./src/components/state-pill.css",
     "./components/priority-pill": "./src/components/priority-pill.css",
