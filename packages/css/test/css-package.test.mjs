@@ -89,6 +89,46 @@ test("topbar menu and compact card accordion stay split from default button chro
   assert.match(cardAccordionCss, /card-expand-trigger:not\(\.card-expand-trigger--static\):hover[\s\S]*filter:\s*none/);
 });
 
+test("close and remove icon buttons stay compact instead of inheriting default button chrome", () => {
+  const iconControls = [
+    ["src/components/create-flyout.css", "create-flyout-close"],
+    ["src/components/drawer.css", "drawer-close"],
+    ["src/components/modal.css", "modal-close"],
+    ["src/components/toast.css", "toast-close"],
+    ["src/components/alert.css", "alert-close"],
+    ["src/components/tag-input.css", "tag-remove"],
+    ["src/components/input.css", "input-search-clear"]
+  ];
+
+  for (const [file, className] of iconControls) {
+    const css = readCss(file);
+    assert.match(css, new RegExp(`button\\.${className}[\\s\\S]*?\\{[\\s\\S]*?min-width:\\s*0`), `${className} should reset default min-width`);
+    assert.match(css, new RegExp(`button\\.${className}[\\s\\S]*?\\{[\\s\\S]*?min-height:\\s*0`), `${className} should reset default min-height`);
+    assert.match(css, new RegExp(`button\\.${className}[\\s\\S]*?\\{[\\s\\S]*?padding:\\s*0`), `${className} should reset default padding`);
+    assert.match(css, new RegExp(`button\\.${className}:hover[\\s\\S]*?\\{[\\s\\S]*?transform:\\s*none`), `${className} should not lift on hover`);
+    assert.match(css, new RegExp(`button\\.${className}:hover[\\s\\S]*?\\{[\\s\\S]*?filter:\\s*none`), `${className} should not brighten on hover`);
+    assert.match(css, new RegExp(`button\\.${className}::after[\\s\\S]*?content:\\s*none`), `${className} should suppress ARC pseudo-elements`);
+  }
+
+  assert.doesNotMatch(readCss("src/components/create-flyout.css"), /button\.create-flyout-close[\s\S]*min-width:\s*2rem/);
+});
+
+test("settings drawer forms keep description rhythm and bounded action buttons", () => {
+  const drawerCss = readCss("src/components/drawer.css");
+
+  assert.match(drawerCss, /--drawer-action-min-inline-size:\s*12\.5rem/);
+  assert.match(drawerCss, /--drawer-action-max-inline-size:\s*18rem/);
+  assert.match(drawerCss, /\.drawer \.section > \.description \+ \.field-form/);
+  assert.match(drawerCss, /\.drawer \.section > \.description \+ \.deployment-actions/);
+  assert.match(drawerCss, /margin-top:\s*0\.85rem/);
+  assert.match(drawerCss, /\.drawer \.field-form > button/);
+  assert.match(drawerCss, /\.drawer \.deployment-actions > button/);
+  assert.match(drawerCss, /\.drawer \.repository-delete-actions > button/);
+  assert.match(drawerCss, /min-inline-size:\s*min\(100%, var\(--drawer-action-min-inline-size\)\)/);
+  assert.match(drawerCss, /max-inline-size:\s*min\(100%, var\(--drawer-action-max-inline-size\)\)/);
+  assert.match(drawerCss, /\.drawer \.deployment-actions,[\s\S]*display:\s*flex/);
+});
+
 test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitives", () => {
   const indexCss = readCss("src/index.css");
   const laneCss = readCss("src/components/lane.css");

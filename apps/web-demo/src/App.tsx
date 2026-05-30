@@ -456,6 +456,35 @@ function Topbar({
                   </div>
                 </fieldset>
               </div>
+
+              <div className="drawer-section board-rename-section">
+                <h3>Board Name</h3>
+                <p className="description">
+                  Rename the board display name only. The canonical URL slug stays <strong>{currentBoard}</strong>,
+                  so existing board links keep working.
+                </p>
+                <form
+                  className="field-form"
+                  onSubmit={e => { e.preventDefault(); toast.success('Board display name saved'); }}
+                >
+                  <label>
+                    <span>Display name</span>
+                    <input name="name" defaultValue={boardName} maxLength={120} required />
+                  </label>
+                  <button type="submit" data-variant="secondary">Rename Board</button>
+                </form>
+              </div>
+
+              <div className="drawer-section">
+                <h3>Snapshot</h3>
+                <p className="description">
+                  Export a local board snapshot or import another board without replacing this one.
+                </p>
+                <div className="deployment-actions">
+                  <button type="button" data-variant="secondary" onClick={() => toast('Export started')}>Export</button>
+                  <button type="button" data-variant="secondary" onClick={() => toast('Import picker opened')}>Import as New Board</button>
+                </div>
+              </div>
             </>
           )}
           {tab === 'lanes' && (

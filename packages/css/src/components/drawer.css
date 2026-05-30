@@ -35,6 +35,8 @@
   /* `--drawer-offcanvas` is the offscreen translate; flipped in RTL so the
      drawer slides off the leading edge regardless of writing direction. */
   --drawer-offcanvas: calc(100% + 1.5rem);
+  --drawer-action-min-inline-size: 12.5rem;
+  --drawer-action-max-inline-size: 18rem;
 
   position: fixed;
   top: clamp(0.75rem, 2vh, 1.5rem);
@@ -303,6 +305,66 @@ button.drawer-close::after {
 
 .drawer-section:first-child {
   margin-top: 0;
+}
+
+/* Settings form rhythm and action sizing.
+ *
+ * Orbit settings panels use `.section`, `.field-form`, `.deployment-actions`,
+ * and `.repository-delete-actions` inside the drawer. The action buttons should
+ * read as deliberate controls, not full-width drawer slabs: default to a
+ * 200–288px range, then wrap/shrink on narrow screens. */
+.drawer .section > .description,
+.drawer .drawer-section > .description {
+  margin-block: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.drawer .section > .description + .field-form,
+.drawer .drawer-section > .description + .field-form,
+.drawer .section > .description + .deployment-actions,
+.drawer .drawer-section > .description + .deployment-actions,
+.drawer .section > .description + .repository-delete-actions,
+.drawer .drawer-section > .description + .repository-delete-actions {
+  margin-top: 0.85rem;
+}
+
+.drawer .field-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.drawer .field-form > label {
+  display: grid;
+  gap: 0.34rem;
+  margin: 0;
+}
+
+.drawer .field-form > label > span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.drawer .deployment-actions,
+.drawer .repository-delete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.drawer .field-form > button,
+.drawer .deployment-actions > button,
+.drawer .repository-delete-actions > button {
+  justify-self: start;
+  flex: 0 1 auto;
+  inline-size: fit-content;
+  min-inline-size: min(100%, var(--drawer-action-min-inline-size));
+  max-inline-size: min(100%, var(--drawer-action-max-inline-size));
+  white-space: normal;
 }
 
 [data-theme="dark"] .drawer {

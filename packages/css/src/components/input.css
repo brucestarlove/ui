@@ -183,6 +183,7 @@ button.input-search-clear {
   margin-block: auto;
   width: 1.6rem;
   height: 1.6rem;
+  min-width: 0;
   min-height: 0;
   padding: 0;
   border: 0;

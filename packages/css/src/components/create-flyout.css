@@ -91,7 +91,7 @@ button.create-flyout-close {
   display: inline-grid;
   place-items: center;
   width: 2rem;
-  min-width: 2rem;
+  min-width: 0;
   height: 2rem;
   min-height: 0;
   padding: 0;
