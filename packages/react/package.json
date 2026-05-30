@@ -1,0 +1,69 @@
+{
+  "name": "@starlove/ui-react",
+  "version": "3.0.0",
+  "description": "Starscape v3 — React layer: typed component wrappers + theme/motion/disclosure hooks for @starlove/ui",
+  "type": "module",
+  "license": "MIT",
+  "author": "Bruce Starlove",
+  "homepage": "https://github.com/brucestarlove/starscape-ui-system-v3/tree/master/packages/react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brucestarlove/starscape-ui-system-v3.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/brucestarlove/starscape-ui-system-v3/issues"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "ui",
+    "components",
+    "starscape",
+    "dark-mode",
+    "theme"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "tsup"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "sonner": ">=1.7"
+  },
+  "peerDependenciesMeta": {
+    "sonner": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@starlove/ui": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "sonner": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:"
+  }
+}

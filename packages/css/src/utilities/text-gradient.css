@@ -1,0 +1,61 @@
+/* Starscape v3 — gradient-text utility.
+ *
+ *   <h1 class="text-gradient">A pure-CSS palette for cosmic web apps.</h1>
+ *
+ * Paints text with the v3 starlight gradient (parchment teal+amber in light,
+ * starlight cyan+violet in dark) by stretching a gradient through the glyphs
+ * and clipping to text shape.
+ *
+ * Falls back to --ink in forced-colors mode (system colors win — gradients
+ * become a single foreground color anyway, and we don't want to fight the OS).
+ */
+
+.text-gradient {
+  background-image: var(--gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* When children inherit, they pick up the parent fill — make sure they
+     stay legible if a consumer accidentally puts a non-text element inside. */
+}
+
+:root {
+  --gradient-text: linear-gradient(
+    135deg,
+    rgba(var(--accent-rgb), 0.95) 0%,
+    rgba(var(--amber-rgb), 0.9) 55%,
+    rgba(var(--blue-rgb), 0.95) 100%
+  );
+}
+
+[data-theme="dark"] {
+  --gradient-text: linear-gradient(
+    135deg,
+    rgba(var(--cyan-rgb), 1) 0%,
+    rgba(var(--starlight-rgb), 1) 50%,
+    rgba(var(--violet-rgb), 1) 100%
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --gradient-text: linear-gradient(
+      135deg,
+      rgba(var(--cyan-rgb), 1) 0%,
+      rgba(var(--starlight-rgb), 1) 50%,
+      rgba(var(--violet-rgb), 1) 100%
+    );
+  }
+}
+
+/* In forced-colors / Windows high-contrast, browsers ignore gradient fills
+ * anyway and use system colors. Still — restore a real foreground so screen
+ * magnifiers and selection highlights behave. */
+@media (forced-colors: active) {
+  .text-gradient {
+    background: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
+}

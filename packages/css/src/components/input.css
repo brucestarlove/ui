@@ -1,0 +1,230 @@
+/* Starscape v3 — form fields.
+ * Inputs, selects, and textareas share a common chrome so they can be
+ * mixed in a form without visual jitter.
+ */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+  background: var(--surface-input);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: rgba(var(--accent-rgb), 0.35);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent-focus-border);
+  box-shadow: var(--accent-ring);
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+textarea {
+  min-height: 4rem;
+  resize: vertical;
+}
+
+/* Custom chevron for native <select>. The SVG below is a 2-line caret glyph
+ * (functional UI affordance, not decoration — stays in this library by
+ * design). Apply via .select-chevron-field. */
+select.select-chevron-field {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-inline-end: calc(var(--select-chevron-pad-x) * 2 + var(--select-chevron-size));
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right var(--select-chevron-pad-x) center;
+  background-size: var(--select-chevron-size) var(--select-chevron-size);
+}
+
+[dir="rtl"] select.select-chevron-field {
+  background-position: left var(--select-chevron-pad-x) center;
+}
+
+select.select-chevron-field::-ms-expand {
+  display: none;
+}
+
+/* Dark mode — starscape navy fill on selects + brighter chevron stroke. */
+[data-theme="dark"] select {
+  color: #e8efff;
+  background: linear-gradient(180deg, rgba(26, 43, 80, 0.85), rgba(15, 25, 50, 0.9));
+  border-color: rgba(var(--starlight-rgb), 0.25);
+}
+
+[data-theme="dark"] select.select-chevron-field {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8c0ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right var(--select-chevron-pad-x) center;
+  background-size: var(--select-chevron-size) var(--select-chevron-size);
+}
+
+[data-theme="dark"] option {
+  background: #16213e;
+  color: #e8efff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) select {
+    color: #e8efff;
+    background: linear-gradient(180deg, rgba(26, 43, 80, 0.85), rgba(15, 25, 50, 0.9));
+    border-color: rgba(var(--starlight-rgb), 0.25);
+  }
+  :root:not([data-theme="light"]) select.select-chevron-field {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8c0ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right var(--select-chevron-pad-x) center;
+    background-size: var(--select-chevron-size) var(--select-chevron-size);
+  }
+  :root:not([data-theme="light"]) option {
+    background: #16213e;
+    color: #e8efff;
+  }
+}
+
+/* Form labels & helpers. */
+label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.form-help {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.form-error {
+  font-size: 0.78rem;
+  color: var(--danger);
+}
+
+/* ---------- Search input variant ---------- */
+/*
+ *   <div class="input-search">
+ *     <input type="search" placeholder="Search…" />
+ *     <button class="input-search-clear" aria-label="Clear">×</button>
+ *   </div>
+ *
+ * The wrapper supplies the magnifier glyph as a background-image on the input
+ * (so it's always anchored to the input chrome, not the wrapper). The clear
+ * button is optional and shown only when the input has a value via the
+ * :not(:placeholder-shown) sibling check.
+ */
+
+.input-search {
+  position: relative;
+  display: block;
+}
+
+.input-search > input,
+.input-search > input[type="search"] {
+  padding-inline-start: 2.1rem;
+  padding-inline-end: 2.1rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+  background-repeat: no-repeat;
+  background-position: 0.65rem center;
+  background-size: 16px 16px;
+}
+
+/* Hide native WebKit search clear cancel button — we ship our own. */
+.input-search > input[type="search"]::-webkit-search-decoration,
+.input-search > input[type="search"]::-webkit-search-cancel-button,
+.input-search > input[type="search"]::-webkit-search-results-button,
+.input-search > input[type="search"]::-webkit-search-results-decoration {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none;
+}
+
+.input-search-clear {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0.4rem;
+  margin-block: auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  display: inline-grid;
+  place-items: center;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 140ms ease, color 140ms ease, opacity 140ms ease;
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Reveal the clear button only when the input has user content. */
+.input-search > input:not(:placeholder-shown) ~ .input-search-clear,
+.input-search > input[data-has-value="true"] ~ .input-search-clear {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.input-search-clear:hover {
+  background: var(--accent-hover);
+  color: var(--ink);
+}
+
+.input-search-clear:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+[data-theme="dark"] .input-search > input,
+[data-theme="dark"] .input-search > input[type="search"] {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8c0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .input-search > input,
+  :root:not([data-theme="light"]) .input-search > input[type="search"] {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8c0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+  }
+}

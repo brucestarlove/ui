@@ -1,0 +1,189 @@
+/* Starscape v3 — topbar buttons + controls row (ported from ss-orbit).
+ *
+ * The action buttons that live in the topbar (Settings ghost, the theme
+ * toggle) plus the flex `.controls` row helpers. Radius from --radius-control.
+ *
+ *   <div class="controls">
+ *     <span class="topbar-controls-gap"></span>
+ *     <div class="topbar-search">…</div>
+ *     <button class="topbar-btn btn-sun topbar-ctl-shrink">…</button>
+ *     <div class="topbar-menu"><button class="topbar-chip">Board ▾</button>…</div>
+ *     <button class="topbar-btn topbar-ctl-shrink" data-variant="theme"><svg class="topbar-icon">…</svg></button>
+ *     <button class="topbar-btn ghost topbar-ctl-shrink"><svg class="topbar-icon">…</svg>Settings</button>
+ *   </div>
+ *
+ * `.topbar` itself ships in topbar.css; these are the inner controls.
+ */
+
+.controls {
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+/* Pushes the search + actions away from the brand without stretching search. */
+.topbar-controls-gap {
+  flex: 1 1 auto;
+  min-width: 1.25rem;
+}
+
+.topbar-ctl-shrink {
+  flex-shrink: 0;
+}
+
+.topbar-menu {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.topbar-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* ---------- Even-height control rail (matches ss-orbit) ----------
+ *
+ * Every control in the topbar row shares one height so the rail reads as a
+ * single aligned strip. box-sizing: border-box lets each keep its own padding
+ * within that height; min-height is reset here because some controls ship a
+ * taller standalone min-height (e.g. .btn-sun is a 2.7rem CTA elsewhere). */
+.controls {
+  --topbar-ctl-h: 2.35rem;
+}
+
+.controls .topbar-search input,
+.controls .btn-sun,
+.controls .topbar-chip,
+.controls .segmented,
+.controls .topbar-btn {
+  height: var(--topbar-ctl-h);
+  min-height: var(--topbar-ctl-h);
+  box-sizing: border-box;
+}
+
+/* CTA / chip / action buttons: center contents inside the fixed height
+ * (their own vertical padding would otherwise fight the height). */
+.controls .btn-sun,
+.controls .topbar-chip,
+.controls .topbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Icon-only theme toggle: keep the standard horizontal padding (not squared)
+ * so it reads as a slightly-wider pill, matching ss-orbit's #themeToggle. */
+.controls .topbar-btn[data-variant="theme"] {
+  padding-inline: 0.85rem;
+}
+
+/* Board chip label truncates so the chip can't blow the rail height/width. */
+.topbar-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.44rem 0.85rem;
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-control);
+  color: #fff;
+  background: var(--btn-gradient);
+  box-shadow: 0 2px 8px var(--accent-hover);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.topbar-btn:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: var(--btn-hover-shadow);
+}
+
+.topbar-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+/* Ghost — the Settings button. */
+.topbar-btn.ghost {
+  color: var(--ink);
+  background: var(--surface-dim);
+  border: 1px solid var(--line);
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.topbar-btn.ghost:hover {
+  filter: none;
+  transform: none;
+  background: var(--accent-hover);
+  border-color: var(--accent-border);
+}
+
+/* Theme toggle — periwinkle oklch wash (was #themeToggle in ss-orbit). */
+.topbar-btn[data-variant="theme"] {
+  color: var(--ink);
+  border: 1px solid rgba(60, 80, 160, 0.18);
+  background: linear-gradient(in oklch 135deg, oklch(0.96 0.02 282.9) 0%, oklch(0.94 0.03 266.7) 50%, oklch(0.92 0.05 255.1) 100%);
+  box-shadow: 0 0.25rem 0.75rem rgba(60, 80, 160, 0.12);
+  font-weight: 600;
+}
+
+.topbar-btn[data-variant="theme"] .topbar-icon {
+  color: var(--ink);
+}
+
+.topbar-btn[data-variant="theme"]:hover {
+  filter: none;
+  border-color: rgba(60, 80, 160, 0.32);
+  background: linear-gradient(in oklch 135deg, oklch(0.97 0.025 276.2) 0%, oklch(0.95 0.04 261.5) 50%, oklch(0.93 0.06 254.3) 100%);
+  box-shadow: 0 0.5rem 1.5625rem rgba(60, 80, 160, 0.22);
+}
+
+/* Dark theme toggle — deep navy oklch. */
+[data-theme="dark"] .topbar-btn[data-variant="theme"] {
+  color: #fff;
+  border-color: rgba(var(--starlight-rgb), 0.15);
+  background: linear-gradient(in oklch 135deg, oklch(0.228 0.0384 282.9) 0%, oklch(0.254 0.0571 266.7) 50%, oklch(0.325 0.0884 255.1) 100%);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+}
+[data-theme="dark"] .topbar-btn[data-variant="theme"]:hover {
+  border-color: rgba(var(--starlight-rgb), 0.3);
+  background: linear-gradient(in oklch 135deg, oklch(0.257 0.0323 276.2) 0%, oklch(0.287 0.0577 261.5) 50%, oklch(0.356 0.0989 254.3) 100%);
+  box-shadow: 0 0.5rem 1.5625rem rgba(var(--void-rgb), 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .topbar-btn[data-variant="theme"] {
+    color: #fff;
+    border-color: rgba(var(--starlight-rgb), 0.15);
+    background: linear-gradient(in oklch 135deg, oklch(0.228 0.0384 282.9) 0%, oklch(0.254 0.0571 266.7) 50%, oklch(0.325 0.0884 255.1) 100%);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+  }
+  :root:not([data-theme="light"]) .topbar-btn[data-variant="theme"]:hover {
+    border-color: rgba(var(--starlight-rgb), 0.3);
+    background: linear-gradient(in oklch 135deg, oklch(0.257 0.0323 276.2) 0%, oklch(0.287 0.0577 261.5) 50%, oklch(0.356 0.0989 254.3) 100%);
+    box-shadow: 0 0.5rem 1.5625rem rgba(var(--void-rgb), 0.3);
+  }
+}

@@ -1,0 +1,100 @@
+/* Starscape v3 — progress indicators.
+ *
+ *   <div class="progress" role="progressbar" aria-valuenow="42">
+ *     <div class="progress-bar" style="--value: 42%"></div>
+ *   </div>
+ *
+ *   <div class="progress" data-indeterminate role="progressbar"></div>
+ *
+ *   <span class="spinner" role="status" aria-label="Loading"></span>
+ */
+
+.progress {
+  position: relative;
+  height: 0.5rem;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--subtle-bg);
+  overflow: hidden;
+}
+
+.progress-bar {
+  display: block;
+  width: var(--value, 0%);
+  height: 100%;
+  border-radius: 999px;
+  /* Same charged fill as the slider: amber→accent (light), violet→cyan (dark). */
+  background: linear-gradient(90deg, rgb(var(--amber-rgb)), rgb(var(--accent-rgb)));
+  transition: width 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .progress-bar,
+[data-starscape-bg="starscape"] .progress-bar {
+  background: linear-gradient(90deg, rgb(var(--violet-rgb)), rgb(var(--cyan-rgb)));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .progress-bar {
+    background: linear-gradient(90deg, rgb(var(--violet-rgb)), rgb(var(--cyan-rgb)));
+  }
+}
+
+.progress[data-indeterminate]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.55) 40%,
+    rgba(var(--blue-rgb), 0.55) 60%,
+    transparent 100%);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  animation: starscape-progress-indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes starscape-progress-indeterminate {
+  0%   { background-position: -50% 0; }
+  100% { background-position: 150% 0; }
+}
+
+/* Ring spinner. */
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2.5px solid var(--subtle-bg);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: starscape-spin 0.7s linear infinite;
+}
+
+.spinner[data-size="sm"] { width: 0.85rem; height: 0.85rem; border-width: 2px; }
+.spinner[data-size="lg"] { width: 2rem;    height: 2rem;    border-width: 3px; }
+
+@keyframes starscape-spin {
+  to { transform: rotate(360deg); }
+}
+
+[data-theme="dark"] .spinner {
+  border-top-color: var(--starlight-rgb, var(--accent));
+  border-top-color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .spinner {
+    border-top-color: rgb(var(--starlight-rgb));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .progress[data-indeterminate]::before,
+  :root:not([data-motion="full"]) .spinner {
+    animation: none;
+  }
+}
+
+[data-motion="reduce"] .progress[data-indeterminate]::before,
+[data-motion="reduce"] .spinner {
+  animation: none;
+}

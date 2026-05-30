@@ -1,0 +1,75 @@
+/* Starscape v3 — shared motion primitives.
+ * These keyframes are referenced from multiple components (cards, toasts,
+ * starscape background). Centralising them keeps timings consistent and makes
+ * the reduced-motion guards a single switch.
+ */
+@keyframes starscape-twinkle {
+  0%, 100% { opacity: var(--starscape-dim-opacity, 0.78); }
+  50%      { opacity: var(--starscape-peak-opacity, 1); }
+}
+
+@keyframes starscape-card-settle {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes starscape-toast-in {
+  0%   { opacity: 0; transform: translateY(-100%) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes starscape-toast-out {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-100%) scale(0.96); }
+}
+
+@keyframes starscape-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------- Motion preference resolution ----------
+ *
+ * Three states, mirroring the theme system:
+ *
+ *   1. No attribute      → follow `prefers-reduced-motion` (default)
+ *   2. data-motion="reduce" on <html>  → always reduce, regardless of OS
+ *   3. data-motion="full" on <html>    → ignore OS reduce-motion (full motion)
+ *
+ * The :root:not([data-motion="full"]) qualifier lets users force motion in
+ * an app even when their OS reports reduce — a niche but valid escape hatch
+ * (e.g., enterprise environments where IT enforces reduce globally).
+ *
+ * Functional motion (drawer slide, modal fade, tooltip fade) is handled by
+ * each component's own block; this file targets the ambient/decorative
+ * animations that should pause on reduced motion.
+ */
+
+/* OS preference path. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) body::before,
+  :root:not([data-motion="full"]) [data-starscape-bg]::before {
+    animation: none !important;
+  }
+
+  :root:not([data-motion="full"]) .card,
+  :root:not([data-motion="full"]) [data-sonner-toast],
+  :root:not([data-motion="full"]) .toast {
+    animation: none !important;
+  }
+}
+
+/* Explicit reduce path. */
+[data-motion="reduce"] body::before,
+[data-motion="reduce"] [data-starscape-bg]::before,
+[data-motion="reduce"] .card,
+[data-motion="reduce"] [data-sonner-toast],
+[data-motion="reduce"] .toast {
+  animation: none !important;
+}

@@ -1,0 +1,169 @@
+/* Starscape v3 — content lists.
+ *
+ *   <ol class="list-numbered">
+ *     <li><strong>Initialize</strong><span>Set up the workspace.</span></li>
+ *     …
+ *   </ol>
+ *
+ *   <ul class="list-stars">
+ *     <li><strong>Cosmic accuracy</strong><span>Pixel-precise renders.</span></li>
+ *     …
+ *   </ul>
+ *
+ * Markers are absolute-positioned so the LI's content keeps the full row
+ * width — using CSS Grid here would auto-place the second child under the
+ * marker column and wrap every word.
+ *
+ * The numbered marker is generated via CSS counters; the star marker is a
+ * gradient tile (::before) with a clip-path star glyph layered on top
+ * (::after).
+ */
+
+.list-numbered,
+.list-stars {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  counter-reset: starscape-list;
+}
+
+.list-numbered > li,
+.list-stars > li {
+  position: relative;
+  padding: 0.72rem 0;
+  padding-inline-start: 2.65rem;
+  border-bottom: 1px solid var(--line);
+  min-height: 2.6rem;
+}
+
+.list-numbered > li:last-child,
+.list-stars > li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ---------- Numbered marker — circular badge with counter glyph ---------- */
+
+.list-numbered > li {
+  counter-increment: starscape-list;
+}
+
+.list-numbered > li::before {
+  content: counter(starscape-list);
+  position: absolute;
+  top: 0.85rem;
+  inset-inline-start: 0;
+  display: grid;
+  width: 1.85rem;
+  height: 1.85rem;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.08);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .list-numbered > li::before {
+  border-color: rgba(var(--starlight-rgb), 0.32);
+  color: rgb(var(--starlight-rgb));
+  background: var(--surface-dim);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .list-numbered > li::before {
+    border-color: rgba(var(--starlight-rgb), 0.32);
+    color: rgb(var(--starlight-rgb));
+    background: var(--surface-dim);
+  }
+}
+
+/* ---------- Star marker — gradient tile with white clip-path star ---------- */
+
+.list-stars > li::before {
+  content: "";
+  position: absolute;
+  top: 0.85rem;
+  inset-inline-start: 0;
+  display: block;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 8px;
+  background: var(--btn-gradient);
+  pointer-events: none;
+}
+
+.list-stars > li::after {
+  content: "";
+  position: absolute;
+  top: calc(0.85rem + (1.85rem - 1rem) / 2);
+  inset-inline-start: calc((1.85rem - 1rem) / 2);
+  width: 1rem;
+  height: 1rem;
+  background: #ffffff;
+  clip-path: polygon(
+    50% 0%,   61% 34%,   98% 35%,   68% 56%,   79% 91%,
+    50% 70%,  21% 91%,   32% 56%,    2% 35%,   39% 34%
+  );
+  pointer-events: none;
+}
+
+[data-theme="dark"] .list-stars > li::before {
+  background: linear-gradient(135deg, #0f3460, #1a1a2e);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .list-stars > li::before {
+    background: linear-gradient(135deg, #0f3460, #1a1a2e);
+  }
+}
+
+/* ---------- Shared content typography ---------- */
+
+.list-numbered > li > strong,
+.list-stars > li > strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+
+.list-numbered > li > span,
+.list-stars > li > span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  /* Allow long inline content (URLs, code) to wrap rather than overflow. */
+  overflow-wrap: anywhere;
+}
+
+.list-numbered > li code,
+.list-stars > li code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--accent);
+  /* Box-decoration-break makes the chip background look right when the
+     code wraps across lines instead of splitting the rounded corners. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+[data-theme="dark"] .list-numbered > li code,
+[data-theme="dark"] .list-stars > li code {
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .list-numbered > li code,
+  :root:not([data-theme="light"]) .list-stars > li code {
+    color: rgb(var(--starlight-rgb));
+  }
+}

@@ -1,0 +1,25 @@
+/* Starscape v3 — shape & density tokens.
+ *
+ * Theme-stable design tokens for corner radius and field density, used by the
+ * ss-orbit chrome (topbar search/buttons/chip, the board menu-flyout, the New
+ * Card create-flyout, the appearance theme selector, and the settings drawer).
+ *
+ * These carry ss-orbit's "starship cockpit" silhouette — tight radii, dense
+ * padding — as the single default across the system. They're plain global
+ * tokens, so an app that wants softer corners overrides one value at :root
+ * (e.g. `--radius-control: 14px`) rather than opting into a whole variant axis.
+ *
+ * Note: `--radius` (in light/dark/system.css) is the older, theme-specific
+ * surface radius used by cards and the like; these `--radius-*` tokens are
+ * separate, theme-stable, and govern the chrome.
+ */
+
+:root {
+  --radius-control: 10px;   /* inputs, buttons, menu items, chips */
+  --radius-surface: 14px;   /* flyouts, dropdowns, the composer */
+  --radius-drawer: 20px;    /* the settings drawer shell */
+  --radius-pill: 999px;     /* still-round bits: toggle tracks, marks, dots */
+  --field-pad-y: 0.62rem;
+  --field-pad-x: 0.8rem;
+  --row-gap: 0.4rem;        /* density of stacked rows/lists */
+}

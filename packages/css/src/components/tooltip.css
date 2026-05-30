@@ -1,0 +1,137 @@
+/* Starscape v3 — CSS-only tooltip with optional viewport-aware flipping.
+ *
+ *   <button data-tooltip="Save (⌘S)">Save</button>
+ *   <button data-tooltip="Help" data-tooltip-placement="bottom">Help</button>
+ *
+ * The bubble is a `::after` pseudo-element — no extra DOM. By default it
+ * appears above the trigger; `data-tooltip-placement="top|bottom|left|right"`
+ * picks a different preferred direction.
+ *
+ * Viewport-aware auto-flip: if you mount the JS engine
+ * (`@starlove/ui/tooltip-placement` or the React hook
+ * `useTooltipPlacement`), the engine sets `data-tooltip-resolved` on hover
+ * to flip the placement when the preferred direction would clip the
+ * viewport. CSS rules below prefer `data-tooltip-resolved` when present and
+ * fall back to `data-tooltip-placement` when it isn't (so static HTML still
+ * works without JS).
+ *
+ * Accessibility note: a CSS-only tooltip can't be dismissed on keyboard
+ * escape and doesn't follow ARIA tooltip practices fully. For mission-
+ * critical info on focus-only triggers, build a JS-driven popover. This is
+ * for hint/affordance text.
+ */
+
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 80;
+  bottom: calc(100% + 0.45rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--flyout-shadow), 0 0 0 1px rgba(var(--paper-rgb), 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease, transform 160ms cubic-bezier(0.21, 1.02, 0.73, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] [data-tooltip]::after {
+  border-color: rgba(var(--starlight-rgb), 0.32);
+  color: #e8efff;
+  box-shadow: var(--flyout-shadow), 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-tooltip]::after {
+    border-color: rgba(var(--starlight-rgb), 0.32);
+    color: #e8efff;
+    box-shadow: var(--flyout-shadow), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  }
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Placement: bottom ----------
+ * Resolved by JS auto-flip OR explicit author preference (when no resolver).
+ */
+[data-tooltip][data-tooltip-resolved="bottom"]::after,
+[data-tooltip][data-tooltip-placement="bottom"]:not([data-tooltip-resolved])::after {
+  top: calc(100% + 0.45rem);
+  bottom: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+[data-tooltip][data-tooltip-resolved="bottom"]:hover::after,
+[data-tooltip][data-tooltip-resolved="bottom"]:focus-visible::after,
+[data-tooltip][data-tooltip-placement="bottom"]:not([data-tooltip-resolved]):hover::after,
+[data-tooltip][data-tooltip-placement="bottom"]:not([data-tooltip-resolved]):focus-visible::after {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Placement: top (explicit, in case JS resolves back to top) ---------- */
+[data-tooltip][data-tooltip-resolved="top"]::after {
+  top: auto;
+  bottom: calc(100% + 0.45rem);
+  transform: translateX(-50%) translateY(4px);
+}
+[data-tooltip][data-tooltip-resolved="top"]:hover::after,
+[data-tooltip][data-tooltip-resolved="top"]:focus-visible::after {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Placement: left ---------- */
+[data-tooltip][data-tooltip-resolved="left"]::after,
+[data-tooltip][data-tooltip-placement="left"]:not([data-tooltip-resolved])::after {
+  top: 50%;
+  left: auto;
+  right: calc(100% + 0.45rem);
+  bottom: auto;
+  transform: translateY(-50%) translateX(4px);
+}
+[data-tooltip][data-tooltip-resolved="left"]:hover::after,
+[data-tooltip][data-tooltip-resolved="left"]:focus-visible::after,
+[data-tooltip][data-tooltip-placement="left"]:not([data-tooltip-resolved]):hover::after,
+[data-tooltip][data-tooltip-placement="left"]:not([data-tooltip-resolved]):focus-visible::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ---------- Placement: right ---------- */
+[data-tooltip][data-tooltip-resolved="right"]::after,
+[data-tooltip][data-tooltip-placement="right"]:not([data-tooltip-resolved])::after {
+  top: 50%;
+  left: calc(100% + 0.45rem);
+  bottom: auto;
+  transform: translateY(-50%) translateX(-4px);
+}
+[data-tooltip][data-tooltip-resolved="right"]:hover::after,
+[data-tooltip][data-tooltip-resolved="right"]:focus-visible::after,
+[data-tooltip][data-tooltip-placement="right"]:not([data-tooltip-resolved]):hover::after,
+[data-tooltip][data-tooltip-placement="right"]:not([data-tooltip-resolved]):focus-visible::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) [data-tooltip]::after {
+    transition: opacity 0.01ms;
+  }
+}
+
+[data-motion="reduce"] [data-tooltip]::after {
+  transition: opacity 0.01ms;
+}

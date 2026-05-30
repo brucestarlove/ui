@@ -1,0 +1,7 @@
+/* Order matters here:
+ *   parchment.css applies to body unconditionally,
+ *   starscape.css overrides for dark themes (explicit + system).
+ * Importing parchment first lets the dark rules override cleanly.
+ */
+@import "./parchment.css";
+@import "./starscape.css";

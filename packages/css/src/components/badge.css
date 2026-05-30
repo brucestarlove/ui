@@ -1,0 +1,230 @@
+/* Starscape v3 — badges & chips.
+ * Generic pill components for tags, counts, status labels.
+ */
+
+.badge,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 1.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* Live badge — a leading dot that pulses a fading halo outward (ARC's
+ * orbit/commit energy, distilled to a status pulse). Default tone red. */
+.badge[data-live] {
+  --live-color: var(--red-rgb);
+}
+.badge[data-live]::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgb(var(--live-color));
+  animation: badge-pulse 1.8s ease-out infinite;
+}
+.badge[data-live][data-tone="success"] { --live-color: 34, 197, 94; }
+.badge[data-live][data-tone="accent"]  { --live-color: var(--accent-rgb); }
+
+@keyframes badge-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--live-color), 0.55); }
+  70%  { box-shadow: 0 0 0 0.45rem rgba(var(--live-color), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--live-color), 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge[data-live]::before { animation: none; }
+}
+
+.badge[data-tone="accent"],
+.chip[data-tone="accent"] {
+  border-color: rgba(var(--accent-rgb), 0.35);
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+}
+
+.badge[data-tone="success"],
+.chip[data-tone="success"] {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.12);
+  color: #1a8a3e;
+}
+
+.badge[data-tone="warning"],
+.chip[data-tone="warning"] {
+  border-color: rgba(var(--amber-rgb), 0.45);
+  background: rgba(var(--amber-rgb), 0.12);
+  color: #8a4d12;
+}
+
+.badge[data-tone="danger"],
+.chip[data-tone="danger"] {
+  border-color: rgba(var(--red-rgb), 0.45);
+  background: rgba(var(--red-rgb), 0.1);
+  color: var(--danger);
+}
+
+.count {
+  display: inline-grid;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--orbit-text-muted);
+  background: var(--orbit-count-bg);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* Type pills — uppercase, monospace-feel labels for ticket types or category
+ * tags. Quieter than .badge; lives inside cards or alongside titles.
+ *
+ *   <span class="type-pill" data-type="epic">EPIC</span>
+ */
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.12rem 0.42rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--subtle-bg);
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.type-pill[data-type="epic"]    { background: rgba(var(--purple-rgb), 0.12); border-color: rgba(var(--purple-rgb), 0.28); color: #6b3ea1; }
+.type-pill[data-type="feature"] { background: rgba(var(--accent-rgb), 0.12); border-color: rgba(var(--accent-rgb), 0.28); color: var(--teal-deep); }
+.type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.10);   border-color: rgba(var(--blue-rgb), 0.24);   color: #1e4a66; }
+.type-pill[data-type="bug"]     { background: rgba(var(--red-rgb), 0.10);    border-color: rgba(var(--red-rgb), 0.28);    color: #8a2d24; }
+.type-pill[data-type="done"]    { background: rgba(34, 197, 94, 0.12);       border-color: rgba(34, 197, 94, 0.28);        color: #16703a; }
+
+[data-theme="dark"] .type-pill[data-type="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
+[data-theme="dark"] .type-pill[data-type="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
+[data-theme="dark"] .type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
+[data-theme="dark"] .type-pill[data-type="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
+[data-theme="dark"] .type-pill[data-type="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .type-pill[data-type="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
+  :root:not([data-theme="light"]) .type-pill[data-type="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
+  :root:not([data-theme="light"]) .type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
+  :root:not([data-theme="light"]) .type-pill[data-type="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
+  :root:not([data-theme="light"]) .type-pill[data-type="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
+}
+
+[data-theme="dark"] .badge[data-tone="success"],
+[data-theme="dark"] .chip[data-tone="success"] {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .badge[data-tone="warning"],
+[data-theme="dark"] .chip[data-tone="warning"] {
+  background: rgba(var(--amber-rgb), 0.18);
+  color: #facc15;
+}
+
+[data-theme="dark"] .badge[data-tone="danger"],
+[data-theme="dark"] .chip[data-tone="danger"] {
+  border-color: rgba(var(--coral-rgb), 0.45);
+  background: rgba(var(--coral-rgb), 0.16);
+  color: #fca5a5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .badge[data-tone="success"],
+  :root:not([data-theme="light"]) .chip[data-tone="success"] {
+    background: rgba(34, 197, 94, 0.18);
+    color: #4ade80;
+  }
+  :root:not([data-theme="light"]) .badge[data-tone="warning"],
+  :root:not([data-theme="light"]) .chip[data-tone="warning"] {
+    background: rgba(var(--amber-rgb), 0.18);
+    color: #facc15;
+  }
+  :root:not([data-theme="light"]) .badge[data-tone="danger"],
+  :root:not([data-theme="light"]) .chip[data-tone="danger"] {
+    border-color: rgba(var(--coral-rgb), 0.45);
+    background: rgba(var(--coral-rgb), 0.16);
+    color: #fca5a5;
+  }
+}
+
+/* Interactive chip — a filter/toggle pill. Add data-interactive (or use a
+ * <button class="chip">) for hover/press affordance. Ported from studio's
+ * .studio-chip; hover colors flow from the --chip-hover-* token pair.
+ *
+ *   <button class="chip" data-tone="accent">All <span class="count">12</span></button>
+ *   <span class="chip" data-interactive>Drafts</span>
+ */
+
+:root {
+  --chip-hover-bg: rgba(var(--accent-rgb), 0.1);
+  --chip-hover-border: rgba(var(--accent-rgb), 0.3);
+}
+
+[data-theme="dark"] {
+  --chip-hover-bg: rgba(var(--violet-rgb), 0.18);
+  --chip-hover-border: rgba(var(--violet-rgb), 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --chip-hover-bg: rgba(var(--violet-rgb), 0.18);
+    --chip-hover-border: rgba(var(--violet-rgb), 0.45);
+  }
+}
+
+button.chip,
+.chip[data-interactive] {
+  min-height: 0;
+  font-family: inherit;
+  /* Pixel bevel — a subtle raised-chip tactility. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    background 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button.chip:hover,
+.chip[data-interactive]:hover {
+  background: var(--chip-hover-bg);
+  border-color: var(--chip-hover-border);
+  filter: none;
+}
+
+button.chip:active,
+.chip[data-interactive]:active {
+  transform: none;
+}
+
+button.chip:focus-visible,
+.chip[data-interactive]:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+button.chip[aria-pressed="true"],
+.chip[data-interactive][aria-selected="true"] {
+  background: var(--chip-hover-bg);
+  border-color: var(--chip-hover-border);
+  color: var(--accent);
+  /* Press-invert — selected chips read as pushed in, not raised. */
+  box-shadow: inset 0 1px 3px rgba(var(--accent-rgb), 0.22);
+}

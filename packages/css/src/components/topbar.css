@@ -1,0 +1,112 @@
+/* Starscape v3 — scroll-aware topbar.
+ *
+ * Backgroundless until the page scrolls — then a soft gradient + blur slides
+ * in. Pattern is 100% CSS; the only JS is toggling `is-scrolled` on <body>
+ * (or any ancestor of the topbar) when scroll passes a threshold. The React
+ * package ships `useScrollAware()` which does this for you.
+ *
+ *   <header class="topbar">
+ *     <div class="topbar-brand">…</div>
+ *     <nav class="topbar-nav">…</nav>
+ *   </header>
+ *
+ * The topbar is `position: fixed` at the top of the viewport. Pad your main
+ * content with `padding-top` matching the topbar height (or a CSS variable)
+ * so it doesn't slip underneath.
+ */
+
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  min-height: 3.05rem;
+  padding: 0.55rem clamp(0.65rem, 2vw, 1.1rem);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition:
+    background 260ms ease,
+    box-shadow 260ms ease,
+    backdrop-filter 260ms ease,
+    -webkit-backdrop-filter 260ms ease,
+    border-color 260ms ease;
+  border-bottom: 1px solid transparent;
+}
+
+/* Scrolled state — light theme. Warm parchment glass. */
+body.is-scrolled .topbar,
+.topbar[data-scrolled] {
+  background: linear-gradient(
+    to bottom,
+    rgba(246, 240, 229, 0.85) 0%,
+    rgba(255, 252, 246, 0.6) 100%
+  );
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: 0 10px 30px rgba(var(--warmth-rgb), 0.08);
+}
+
+/* Scrolled state — dark theme. Cosmic glass. */
+[data-theme="dark"] body.is-scrolled .topbar,
+[data-theme="dark"] .topbar[data-scrolled] {
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 26, 46, 0.82) 0%,
+    rgba(15, 52, 96, 0.55) 100%
+  );
+  border-bottom-color: rgba(var(--starlight-rgb), 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body.is-scrolled .topbar,
+  :root:not([data-theme="light"]) .topbar[data-scrolled] {
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 26, 46, 0.82) 0%,
+      rgba(15, 52, 96, 0.55) 100%
+    );
+    border-bottom-color: rgba(var(--starlight-rgb), 0.18);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .topbar {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .topbar {
+  transition: none;
+}
+
+/* Sub-elements — purely structural; consumers can replace freely. */
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  font-family: var(--font-stack);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.topbar-spacer {
+  flex: 1 1 auto;
+  min-width: 0;
+}

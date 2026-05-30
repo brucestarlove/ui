@@ -1,0 +1,135 @@
+/* Starscape v3 — collapsible section with badge mark.
+ *
+ * The "badge accordion" ported from the kanban app's MCP setup: a flat
+ * disclosure section whose summary carries a small gradient badge ("mark")
+ * beside the title and a rotating › chevron. Built on native <details>, so it
+ * needs no JS.
+ *
+ *   <details class="section" open>
+ *     <summary>
+ *       <span class="section-title-row">
+ *         <span class="section-mark">MCP</span>
+ *         <h3>Connect your agent</h3>
+ *       </span>
+ *     </summary>
+ *     …content…
+ *   </details>
+ *
+ * `.section` also works as a plain (non-collapsible) block wrapper. Use
+ * `.section-mark--lg` for the larger square hero badge.
+ */
+
+.section {
+  margin: 0;
+}
+
+.section + .section {
+  margin-top: 1.6rem;
+}
+
+.section h3 {
+  margin-bottom: 0.7rem;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1.25;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* ---------- Disclosure form ---------- */
+
+details.section > summary {
+  list-style: none;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+details.section > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.section > summary::before {
+  content: "›";
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+details.section[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+details.section > summary h3 {
+  display: inline;
+  margin: 0;
+}
+
+/* The inner h3 lives inside <summary>, so the rhythm gap has to live on the
+   first child that follows the summary instead. */
+details.section[open] > summary + * {
+  margin-top: 0.7rem;
+}
+
+details.section > summary .section-title-row {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) details.section > summary::before {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] details.section > summary::before {
+  transition: none;
+}
+
+/* ---------- Title row + badge mark ---------- */
+
+.section-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.section-title-row h3 {
+  margin: 0;
+}
+
+.section-mark {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.2rem;
+  height: 1.3rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.95), rgba(var(--blue-rgb), 0.9));
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 14px rgba(var(--accent-rgb), 0.22);
+}
+
+.section-mark--lg {
+  width: 3.2rem;
+  height: 3.2rem;
+  min-width: 0;
+  padding: 0;
+  border-radius: 18px;
+  font-size: 0.76rem;
+  box-shadow: 0 12px 28px rgba(var(--accent-rgb), 0.25);
+}
+
+[data-theme="dark"] .section-mark--lg {
+  background: linear-gradient(135deg, #d6e6ff, #9fbaff);
+  color: #08111f;
+  box-shadow: 0 12px 30px rgba(var(--starlight-rgb), 0.28);
+}

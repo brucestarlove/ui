@@ -1,0 +1,211 @@
+/* Starscape v3 — typography.
+ *
+ * Font stack and rhythm. The v3 source uses Aptos Display with Bahnschrift
+ * and Segoe UI Variable fallbacks; on non-Windows systems the generic
+ * sans-serif at the end keeps things readable.
+ *
+ * Heading scale uses clamp() for responsive sizing so h1/h2 feel right on
+ * both phones and 32" monitors without media queries.
+ */
+:root {
+  --font-stack:
+    "Aptos Display",
+    "Bahnschrift",
+    "Segoe UI Variable",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  --font-mono:
+    "Cascadia Mono",
+    ui-monospace,
+    "SF Mono",
+    "JetBrains Mono",
+    Menlo,
+    Consolas,
+    monospace;
+}
+
+body {
+  font-family: var(--font-stack);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+/* Hero / page-level heading. clamp() keeps it large on desktop and graceful
+   on mobile — no media queries needed. */
+h1 {
+  max-width: 18ch;
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.9rem);
+  line-height: 1.1;
+}
+
+h3 { font-size: 1.15rem; font-weight: 700; }
+h4 { font-size: 1rem;    font-weight: 700; }
+h5 { font-size: 0.88rem; font-weight: 700; }
+h6 {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+p {
+  margin: 0 0 0.85rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Lede / intro paragraph that sits below an h1/h2. Slightly larger than body,
+   slightly muted so the heading dominates. */
+.lede {
+  max-width: 36rem;
+  margin: 0 0 1rem;
+  color: var(--lede-color);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+/* Eyebrow — uppercase section label. Pairs with .lede or h1 above the
+   primary content. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  display: block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+[data-theme="dark"] .eyebrow::before {
+  background: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .eyebrow::before {
+    background: rgb(var(--starlight-rgb));
+  }
+}
+
+small,
+.text-small {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+code {
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+  background: var(--subtle-bg);
+  color: var(--ink);
+}
+
+[data-theme="dark"] code {
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) code {
+    color: rgb(var(--starlight-rgb));
+  }
+}
+
+pre {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-dim);
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  color: inherit;
+}
+
+strong,
+b {
+  font-weight: 700;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+[data-theme="dark"] a {
+  color: rgb(var(--starlight-rgb));
+}
+
+[data-theme="dark"] a:hover {
+  color: #d6e6ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) a {
+    color: rgb(var(--starlight-rgb));
+  }
+  :root:not([data-theme="light"]) a:hover {
+    color: #d6e6ff;
+  }
+}

@@ -1,0 +1,39 @@
+/* Starscape v3 — themed scrollbar utility.
+ *
+ *   <div class="scroll-themed" style="overflow:auto">…</div>
+ *
+ * Opt-in accent-tinted scrollbars that flow from the --scrollbar-* token
+ * group (teal-ish in light, starlight in dark — redefined in tokens/dark.css
+ * and tokens/system.css). Standard `scrollbar-color` covers Firefox and the
+ * non-WebKit path; the ::-webkit-scrollbar block covers Chromium/Safari.
+ *
+ * No theme overrides live here — the tokens already flip, matching the
+ * library's token-driven theming strategy.
+ */
+
+.scroll-themed {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.scroll-themed::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll-themed::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+.scroll-themed::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.scroll-themed::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+.scroll-themed::-webkit-scrollbar-corner {
+  background: transparent;
+}

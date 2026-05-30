@@ -1,0 +1,107 @@
+/* Starscape v3 — code block.
+ *
+ *   <figure class="code-block">
+ *     <figcaption class="code-block-head">
+ *       <span class="code-block-name">install.sh</span>
+ *       <button class="code-block-copy">Copy</button>
+ *     </figcaption>
+ *     <pre class="scroll-themed" data-numbered><code>npm i …
+ * second line</code></pre>
+ *   </figure>
+ *
+ * <pre data-numbered>  → gutter line numbers (one .line span per line, or rely
+ *                         on the counter on direct text lines)
+ * <pre data-wrap>      → soft-wrap long lines instead of scrolling
+ */
+
+.code-block {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+
+.code-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  background: var(--subtle-bg-2);
+}
+
+.code-block-name {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.code-block-copy {
+  min-height: 0;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: none;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.code-block-copy:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-hover);
+  filter: none;
+  transform: none;
+}
+
+.code-block-copy:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.code-block pre {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.code-block pre[data-wrap] {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.code-block code {
+  font: inherit;
+  color: inherit;
+}
+
+/* Line numbers — counter on each .line child. */
+.code-block pre[data-numbered] {
+  counter-reset: code-line;
+}
+
+.code-block pre[data-numbered] .line {
+  display: block;
+  counter-increment: code-line;
+}
+
+.code-block pre[data-numbered] .line::before {
+  content: counter(code-line);
+  display: inline-block;
+  width: 2.25rem;
+  margin-inline-end: var(--space-3);
+  color: var(--muted);
+  text-align: end;
+  opacity: 0.6;
+  user-select: none;
+}

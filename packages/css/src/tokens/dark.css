@@ -1,0 +1,99 @@
+/* Starscape v3 — dark tokens (explicit override).
+ *
+ * Wins when <html data-theme="dark"> is set, regardless of OS preference.
+ * The same vocabulary appears in system.css inside the prefers-color-scheme
+ * @media wrapper for system-driven dark mode.
+ *
+ * If you change a token here, change it in tokens/system.css too.
+ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ink-rgb: 255, 255, 255;
+
+  --paper: #1a1a2e;
+  --paper-deep: #16213e;
+  --ink: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+  --line: rgba(255, 255, 255, 0.1);
+  --card: rgba(var(--cosmos-rgb), 0.85);
+  --accent: #a8c0ff;
+  --accent-2: #a855f7;
+  --blue: #60a5fa;
+  --danger: #f87171;
+  --shadow: 0 8px 25px rgba(var(--void-rgb), 0.3);
+  --radius: 12px;
+
+  --surface: rgba(var(--cosmos-rgb), 0.7);
+  --surface-raised: rgba(var(--cosmos-rgb), 0.95);
+  --surface-dim: rgba(15, 25, 50, 0.55);
+  --surface-input: rgba(15, 25, 50, 0.7);
+  --topbar-bg: rgba(var(--cosmos-rgb), 0.88);
+  --drawer-bg: rgba(var(--cosmos-rgb), 0.97);
+  --drawer-head-bg: rgba(var(--cosmos-rgb), 0.95);
+
+  --btn-gradient: linear-gradient(135deg, rgba(var(--cyan-rgb), 0.14), rgba(var(--violet-rgb), 0.14));
+  --btn-color: rgb(var(--starlight-rgb));
+  --btn-border: rgba(var(--starlight-rgb), 0.4);
+  --btn-shadow:
+    inset 1px 1px 0 0 rgba(var(--starlight-rgb), 0.22),
+    inset -1px -1px 0 0 rgba(var(--void-rgb), 0.55);
+  --btn-hover-shadow: 0 0 0 0 transparent;
+  --btn-active-gradient: linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.9));
+  --btn-active-color: #fff;
+  --btn-active-shadow:
+    inset 1px 1px 0 0 rgba(var(--void-rgb), 0.55),
+    inset -1px -1px 0 0 rgba(var(--starlight-rgb), 0.3);
+
+  --btn-secondary-gradient: linear-gradient(135deg, #1f3a6b, #0f3460 60%, #1a1a2e);
+  --btn-secondary-color: #e8efff;
+  --btn-secondary-border: rgba(var(--starlight-rgb), 0.32);
+  --btn-secondary-shadow:
+    inset 1px 1px 0 0 rgba(var(--starlight-rgb), 0.22),
+    inset -1px -1px 0 0 rgba(var(--void-rgb), 0.6);
+  --btn-secondary-hover-shadow: 0 0 0 0 transparent;
+  --btn-secondary-active-gradient: linear-gradient(135deg, #0f3460, #1f3a6b 60%, #16213e);
+  --btn-secondary-active-shadow:
+    inset 1px 1px 0 0 rgba(var(--void-rgb), 0.6),
+    inset -1px -1px 0 0 rgba(var(--starlight-rgb), 0.3);
+
+  --command-bg: linear-gradient(135deg, rgba(30, 58, 100, 0.95), rgba(15, 52, 96, 0.98) 55%, rgba(26, 43, 84, 0.95));
+  --command-color: #e8efff;
+  --command-border: rgba(var(--starlight-rgb), 0.28);
+  --command-shadow: 0 4px 18px rgba(var(--starlight-rgb), 0.18), inset 0 1px 0 rgba(210, 225, 255, 0.14);
+
+  --surface-strong: rgba(22, 33, 72, 0.96);
+
+  --lede-color: rgba(255, 255, 255, 0.78);
+
+  --accent-hover: rgba(var(--starlight-rgb), 0.08);
+  --accent-active: rgba(var(--starlight-rgb), 0.12);
+  --accent-border: rgba(var(--starlight-rgb), 0.25);
+  --accent-ring: 0 0 0 3px rgba(var(--starlight-rgb), 0.12);
+  --accent-focus-border: rgba(var(--starlight-rgb), 0.5);
+
+  --subtle-bg: rgba(255, 255, 255, 0.06);
+  --subtle-bg-2: rgba(255, 255, 255, 0.03);
+  --backdrop-bg: rgba(0, 0, 0, 0.5);
+  --flyout-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+
+  --orbit-surface: rgba(15, 20, 35, 0.95);
+  --orbit-surface-2: rgba(10, 14, 28, 0.98);
+  --orbit-grid: rgba(var(--starlight-rgb), 0.04);
+  --orbit-line: rgba(var(--starlight-rgb), 0.08);
+  --orbit-column: rgba(var(--starlight-rgb), 0.05);
+  --orbit-column-border: rgba(var(--starlight-rgb), 0.08);
+  --orbit-text: rgba(255, 255, 255, 0.92);
+  --orbit-text-muted: rgba(255, 255, 255, 0.55);
+  --orbit-accent: rgba(var(--starlight-rgb), 0.08);
+  --orbit-accent-2: rgba(var(--indigo-rgb), 0.06);
+  --orbit-column-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  --orbit-count-bg: rgba(0, 0, 0, 0.2);
+  --orbit-add-bg: rgba(0, 0, 0, 0.22);
+  --orbit-add-border: rgba(255, 255, 255, 0.12);
+  --orbit-phantom-border: rgba(255, 255, 255, 0.22);
+  --orbit-phantom-bg: rgba(0, 0, 0, 0.08);
+
+  --scrollbar-thumb: rgba(var(--starlight-rgb), 0.3);
+  --scrollbar-thumb-hover: rgba(var(--starlight-rgb), 0.5);
+}

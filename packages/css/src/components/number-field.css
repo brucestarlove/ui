@@ -1,0 +1,141 @@
+/* Starscape v3 — number field (spinbox).
+ *
+ *   <div class="number-field">
+ *     <button class="number-step" data-dir="down" aria-label="Decrease">−</button>
+ *     <input type="text" inputmode="numeric" value="8" aria-label="Quantity" />
+ *     <button class="number-step" data-dir="up" aria-label="Increase">+</button>
+ *   </div>
+ *
+ * Sizes: .number-field[data-size="sm"]. Wire +/- to React state in the app.
+ */
+
+.number-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  padding: 0.18rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-input);
+  box-shadow: none;
+}
+
+.number-field:focus-within {
+  border-color: var(--accent-focus-border);
+  box-shadow: var(--accent-ring);
+}
+
+.number-field > input {
+  width: 3rem;
+  min-height: 2.05rem;
+  padding: 0.35rem 0.45rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  box-shadow: none;
+}
+
+.number-field > input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.number-step {
+  display: inline-grid;
+  place-items: center;
+  width: 2.15rem;
+  min-height: 2.05rem;
+  padding: 0;
+  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--btn-color);
+  box-shadow: none;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    filter 140ms ease,
+    box-shadow 160ms ease,
+    transform 140ms ease;
+}
+
+.number-step[data-dir="down"],
+.number-field > .number-step:first-of-type {
+  border-start-start-radius: 999px;
+  border-end-start-radius: 999px;
+  border-start-end-radius: 0.8rem;
+  border-end-end-radius: 0.8rem;
+}
+
+.number-step[data-dir="up"],
+.number-field > .number-step:last-of-type {
+  border-start-start-radius: 0.8rem;
+  border-end-start-radius: 0.8rem;
+  border-start-end-radius: 999px;
+  border-end-end-radius: 999px;
+}
+
+.number-step:hover {
+  background: var(--accent-hover);
+  filter: none;
+  transform: none;
+  box-shadow: none;
+}
+
+.number-step:active {
+  background: var(--btn-active-gradient);
+  color: var(--btn-active-color);
+  transform: none;
+  box-shadow: none;
+}
+
+.number-step:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.number-step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.number-field[data-size="sm"] > input {
+  width: 2.45rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.3rem;
+  font-size: 0.78rem;
+}
+
+.number-field[data-size="sm"] .number-step {
+  width: 1.8rem;
+  min-height: 1.75rem;
+  font-size: 0.95rem;
+}
+
+[data-theme="dark"] .number-step {
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .number-step {
+    color: rgb(var(--starlight-rgb));
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .number-field,
+  .number-step,
+  .number-field > input {
+    corner-shape: squircle;
+  }
+}

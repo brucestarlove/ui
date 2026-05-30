@@ -1,0 +1,76 @@
+/* @starlove/ui — kitchen-sink entry.
+ *
+ * Order matters:
+ *   1. tokens   — defines CSS custom properties (light/system/dark)
+ *   2. base     — reset, type, scrollbar, selection, motion (uses tokens)
+ *   3. backgrounds — body parchment + dark starscape
+ *   4. components  — button/input/card/etc (uses tokens + animations)
+ *   5. utilities   — visually-hidden helpers
+ *
+ * For à-la-carte imports, use the subpath exports defined in package.json
+ * (e.g. "@starlove/ui/components/button").
+ */
+
+@import "./tokens/index.css";
+@import "./base/index.css";
+@import "./backgrounds/index.css";
+
+@import "./components/button.css";
+@import "./components/button-arc.css";
+@import "./components/input.css";
+/* ss-orbit chrome (cockpit silhouette — shape tokens in tokens/shape.css) */
+@import "./components/topbar-btn.css";
+@import "./components/topbar-search.css";
+@import "./components/topbar-chip.css";
+@import "./components/menu-flyout.css";
+@import "./components/create-flyout.css";
+@import "./components/appearance-theme.css";
+@import "./components/switch.css";
+@import "./components/check.css";
+@import "./components/card.css";
+@import "./components/lane.css";
+@import "./components/topbar.css";
+@import "./components/tabs.css";
+@import "./components/segmented.css";
+@import "./components/control-row.css";
+@import "./components/list.css";
+@import "./components/badge.css";
+@import "./components/slider.css";
+@import "./components/accordion.css";
+@import "./components/accordion-epic.css";
+@import "./components/media-card.css";
+@import "./components/table.css";
+@import "./components/pagination.css";
+@import "./components/breadcrumb.css";
+@import "./components/avatar.css";
+@import "./components/divider.css";
+@import "./components/kbd.css";
+@import "./components/progress.css";
+@import "./components/skeleton.css";
+@import "./components/loader.css";
+@import "./components/tooltip.css";
+@import "./components/drawer.css";
+@import "./components/modal.css";
+@import "./components/flyout.css";
+@import "./components/popover.css";
+@import "./components/context-menu.css";
+@import "./components/stepper.css";
+@import "./components/rating.css";
+@import "./components/tag-input.css";
+@import "./components/number-field.css";
+@import "./components/code-block.css";
+@import "./components/description-list.css";
+@import "./components/toast.css";
+@import "./components/sonner.css";
+@import "./components/alert.css";
+@import "./components/empty-state.css";
+@import "./components/prose.css";
+@import "./components/terminal.css";
+@import "./components/section.css";
+@import "./components/dialog.css";
+
+@import "./utilities/index.css";
+
+/* Forced-colors-mode adjustments. Loaded last so its @media (forced-colors)
+ * selectors win over per-component fallbacks. */
+@import "./base/forced-colors.css";

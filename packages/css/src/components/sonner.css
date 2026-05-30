@@ -1,0 +1,118 @@
+/* Starscape v3 — Sonner toast styling.
+ *
+ * Sonner exposes its visual look via CSS custom properties on its top-level
+ * [data-sonner-toaster] element. We override them per type, with light and
+ * dark variants matching the Starscape palette.
+ *
+ * Usage with the React layer:
+ *
+ *   import '@starlove/ui';
+ *   import '@starlove/ui/components/sonner';
+ *   import { Toaster } from '@starlove/ui-react';
+ *
+ *   <Toaster richColors closeButton />
+ *
+ * Sonner's <Toaster theme="light|dark"> sets a data-theme attribute on the
+ * toaster element, so the rules below pick the right mode automatically.
+ *
+ * Reference: Sonner uses --normal-*, --success-*, --info-*, --warning-*,
+ * --error-* triplets (bg / border / text) on [data-sonner-toaster].
+ */
+
+/* ---------- Light (default) ---------- */
+[data-sonner-toaster] {
+  --normal-bg: rgba(var(--paper-rgb), 0.96);
+  --normal-border: var(--line);
+  --normal-text: var(--ink);
+
+  --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+  --success-text: #166534;
+
+  --info-bg: #f0f4ff;
+  --info-border: #c3d4ff;
+  --info-text: #1e40af;
+
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --warning-text: #92400e;
+
+  --error-bg: #fef2f2;
+  --error-border: #fecaca;
+  --error-text: #991b1b;
+}
+
+[data-sonner-toaster] [data-sonner-toast] {
+  border-radius: 12px;
+  font-family: var(--font-stack);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Close button alignment with v3 idiom (live_link cursor + soft hover). */
+[data-sonner-toaster] [data-sonner-toast] [data-close-button] {
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+/* ---------- Dark — matches both:
+ *   - Toaster prop theme="dark" (sets [data-theme="dark"])
+ *   - root data-theme="dark"
+ *   - system dark + no [data-theme="light"]
+ */
+[data-sonner-toaster][data-theme="dark"],
+[data-theme="dark"] [data-sonner-toaster] {
+  --normal-bg: rgba(var(--cosmos-rgb), 0.92);
+  --normal-border: rgba(var(--starlight-rgb), 0.18);
+  --normal-text: rgba(255, 255, 255, 0.94);
+
+  --success-bg: rgba(12, 40, 28, 0.92);
+  --success-border: rgba(74, 222, 128, 0.25);
+  --success-text: #86efac;
+
+  --info-bg: rgba(22, 33, 72, 0.92);
+  --info-border: rgba(96, 140, 255, 0.25);
+  --info-text: #93b4ff;
+
+  --warning-bg: rgba(50, 40, 12, 0.92);
+  --warning-border: rgba(250, 204, 21, 0.25);
+  --warning-text: #fde68a;
+
+  --error-bg: rgba(55, 18, 18, 0.92);
+  --error-border: rgba(var(--coral-rgb), 0.25);
+  --error-text: #fca5a5;
+}
+
+[data-sonner-toaster][data-theme="dark"] [data-sonner-toast],
+[data-theme="dark"] [data-sonner-toaster] [data-sonner-toast] {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-sonner-toaster]:not([data-theme="light"]) {
+    --normal-bg: rgba(var(--cosmos-rgb), 0.92);
+    --normal-border: rgba(var(--starlight-rgb), 0.18);
+    --normal-text: rgba(255, 255, 255, 0.94);
+
+    --success-bg: rgba(12, 40, 28, 0.92);
+    --success-border: rgba(74, 222, 128, 0.25);
+    --success-text: #86efac;
+
+    --info-bg: rgba(22, 33, 72, 0.92);
+    --info-border: rgba(96, 140, 255, 0.25);
+    --info-text: #93b4ff;
+
+    --warning-bg: rgba(50, 40, 12, 0.92);
+    --warning-border: rgba(250, 204, 21, 0.25);
+    --warning-text: #fde68a;
+
+    --error-bg: rgba(55, 18, 18, 0.92);
+    --error-border: rgba(var(--coral-rgb), 0.25);
+    --error-text: #fca5a5;
+  }
+  :root:not([data-theme="light"]) [data-sonner-toaster]:not([data-theme="light"]) [data-sonner-toast] {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.2);
+  }
+}

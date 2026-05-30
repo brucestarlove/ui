@@ -1,0 +1,127 @@
+/* Starscape v3 — stepper.
+ *
+ *   <ol class="stepper" data-orientation="horizontal">
+ *     <li class="step" data-state="done"><span class="step-dot">1</span>
+ *         <span class="step-label">Account</span></li>
+ *     <li class="step" data-state="current"><span class="step-dot">2</span>
+ *         <span class="step-label">Profile</span></li>
+ *     <li class="step" data-state="upcoming"><span class="step-dot">3</span>
+ *         <span class="step-label">Done</span></li>
+ *   </ol>
+ *
+ * Drive state with the useStepper hook. data-state: done | current | upcoming.
+ * data-orientation: horizontal (default) | vertical.
+ */
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.step {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  min-width: 0;
+  text-align: center;
+}
+
+/* Connector line between dots. */
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0.9rem;
+  inset-inline-start: calc(50% + 1rem);
+  inset-inline-end: calc(-50% + 1rem);
+  height: 2px;
+  background: var(--line);
+}
+
+.step[data-state="done"]:not(:last-child)::after {
+  background: var(--accent);
+}
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.step[data-state="current"] .step-dot {
+  border-color: var(--accent-border);
+  background: rgba(var(--accent-rgb), 0.14);
+  color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+.step[data-state="done"] .step-dot {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--btn-color);
+}
+
+.step-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.step[data-state="current"] .step-label {
+  color: var(--ink);
+}
+
+/* ---------- Vertical ---------- */
+
+.stepper[data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.stepper[data-orientation="vertical"] .step {
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-3);
+  text-align: start;
+  padding-bottom: var(--space-5);
+}
+
+.stepper[data-orientation="vertical"] .step:not(:last-child)::after {
+  inset: 1.8rem auto 0 0.9rem;
+  inset-inline-start: 0.9rem;
+  width: 2px;
+  height: auto;
+}
+
+[data-theme="dark"] .step[data-state="done"] .step-dot,
+[data-theme="dark"] .step[data-state="current"] .step-dot {
+  color: var(--cosmos, #16213e);
+}
+
+[data-theme="dark"] .step[data-state="current"] .step-dot {
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .step[data-state="done"] .step-dot {
+    color: var(--cosmos, #16213e);
+  }
+  :root:not([data-theme="light"]) .step[data-state="current"] .step-dot {
+    color: rgb(var(--starlight-rgb));
+  }
+}

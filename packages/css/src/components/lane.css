@@ -1,0 +1,120 @@
+/* Starscape v3 — lane (section panel).
+ *
+ * A generalized version of the kanban "column" — a translucent vertical
+ * panel with optional grid pattern, a sticky head, and a scrollable body.
+ * Universal use: feed sections, sidebar groups, content lanes in dashboards,
+ * settings panels, metric tiles.
+ *
+ * Compose like:
+ *
+ *   <section class="lane">
+ *     <header class="lane-head">
+ *       <h3 class="lane-title">Recent activity</h3>
+ *       <span class="count">12</span>
+ *     </header>
+ *     <div class="lane-body lane-stack">
+ *       <article class="card">…</article>
+ *       <article class="card">…</article>
+ *     </div>
+ *   </section>
+ *
+ * For a multi-column layout, wrap several lanes in a .lane-grid.
+ */
+
+.lane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 0.7rem;
+  padding: 0.85rem;
+  border: 1px solid var(--orbit-line);
+  border-radius: calc(var(--radius) + 4px);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, var(--orbit-accent), transparent 55%),
+    radial-gradient(circle at 100% 100%, var(--orbit-accent-2), transparent 45%),
+    linear-gradient(165deg, var(--orbit-surface) 0%, var(--orbit-surface-2) 100%);
+  box-shadow: var(--orbit-column-shadow);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.lane[data-flat] {
+  background: var(--orbit-column);
+  border-color: var(--orbit-column-border);
+}
+
+.lane-head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.2rem 0.4rem;
+}
+
+.lane-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--orbit-text);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lane-subtitle {
+  margin: 0;
+  color: var(--orbit-text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.lane-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.lane-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.lane-body[data-scrollable] {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.lane-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* Multi-column layout — drop several .lane elements into .lane-grid. */
+.lane-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+}
+
+[data-theme="dark"] .lane {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lane {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+}

@@ -1,0 +1,49 @@
+/* Starscape v3 — context menu.
+ *
+ * A right-click menu. Shares the .flyout-* item/separator/section-label
+ * vocabulary; only the positioning shell differs (fixed, placed at the cursor
+ * by useContextMenu, viewport-clamped).
+ *
+ *   const menu = useContextMenu();
+ *   <div onContextMenu={menu.onContextMenu}>…</div>
+ *   {menu.isOpen && (
+ *     <div className="context-menu" role="menu" {...menu.menuProps}>
+ *       <button className="flyout-item" role="menuitem">Rename</button>
+ *       <div className="flyout-separator" />
+ *       <button className="flyout-item" data-danger role="menuitem">Delete</button>
+ *     </div>
+ *   )}
+ */
+
+.context-menu {
+  position: fixed;
+  z-index: 60;
+  min-width: 11rem;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow);
+}
+
+.context-menu .flyout-item[data-danger] {
+  color: var(--danger);
+}
+
+.context-menu .flyout-item[data-danger]:hover,
+.context-menu .flyout-item[data-danger]:focus-visible {
+  background: rgba(var(--coral-rgb), 0.14);
+  color: var(--danger);
+}
+
+[data-theme="dark"] .context-menu {
+  background: rgba(16, 24, 48, 0.96);
+  border-color: rgba(var(--starlight-rgb), 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .context-menu {
+    background: rgba(16, 24, 48, 0.96);
+    border-color: rgba(var(--starlight-rgb), 0.16);
+  }
+}

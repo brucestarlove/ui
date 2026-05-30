@@ -1,0 +1,140 @@
+/* Starscape v3 — topbar search (ported from ss-orbit).
+ *
+ * A compact search field that lives in the topbar, with an absolutely-
+ * positioned results dropdown. Radius + field padding flow from the
+ * --radius and --field-pad shape tokens (ss-orbit cockpit silhouette).
+ *
+ *   <div class="topbar-search">
+ *     <input type="search" placeholder="Search…" />
+ *     <div class="search-results">            <!-- toggle [hidden] -->
+ *       <button class="search-hit">
+ *         <span class="search-hit-main">
+ *           <span class="search-hit-title">…</span>
+ *         </span>
+ *         <span class="search-hit-state">open</span>
+ *       </button>
+ *     </div>
+ *   </div>
+ *
+ * Colors come from the theme tokens, so light/dark "just work"; the only
+ * explicit dark touch is the glass blur on the dropdown.
+ */
+
+.topbar-search {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(16.5rem, 36vw);
+  max-width: 16.5rem;
+  min-width: 9rem;
+}
+
+.topbar-search input {
+  width: 100%;
+  padding: var(--field-pad-y) var(--field-pad-x);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-input);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.topbar-search input:focus-visible {
+  outline: none;
+  border-color: var(--accent-focus-border, var(--accent-border));
+  box-shadow: var(--accent-ring);
+}
+
+.search-results {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 20;
+  max-height: 22rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow);
+}
+
+.search-results[hidden] {
+  display: none;
+}
+
+.search-hit {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.85rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-align: start;
+  font: inherit;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.search-hit:last-child {
+  border-bottom: 0;
+}
+
+.search-hit:hover {
+  background: var(--accent-hover);
+}
+
+.search-hit-main {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.search-hit-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-hit-state {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  border-radius: var(--radius-pill);
+  color: #3657c8;
+  background-color: rgba(96, 165, 250, 0.12);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+/* Dark — surfaces theme via tokens; add the glass blur the dropdown wants. */
+[data-theme="dark"] .search-results {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+[data-theme="dark"] .search-hit-state {
+  border-color: rgba(var(--starlight-rgb), 0.3);
+  color: #cdddff;
+  background-color: rgba(var(--starlight-rgb), 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .search-results {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  :root:not([data-theme="light"]) .search-hit-state {
+    border-color: rgba(var(--starlight-rgb), 0.3);
+    color: #cdddff;
+    background-color: rgba(var(--starlight-rgb), 0.12);
+  }
+}

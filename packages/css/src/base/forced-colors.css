@@ -1,0 +1,111 @@
+/* Starscape v3 — forced-colors-mode support.
+ *
+ * Windows high-contrast (and any environment that sets `forced-colors: active`)
+ * overrides our gradients, custom backgrounds, and box-shadow rings with the
+ * user's system palette. Most of the library degrades gracefully on its own —
+ * but two classes of issue need explicit fixes:
+ *
+ *   1. Focus rings are box-shadow, which forced-colors strips out. Restore
+ *      a real `outline` for keyboard focus on every interactive surface.
+ *
+ *   2. "Active / selected" states (active tab, checked switch, pressed
+ *      segmented option) lose their fill. Add `Highlight` background +
+ *      `HighlightText` color so the selection remains visible.
+ *
+ * System color keywords used:
+ *   Canvas         — page background
+ *   CanvasText     — primary foreground
+ *   ButtonFace     — button background
+ *   ButtonText     — button foreground
+ *   ButtonBorder   — button outline
+ *   Highlight      — selected-item background
+ *   HighlightText  — selected-item foreground
+ *   LinkText       — anchor color
+ *   GrayText       — disabled foreground
+ */
+
+@media (forced-colors: active) {
+  /* Restore a visible focus ring on every interactive surface that ours
+   * was painting via box-shadow. */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  .tab:focus-visible,
+  .segmented-option:focus-visible,
+  .flyout-item:focus-visible,
+  .drawer-tab:focus-visible,
+  .drawer-close:focus-visible,
+  .alert-close:focus-visible,
+  .input-search-clear:focus-visible,
+  .skip-link:focus,
+  .skip-link:focus-visible,
+  .switch > input:focus-visible + .switch-track,
+  input[type="checkbox"]:focus-visible,
+  input[type="radio"]:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Disabled surfaces fall back to GrayText so user sees they're inert. */
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  .tab[disabled],
+  .tab[aria-disabled="true"],
+  .segmented-option[disabled],
+  .segmented-option[aria-disabled="true"],
+  .flyout-item:disabled,
+  .flyout-item[aria-disabled="true"] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  /* Selected/active states across the library — give them a real fill so
+   * keyboard users can locate the current selection. */
+  .tab[aria-selected="true"],
+  .tab.is-active,
+  .segmented-option[aria-checked="true"],
+  .segmented-option[aria-pressed="true"],
+  .segmented-option.is-active,
+  .drawer-tab[aria-selected="true"],
+  .drawer-tab.is-active,
+  .flyout-item[aria-selected="true"],
+  .flyout-item.is-active {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  /* Switch — paint the on-state with system Highlight. */
+  .switch > input:checked + .switch-track {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+  .switch > input:checked + .switch-track::after {
+    background: HighlightText;
+  }
+
+  /* Checkbox/radio checked — system colors take over naturally, but ensure
+   * the inner mark is visible against the button-face fill. */
+  input[type="checkbox"]:checked,
+  input[type="radio"]:checked {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  /* Anchor color override — let LinkText do its thing instead of --accent. */
+  a {
+    color: LinkText;
+  }
+
+  /* Backdrops vanish in forced-colors. Drop any blur and restore a
+   * functional dim. */
+  .modal-backdrop.is-visible,
+  .drawer-backdrop.is-visible {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

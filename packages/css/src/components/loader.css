@@ -1,0 +1,195 @@
+/* Starscape v3 — app loading screen (splash).
+ *
+ * The full-bleed boot splash: a drifting dot-grid starfield, the Starscape
+ * star growing in and then breathing, and a label. No spinner — the star IS
+ * the loading motion.
+ *
+ * Two ways to use it:
+ *
+ *   1. Pre-React inline splash (paints before the JS bundle). Drop the markup
+ *      below into index.html and inline a critical-CSS copy of this file in a
+ *      <style> in <head> (the package CSS only arrives with the bundle, which
+ *      is too late for first paint). Remove `.is-hiding` once the app mounts.
+ *
+ *   2. In-app, via <LoadingScreen> from @starlove/ui-react, which renders
+ *      the same markup for React loading states.
+ *
+ *      <div class="ss-loader" role="status" aria-live="polite">
+ *        <span class="ss-loader__star" aria-hidden="true"></span>
+ *        <p class="ss-loader__label">Loading Starscape…</p>
+ *      </div>
+ *
+ * Pass `logo` to <LoadingScreen> (or swap the <span> for an <img
+ * class="ss-loader__logo">) to use an app's star artwork instead of the
+ * CSS-drawn star.
+ *
+ * Motion: the star grows in once then breathes, and the dot grid drifts.
+ * Under reduced motion all of that stops — the star simply renders at full
+ * size. See base/motion.css for how the three motion states resolve.
+ */
+
+.ss-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  overflow: hidden;
+  /* Brand splash is always the dark starfield, independent of theme — it
+   * reads as "the app is opening" before any theme is resolved. */
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  transition: opacity 0.4s ease;
+}
+
+/* Drifting dot grid. */
+.ss-loader::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(
+    circle,
+    rgba(var(--starlight-rgb, 168, 192, 255), 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 50px 50px;
+  /* Promote to its own compositor layer so the drift keeps ticking on the GPU
+   * even when the main thread is busy (e.g. a heavy app mounting behind the
+   * splash) — otherwise the animation janks. */
+  will-change: transform;
+  animation: starscape-loader-drift 20s linear infinite;
+}
+
+/* Fade-out hook — add `.is-hiding` (or set [hidden] off the opacity path) once
+ * the app is ready, then remove the node after the 0.4s transition. */
+.ss-loader.is-hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- The star (CSS-drawn, diffraction-spike style) ----------
+ * Mirrors backgrounds/starscape.css .signature-star, scaled up to a hero
+ * size. A glowing core with a horizontal + vertical light spike. */
+.ss-loader__star {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(210, 225, 255, 0.9) 40%,
+    rgba(210, 225, 255, 0) 75%
+  );
+  box-shadow:
+    0 0 24px rgba(255, 255, 255, 0.85),
+    0 0 60px rgba(var(--starlight-rgb, 168, 192, 255), 0.55),
+    0 0 120px rgba(var(--violet-rgb, 168, 128, 255), 0.35);
+  transform-origin: center;
+  /* translateZ in the keyframes + backface-visibility keep the star on a stable
+   * GPU layer, so it doesn't snap ~1px as compositing kicks in at grow start. */
+  backface-visibility: hidden;
+  will-change: transform;
+  animation:
+    starscape-loader-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+    starscape-loader-breathe 3s ease-in-out 0.6s infinite;
+}
+
+.ss-loader__star::before,
+.ss-loader__star::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* Horizontal diffraction spike. */
+.ss-loader__star::before {
+  width: 120px;
+  height: 1.5px;
+  margin: -0.75px 0 0 -60px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent
+  );
+}
+
+/* Vertical diffraction spike. */
+.ss-loader__star::after {
+  width: 1.5px;
+  height: 120px;
+  margin: -60px 0 0 -0.75px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent
+  );
+}
+
+/* Optional logo-image variant (app star artwork in place of the CSS star). */
+.ss-loader__logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  transform-origin: center;
+  /* See .ss-loader__star — same stable-layer pin. */
+  backface-visibility: hidden;
+  will-change: transform;
+  animation:
+    starscape-loader-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+    starscape-loader-breathe 3s ease-in-out 0.6s infinite;
+}
+
+.ss-loader__label {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes starscape-loader-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-50px, -50px); }
+}
+
+@keyframes starscape-loader-grow {
+  from { transform: scale(0) translateZ(0); opacity: 0; }
+  to   { transform: scale(1) translateZ(0); opacity: 1; }
+}
+
+@keyframes starscape-loader-breathe {
+  0%, 100% { transform: scale(1) translateZ(0); }
+  50%      { transform: scale(1.06) translateZ(0); }
+}
+
+/* ---------- Reduced motion ----------
+ * Skip the grow-in (the scale-from-0 is too abrupt) and stop the dot grid
+ * drifting, but keep the gentle breathe — it starts at full size, so there's
+ * no jump. (Three-state resolution mirrors base/motion.css.) */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .ss-loader::before {
+    animation: none;
+  }
+  :root:not([data-motion="full"]) .ss-loader__star,
+  :root:not([data-motion="full"]) .ss-loader__logo {
+    animation: starscape-loader-breathe 3s ease-in-out infinite;
+  }
+}
+
+[data-motion="reduce"] .ss-loader::before {
+  animation: none;
+}
+
+[data-motion="reduce"] .ss-loader__star,
+[data-motion="reduce"] .ss-loader__logo {
+  animation: starscape-loader-breathe 3s ease-in-out infinite;
+}

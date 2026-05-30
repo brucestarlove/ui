@@ -1,0 +1,102 @@
+/* Starscape v3 — flyout / popover / menu.
+ *
+ * Anchored, lightweight overlay surface. Use for context menus, command
+ * palettes, dropdowns, and inline create forms.
+ */
+
+.flyout {
+  position: absolute;
+  z-index: 42;
+  min-width: 12rem;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow);
+  transform-origin: top right;
+  transform: translateY(-4px) scale(0.98);
+  opacity: 0;
+  transition:
+    transform 180ms cubic-bezier(0.21, 1.02, 0.73, 1),
+    opacity 160ms ease;
+  pointer-events: none;
+}
+
+.flyout.is-open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.flyout-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: start;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.flyout-item:hover,
+.flyout-item:focus-visible {
+  background: var(--accent-hover);
+  color: var(--ink);
+  outline: none;
+}
+
+.flyout-item[aria-selected="true"],
+.flyout-item.is-active {
+  background: var(--accent-active);
+  color: var(--ink);
+}
+
+.flyout-item[aria-disabled="true"],
+.flyout-item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.flyout-separator {
+  height: 1px;
+  margin: 0.3rem 0;
+  background: var(--line);
+}
+
+.flyout-section-label {
+  padding: 0.35rem 0.65rem 0.2rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .flyout {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .flyout {
+  transition: none;
+}
+
+[data-theme="dark"] .flyout {
+  background: rgba(16, 24, 48, 0.96);
+  border-color: rgba(var(--starlight-rgb), 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .flyout {
+    background: rgba(16, 24, 48, 0.96);
+    border-color: rgba(var(--starlight-rgb), 0.16);
+  }
+}

@@ -1,0 +1,177 @@
+/* Starscape v3 — epic accordion (the ARC-grade disclosure).
+ *
+ * A bolder, panel-shaped sibling of `.accordion` (which is a quiet
+ * <details>/<summary> inline disclosure). Here the whole head is a <button>,
+ * so it inherits the shared ARC sweep ring on hover/focus (button-arc.css);
+ * it carries an uppercase title, an optional count badge, a Show/Hide state
+ * label, and a chevron that rotates on open.
+ *
+ * Designed to pair with a LAZY-MOUNTED body: the React <EpicAccordion> renders
+ * its children only while open, so a heavy panel (e.g. a wall of animated demo
+ * buttons) costs nothing while collapsed. Static markup works too:
+ *
+ *   <section class="accordion-epic" data-open>
+ *     <button class="accordion-epic-toggle" aria-expanded="true" aria-controls="x">
+ *       <svg class="accordion-epic-chevron" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+ *       <span class="accordion-epic-title">ARC lab</span>
+ *       <span class="accordion-epic-count">10</span>
+ *       <span class="accordion-epic-state">Hide</span>
+ *     </button>
+ *     <div class="accordion-epic-body" id="x">…</div>
+ *   </section>
+ */
+
+.accordion-epic {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  /* Inner padding insets the toggle so its ARC ring (::after at -2px) has room
+   * to show without being clipped — no overflow:hidden for the same reason. */
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(var(--accent-rgb), 0.06), transparent 60%),
+    var(--surface);
+  box-shadow: 0 8px 24px rgba(var(--warmth-rgb), 0.08);
+}
+
+/* Collapsed → no body, so drop the body gap. */
+.accordion-epic:not([data-open]) {
+  gap: 0;
+}
+
+.accordion-epic-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-surface) - 4px);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.accordion-epic-toggle:hover {
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), transparent 60%);
+  border-color: rgba(var(--accent-rgb), 0.22);
+}
+
+.accordion-epic-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.accordion-epic-chevron {
+  flex: 0 0 auto;
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--accent);
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-epic-toggle[aria-expanded="true"] .accordion-epic-chevron {
+  transform: rotate(90deg);   /* right → down on open (matches .accordion) */
+}
+
+.accordion-epic-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.accordion-epic-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.14);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.accordion-epic-state {
+  margin-inline-start: auto;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.accordion-epic-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0 0.15rem 0.15rem;
+}
+
+.accordion-epic-body .list-stars > li {
+  min-height: 2.45rem;
+  padding-block: 0.58rem;
+  padding-inline-start: 2.45rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.accordion-epic-body .list-stars > li::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.accordion-epic-body .list-stars > li::after {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Reduced motion — flip the chevron instantly (state still toggles). */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .accordion-epic-chevron {
+    transition: none;
+  }
+}
+[data-motion="reduce"] .accordion-epic-chevron {
+  transition: none;
+}
+
+/* ---------- Dark theme — deepen the surface + glow. ---------- */
+[data-theme="dark"] .accordion-epic {
+  border-color: rgba(var(--starlight-rgb), 0.14);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(var(--starlight-rgb), 0.06), transparent 60%),
+    var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 30px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dark"] .accordion-epic-toggle:hover {
+  background: linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), transparent 60%);
+  border-color: rgba(var(--starlight-rgb), 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .accordion-epic {
+    border-color: rgba(var(--starlight-rgb), 0.14);
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(var(--starlight-rgb), 0.06), transparent 60%),
+      var(--surface);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  :root:not([data-theme="light"]) .accordion-epic-toggle:hover {
+    background: linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), transparent 60%);
+    border-color: rgba(var(--starlight-rgb), 0.22);
+  }
+}

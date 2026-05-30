@@ -1,0 +1,17 @@
+/* Starscape v3 — text selection styling. */
+::selection {
+  background: rgba(var(--accent-rgb), 0.3);
+  color: var(--ink);
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(var(--starlight-rgb), 0.32);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) ::selection {
+    background: rgba(var(--starlight-rgb), 0.32);
+    color: rgba(255, 255, 255, 0.96);
+  }
+}

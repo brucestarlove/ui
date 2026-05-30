@@ -1,0 +1,681 @@
+/* Starscape v3 — "arc" sweep ring + the ARC button variant.
+ *
+ * Technique adapted from @nous-research/ui (MIT) — the Hermes Agent dashboard
+ * buttons. Three signature techniques grafted onto Starscape's token palette:
+ *
+ *   1. Pixel-bevel inset shadow  — light highlight top-left, dark shadow
+ *      bottom-right, faking a tactile raised chip.
+ *   2. Animated .arc sweep ring  — a gradient ring masked to border-only via
+ *      mask-composite, oversized and animated so a bright arc sweeps the rim.
+ *      opacity 0 at rest; fades in on hover / focus / active.
+ *   3. Press invert              — :active flips the surface for crisp tactile
+ *      feedback (token-swapped rather than filter:invert so it stays on-brand).
+ *
+ * The sweep ring is now the shared button grammar (§ "ring hosts" below):
+ * every button hosts it EXCEPT command, plus, and the clip-path shapes. So the
+ * default primary, .btn-secondary, .ghost, [data-variant="arc"], and the epic
+ * CTA all light up. Each variant supplies its own surface (button.css); this
+ * file supplies the ring + press-invert grammar on top. Themes for free (warm
+ * teal+amber light, cyan+violet dark).
+ *
+ *   • <button>                    — primary: ring fades in on hover.
+ *   • .btn-secondary / .ghost     — same hover ring over their own surfaces.
+ *   • [data-variant="arc"]        — the Arc Lab variant (uppercase identity).
+ *   • .btn-sun / [data-variant="cta"] — epic tier: quiet by default; opt into
+ *     the always-on twin ring with data-cta="bstar".
+ *
+ * Shipped by default via index.css. The ring colors are per-instance
+ * overridable through the --arc-* custom properties.
+ */
+
+/* ---------- Ring hosts — vars + stacking context (shared) ----------
+ *
+ * The sweep ring is now the shared button grammar: every button hosts it
+ * EXCEPT the command, plus, and clip-path shape variants (which have their own
+ * treatment) — and EXCEPT [data-tooltip] buttons: the CSS tooltip (tooltip.css)
+ * also lives on ::after, and an element gets only one ::after, so a tooltip
+ * button yields its ::after to the bubble rather than the ring.
+ *
+ * The exclusion chain is wrapped in :where() so it contributes ZERO
+ * specificity — the host stays at just `button` (0,0,1). That's deliberate:
+ * the per-variant rim rules below (comet, progress, success/danger/info, …)
+ * are simple `[data-variant="arc"][data-arc="…"]` selectors, and they MUST be
+ * able to override this base ::after. A bare `:not()` chain would out-specify
+ * and silence them. The same `:where(:not(…))` is reused verbatim for the
+ * ::after ring, its hover/disabled triggers, and the dark rim colors. */
+
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+  /* Arc ring colors — overridable per-instance. Defaults: light theme. */
+  --arc-c0: rgba(var(--accent-rgb), 0);
+  --arc-c1: rgba(var(--accent-rgb), 0.95);
+  --arc-c2: rgba(var(--amber-rgb), 0.9);
+  --arc-angle: 160deg;
+  --arc-width: 1.25px;
+  --arc-inset: -2px;
+  --arc-duration: 2.23s;
+
+  position: relative;
+  isolation: isolate;
+}
+
+/* The sweeping arc ring — a masked-border pseudo-element behind the host. */
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))::after {
+  content: "";
+  position: absolute;
+  inset: var(--arc-inset);
+  z-index: -1;
+  border-radius: inherit;
+  padding: var(--arc-width);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+
+  background: linear-gradient(
+    var(--arc-angle),
+    transparent 0%,
+    var(--arc-c0) 15%,
+    var(--arc-c1) 20%,
+    var(--arc-c2) 25%,
+    transparent 35%,
+    transparent 40%,
+    var(--arc-c0) 55%,
+    var(--arc-c1) 60%,
+    var(--arc-c2) 65%,
+    transparent 75%,
+    transparent 80%,
+    var(--arc-c0) 95%,
+    var(--arc-c1) 100%
+  );
+  background-size: 300% 300%;
+  animation: arc-sweep var(--arc-duration) linear infinite;
+  /* Paused at rest: the ring is invisible (opacity 0) until hover/focus/active,
+   * so there's no reason to repaint the masked gradient every frame. Animating
+   * `background-position` on a mask-composite layer can't be GPU-composited —
+   * each running ring is a per-frame software raster. Keeping ~a viewportful of
+   * buttons paused (vs. all sweeping) is the bulk of the page's idle cost. The
+   * always-alive variants below opt back in with `animation-play-state: running`. */
+  animation-play-state: paused;
+
+  /* Subtract the content box so only the ring paints. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):hover::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):focus-visible::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):active::after {
+  opacity: 1;
+  animation-play-state: running;   /* sweep only while the ring is shown */
+}
+
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes arc-sweep {
+  0%   { background-position: 15% 15%; }
+  100% { background-position: 75% 75%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button[data-variant="arc"]::after,
+  .btn-sun::after,
+  button[data-variant="cta"]::after,
+  button[data-variant="arc"][data-arc="double"]::before,
+  .btn-sun[data-cta="bstar"]::before,
+  button[data-variant="cta"][data-cta="bstar"]::before,
+  button[data-variant="arc"][data-loading]::after,
+  button[data-variant="arc"][data-arc="comet"]::after,
+  button[data-variant="arc"][data-arc="holo"]::after,
+  button[data-variant="arc-star"],
+  button[data-variant="arc-hex"],
+  button[data-variant="arc-shield"] {
+    animation: none;
+  }
+  button[data-variant="arc"][data-arc="trace"] {
+    transition: none;
+  }
+}
+
+/* ---------- ARC variant — its own bevel surface + press-invert ---------- */
+
+button[data-variant="arc"] {
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(var(--amber-rgb), 0.1));
+  color: var(--teal-deep);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* The bevel: highlight top-left, shadow bottom-right. */
+  box-shadow:
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 0 rgba(var(--warmth-rgb), 0.28);
+  transition:
+    transform 150ms ease,
+    box-shadow 200ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+button[data-variant="arc"]:hover {
+  transform: translateY(-1px);
+}
+
+button[data-variant="arc"]:focus-visible {
+  outline: none;
+}
+
+/* Press invert — flip to a filled accent surface for tactile feedback. */
+button[data-variant="arc"]:active {
+  transform: translateY(0);
+  background: linear-gradient(135deg, rgb(var(--accent-rgb)), rgba(var(--amber-rgb), 0.85));
+  color: var(--paper);
+  box-shadow:
+    inset 1px 1px 0 0 rgba(var(--warmth-rgb), 0.28),
+    inset -1px -1px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+button[data-variant="arc"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  filter: saturate(0.55);
+}
+
+/* ---------- Dark: cyan + violet rim (ring vars, shared) ---------- */
+
+[data-theme="dark"] button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+  --arc-c0: rgba(var(--cyan-rgb), 0);
+  --arc-c1: rgba(var(--cyan-rgb), 0.95);
+  --arc-c2: rgba(var(--violet-rgb), 0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button:where(:not([data-variant="command"]):not([data-variant="plus"]):not(.btn-plus):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+    --arc-c0: rgba(var(--cyan-rgb), 0);
+    --arc-c1: rgba(var(--cyan-rgb), 0.95);
+    --arc-c2: rgba(var(--violet-rgb), 0.9);
+  }
+}
+
+/* Dark ARC variant surface (the CTA keeps its own dark surface from button.css). */
+[data-theme="dark"] button[data-variant="arc"] {
+  border-color: rgba(var(--starlight-rgb), 0.4);
+  background: linear-gradient(135deg, rgba(var(--cyan-rgb), 0.14), rgba(var(--violet-rgb), 0.14));
+  color: rgb(var(--starlight-rgb));
+  box-shadow:
+    inset 1px 1px 0 0 rgba(var(--starlight-rgb), 0.22),
+    inset -1px -1px 0 0 rgba(var(--void-rgb), 0.55);
+}
+
+[data-theme="dark"] button[data-variant="arc"]:active {
+  background: linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.9));
+  color: #fff;
+  box-shadow:
+    inset 1px 1px 0 0 rgba(var(--void-rgb), 0.55),
+    inset -1px -1px 0 0 rgba(var(--starlight-rgb), 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button[data-variant="arc"] {
+    border-color: rgba(var(--starlight-rgb), 0.4);
+    background: linear-gradient(135deg, rgba(var(--cyan-rgb), 0.14), rgba(var(--violet-rgb), 0.14));
+    color: rgb(var(--starlight-rgb));
+    box-shadow:
+      inset 1px 1px 0 0 rgba(var(--starlight-rgb), 0.22),
+      inset -1px -1px 0 0 rgba(var(--void-rgb), 0.55);
+  }
+  :root:not([data-theme="light"]) button[data-variant="arc"]:active {
+    background: linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.9));
+    color: #fff;
+    box-shadow:
+      inset 1px 1px 0 0 rgba(var(--void-rgb), 0.55),
+      inset -1px -1px 0 0 rgba(var(--starlight-rgb), 0.3);
+  }
+}
+
+/* ---------- bstar — "binary star" twin ring for the epic CTA ----------
+ *
+ * Opt-in modifier on the CTA: <button data-variant="cta" data-cta="bstar">.
+ * The rim goes always-alive — the inner sweep (::after) glows at rest and the
+ * outer conic frame (::before) orbits the OPPOSITE direction, two stars locked
+ * in a gyroscopic dance. Plain CTAs stay quiet (hover-only ring, like primary).
+ */
+
+/* Rotation primitive — shared by bstar, loading, comet, progress, trace.
+ * @property registers --arc-spin so the conic `from` angle can animate
+ * (graceful no-op where unsupported). Both hoist globally. */
+@property --arc-spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes arc-spin {
+  to { --arc-spin: 360deg; }
+}
+
+/* The bstar twin ring: inner sweep visible at rest + an outer conic frame
+ * counter-rotating against it. Opt in on the epic CTA. */
+.btn-sun[data-cta="bstar"]::after,
+button[data-variant="cta"][data-cta="bstar"]::after {
+  opacity: 0.4;   /* inner sweep glows at rest (shared ::after is 0 until hover) */
+  animation-play-state: running;   /* always-alive: re-enable the paused base sweep */
+}
+
+.btn-sun[data-cta="bstar"]::before,
+button[data-variant="cta"][data-cta="bstar"]::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: calc(var(--radius-control) + 5px);   /* > the button radius */
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 220ms ease;
+
+  background: conic-gradient(
+    from var(--arc-spin),
+    transparent 0deg,
+    var(--arc-c0) 18deg,
+    var(--arc-c1) 40deg,
+    var(--arc-c2) 62deg,
+    transparent 120deg,
+    transparent 180deg,
+    var(--arc-c0) 198deg,
+    var(--arc-c1) 220deg,
+    var(--arc-c2) 242deg,
+    transparent 300deg,
+    transparent 360deg
+  );
+  /* `reverse` makes it counter-rotate against the inner sweep. */
+  animation: arc-spin calc(var(--arc-duration) * 1.6) linear infinite reverse;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.btn-sun[data-cta="bstar"]:hover::before,
+.btn-sun[data-cta="bstar"]:focus-visible::before,
+.btn-sun[data-cta="bstar"]:active::before,
+button[data-variant="cta"][data-cta="bstar"]:hover::before,
+button[data-variant="cta"][data-cta="bstar"]:focus-visible::before,
+button[data-variant="cta"][data-cta="bstar"]:active::before {
+  opacity: 1;
+}
+
+.btn-sun[data-cta="bstar"]:disabled::after,
+.btn-sun[data-cta="bstar"]:disabled::before,
+button[data-variant="cta"][data-cta="bstar"]:disabled::after,
+button[data-variant="cta"][data-cta="bstar"]:disabled::before {
+  animation: none;
+  opacity: 0;
+}
+
+/* ---------- Double-radius — a second, larger-radius frame ----------
+ *
+ * Kept for branch compatibility: <button data-variant="arc" data-arc="double">.
+ * The CTA's always-on twin ring moved to the explicit `data-cta="bstar"`
+ * modifier above; this stays as a composable Arc Lab rim treatment.
+ */
+button[data-variant="arc"][data-arc="double"]::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: 17px;            /* > the 12px button radius */
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 220ms ease;
+
+  background: conic-gradient(
+    from var(--arc-spin),
+    transparent 0deg,
+    var(--arc-c0) 18deg,
+    var(--arc-c1) 40deg,
+    var(--arc-c2) 62deg,
+    transparent 120deg,
+    transparent 180deg,
+    var(--arc-c0) 198deg,
+    var(--arc-c1) 220deg,
+    var(--arc-c2) 242deg,
+    transparent 300deg,
+    transparent 360deg
+  );
+  animation: arc-spin calc(var(--arc-duration) * 1.6) linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+button[data-variant="arc"][data-arc="double"]:hover::before,
+button[data-variant="arc"][data-arc="double"]:focus-visible::before,
+button[data-variant="arc"][data-arc="double"]:active::before {
+  opacity: 0.85;
+}
+
+button[data-variant="arc"][data-arc="double"]:disabled::before {
+  animation: none;
+  opacity: 0;
+}
+
+/* =========================================================================
+ * Arc families — shape silhouettes and rim behaviors. The counter-rotating
+ * twin ring now lives as the CTA's `bstar` modifier (above); `data-arc="double"`
+ * remains available for Arc Lab buttons.
+ * ========================================================================= */
+
+/* ---------- Shape family — clip-path silhouettes with a shimmer fill --------
+ *
+ * The masked border-ring can't follow a non-rectangular outline, so these
+ * flip the technique: the arc gradient FILLS the shape and the sweep animates
+ * as a diagonal shimmer band. Shared paint below; per-shape clip-paths after.
+ *
+ *   <button data-variant="arc-star" aria-label="Favorite"></button>   (icon)
+ *   <button data-variant="arc-hex">Deploy</button>                    (label)
+ *   <button data-variant="arc-shield">Confirm</button>               (label)
+ */
+button[data-variant="arc-star"],
+button[data-variant="arc-hex"],
+button[data-variant="arc-shield"] {
+  --arc-angle: 135deg;
+  --arc-duration: 2.6s;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 0;
+  border: 0;
+  box-shadow: none;            /* clip-path would hide it anyway */
+  color: #fff;
+  font-weight: 700;
+
+  /* Moving highlight band over a teal→amber base, both clipped to the shape. */
+  background:
+    linear-gradient(var(--arc-angle),
+      transparent 38%, rgba(255, 255, 255, 0.6) 50%, transparent 62%),
+    linear-gradient(135deg, rgb(var(--accent-rgb)), rgba(var(--amber-rgb), 0.92));
+  background-size: 300% 300%, 100% 100%;
+  animation: arc-sweep var(--arc-duration) linear infinite;
+  transition: transform 150ms ease, filter 150ms ease;
+}
+
+button[data-variant="arc-star"]:hover,
+button[data-variant="arc-hex"]:hover,
+button[data-variant="arc-shield"]:hover {
+  transform: scale(1.06);
+  filter: brightness(1.06);
+}
+
+button[data-variant="arc-star"]:focus-visible,
+button[data-variant="arc-hex"]:focus-visible,
+button[data-variant="arc-shield"]:focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), 0.6);
+  outline-offset: 3px;
+}
+
+button[data-variant="arc-star"]:active,
+button[data-variant="arc-hex"]:active,
+button[data-variant="arc-shield"]:active {
+  transform: scale(0.96);
+  background: linear-gradient(135deg, rgba(var(--amber-rgb), 0.95), rgb(var(--accent-rgb)));
+}
+
+button[data-variant="arc-star"]:disabled,
+button[data-variant="arc-hex"]:disabled,
+button[data-variant="arc-shield"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  filter: saturate(0.5);
+  animation: none;
+}
+
+[data-theme="dark"] button[data-variant="arc-star"],
+[data-theme="dark"] button[data-variant="arc-hex"],
+[data-theme="dark"] button[data-variant="arc-shield"] {
+  background:
+    linear-gradient(var(--arc-angle),
+      transparent 38%, rgba(255, 255, 255, 0.5) 50%, transparent 62%),
+    linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.92));
+  background-size: 300% 300%, 100% 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button[data-variant="arc-star"],
+  :root:not([data-theme="light"]) button[data-variant="arc-hex"],
+  :root:not([data-theme="light"]) button[data-variant="arc-shield"] {
+    background:
+      linear-gradient(var(--arc-angle),
+        transparent 38%, rgba(255, 255, 255, 0.5) 50%, transparent 62%),
+      linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.92));
+    background-size: 300% 300%, 100% 100%;
+  }
+}
+
+/* Star — icon-only square. */
+button[data-variant="arc-star"] {
+  width: 2.85rem;
+  height: 2.85rem;
+  padding: 0;
+  clip-path: polygon(
+    50% 0%,   61% 34%,   98% 35%,   68% 56%,   79% 91%,
+    50% 70%,  21% 91%,   32% 56%,    2% 35%,   39% 34%
+  );
+}
+
+/* Hexagon — flat-top; roomy enough for a short label. Cockpit-native. */
+button[data-variant="arc-hex"] {
+  min-height: 2.7rem;
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Shield — flat top, pointed base. For confirm / secure actions. */
+button[data-variant="arc-shield"] {
+  min-height: 3rem;
+  padding: 0.55rem 1.6rem 1.1rem;
+  letter-spacing: 0.06em;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 55%, 50% 100%, 0% 55%);
+}
+
+/* =========================================================================
+ * Rim behaviors & tints — modifiers on the base `data-variant="arc"`.
+ * Each overrides only the ::after rim's paint/opacity; inset, padding, mask,
+ * and radius carry over from the base rim rule.
+ * ========================================================================= */
+
+/* ---------- Loading — indeterminate spinning arc; label dimmed -------------
+ *   <button data-variant="arc" data-loading aria-busy="true">Saving…</button>
+ */
+button[data-variant="arc"][data-loading] {
+  cursor: progress;
+  color: color-mix(in oklab, currentColor 55%, transparent);
+}
+button[data-variant="arc"][data-loading]::after {
+  opacity: 1;
+  background: conic-gradient(
+    from var(--arc-spin),
+    var(--arc-c1) 0deg,
+    var(--arc-c2) 36deg,
+    transparent 72deg,
+    transparent 360deg
+  );
+  animation: arc-spin 0.9s linear infinite;
+}
+
+/* ---------- Loading (trace) — a looping draw-on / draw-off ring -------------
+ * Like the `trace` rim, but on a loop: phase 1 the arc draws itself around the
+ * rim (the HEAD sweeps 0→360°); phase 2 it erases the same way (the TAIL sweeps
+ * 0→360°), then it loops. Both endpoints meet at "empty" on the seam, so the
+ * loop is seamless. Reads as a determinate-feeling loader — nicer than an
+ * endless spinner for Save/submit. Cycle time via --arc-fill-duration (1.6s).
+ *   <button data-variant="arc" data-loading="fill" aria-busy="true">Saving…</button>
+ *
+ * Head defaults to 360° so that with animation suppressed (reduced-motion) the
+ * rim rests as a full ring rather than blank. */
+@property --trace-head { syntax: "<angle>"; inherits: true; initial-value: 360deg; }
+@property --trace-tail { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+@keyframes arc-trace-head {
+  0%        { --trace-head: 0deg; }
+  50%, 100% { --trace-head: 360deg; }
+}
+@keyframes arc-trace-tail {
+  0%, 50%   { --trace-tail: 0deg; }
+  100%      { --trace-tail: 360deg; }
+}
+button[data-variant="arc"][data-loading="fill"] {
+  --arc-width: 2.5px;     /* thicker than the resting 1.25px rim so the trace reads clearly */
+  --arc-inset: -3px;
+}
+button[data-variant="arc"][data-loading="fill"]::after {
+  opacity: 1;
+  background: conic-gradient(
+    from -90deg,
+    transparent var(--trace-tail),
+    var(--arc-c1) var(--trace-tail),
+    var(--arc-c2) var(--trace-head),
+    transparent var(--trace-head)
+  );
+  animation:
+    arc-trace-head var(--arc-fill-duration, 1.6s) linear infinite,
+    arc-trace-tail var(--arc-fill-duration, 1.6s) linear infinite;
+}
+
+/* ---------- Progress — determinate rim fill to --progress (0–1) ------------
+ *   <button data-variant="arc" data-arc="progress" style="--progress:.6">60%</button>
+ */
+button[data-variant="arc"][data-arc="progress"]::after {
+  opacity: 1;
+  background: conic-gradient(
+    from -90deg,
+    var(--arc-c1) 0deg,
+    var(--arc-c2) calc(var(--progress, 0) * 360deg),
+    rgba(var(--ink-rgb), 0.12) calc(var(--progress, 0) * 360deg)
+  );
+  animation: none;
+}
+
+/* ---------- Comet — a single spark orbits the rim with a trailing fade -----
+ *   <button data-variant="arc" data-arc="comet">Launch</button>
+ */
+button[data-variant="arc"][data-arc="comet"]::after {
+  opacity: 1;
+  background: conic-gradient(
+    from var(--arc-spin),
+    var(--arc-c1) 0deg,
+    var(--arc-c2) 8deg,
+    transparent 55deg,
+    transparent 360deg
+  );
+  animation: arc-spin 1.8s linear infinite;
+}
+
+/* ---------- Trace — the rim draws itself around on hover -------------------
+ *   <button data-variant="arc" data-arc="trace">Engage</button>
+ */
+@property --arc-trace {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+button[data-variant="arc"][data-arc="trace"] {
+  --arc-trace: 0deg;
+  transition:
+    transform 150ms ease,
+    box-shadow 200ms ease,
+    background 150ms ease,
+    color 150ms ease,
+    --arc-trace 650ms ease;
+}
+button[data-variant="arc"][data-arc="trace"]::after {
+  opacity: 1;
+  background: conic-gradient(
+    from -90deg,
+    var(--arc-c1) 0deg,
+    var(--arc-c2) var(--arc-trace),
+    transparent var(--arc-trace)
+  );
+  animation: none;
+}
+button[data-variant="arc"][data-arc="trace"]:hover,
+button[data-variant="arc"][data-arc="trace"]:focus-visible {
+  --arc-trace: 360deg;
+}
+
+/* ---------- Holo — iridescent rim (hue cycles through the spectrum) --------
+ *   <button data-variant="arc" data-arc="holo">Foil</button>
+ */
+button[data-variant="arc"][data-arc="holo"]::after {
+  opacity: 0.55;
+  animation:
+    arc-sweep var(--arc-duration) linear infinite,
+    arc-holo 7s linear infinite;
+}
+button[data-variant="arc"][data-arc="holo"]:hover::after,
+button[data-variant="arc"][data-arc="holo"]:focus-visible::after,
+button[data-variant="arc"][data-arc="holo"]:active::after {
+  opacity: 1;
+}
+@keyframes arc-holo {
+  to { filter: hue-rotate(360deg); }
+}
+
+/* ---------- Status tints — the rim color carries meaning -------------------
+ *   <button data-variant="arc" data-arc="success|danger|info">…</button>
+ */
+button[data-variant="arc"][data-arc="success"] {
+  /* No --green token yet — placeholder literal, swap when one lands. */
+  --arc-c1: rgba(52, 199, 89, 0.95);
+  --arc-c2: rgba(var(--cyan-rgb), 0.85);
+}
+button[data-variant="arc"][data-arc="info"] {
+  --arc-c1: rgba(var(--blue-rgb), 0.95);
+  --arc-c2: rgba(var(--cyan-rgb), 0.9);
+}
+button[data-variant="arc"][data-arc="danger"] {
+  --arc-c1: rgba(var(--red-rgb), 0.95);
+  --arc-c2: rgba(var(--amber-rgb), 0.9);
+  --arc-duration: 1.2s;        /* faster = urgency */
+}
+
+/* Always-on rim (like holo): visible & sweeping at rest, brighter on hover.
+ * Color stays fixed — no hue cycle — so the semantic meaning holds. */
+button[data-variant="arc"][data-arc="success"]::after,
+button[data-variant="arc"][data-arc="danger"]::after,
+button[data-variant="arc"][data-arc="info"]::after {
+  opacity: 0.6;
+  animation-play-state: running;   /* always-alive: re-enable the paused base sweep */
+}
+button[data-variant="arc"][data-arc="success"]:hover::after,
+button[data-variant="arc"][data-arc="success"]:focus-visible::after,
+button[data-variant="arc"][data-arc="success"]:active::after,
+button[data-variant="arc"][data-arc="danger"]:hover::after,
+button[data-variant="arc"][data-arc="danger"]:focus-visible::after,
+button[data-variant="arc"][data-arc="danger"]:active::after,
+button[data-variant="arc"][data-arc="info"]:hover::after,
+button[data-variant="arc"][data-arc="info"]:focus-visible::after,
+button[data-variant="arc"][data-arc="info"]:active::after {
+  opacity: 1;
+}

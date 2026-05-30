@@ -1,0 +1,183 @@
+/* Starscape v3 — tabs.
+ *
+ * Generalized from the .drawer-tab pattern. The drawer header still uses its
+ * own .drawer-tabs / .drawer-tab classes for layout-specific reasons (no
+ * underline, scroll-snapped strip), but for free-standing tab navigation use
+ * .tabs / .tab here.
+ *
+ *   <div class="tabs" role="tablist">
+ *     <button class="tab" role="tab" aria-selected="true">Overview</button>
+ *     <button class="tab" role="tab" aria-selected="false">Activity</button>
+ *     <button class="tab" role="tab" aria-selected="false" disabled>Billing</button>
+ *   </div>
+ *   <div class="tab-panels">
+ *     <section role="tabpanel">…</section>
+ *   </div>
+ *
+ * Variants:
+ *   .tabs[data-variant="pill"]    → pill-shape (default)
+ *   .tabs[data-variant="underline"] → underline-on-active, flush left
+ *   .tabs[data-orientation="vertical"] → stacked, sidebar-style
+ */
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--subtle-bg-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex-shrink: 0;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-control) - 2px);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease;
+}
+
+.tab:hover {
+  color: var(--ink);
+  background: var(--accent-hover);
+}
+
+.tab:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.tab[aria-selected="true"],
+.tab.is-active {
+  color: var(--ink);
+  background: var(--surface-raised);
+  border-color: var(--accent-border);
+  box-shadow: 0 1px 2px rgba(var(--warmth-rgb), 0.06);
+}
+
+.tab[disabled],
+.tab[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Underline variant ---------- */
+
+.tabs[data-variant="underline"] {
+  gap: var(--space-3);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs[data-variant="underline"] .tab {
+  position: relative;
+  padding: 0.55rem var(--space-1);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tabs[data-variant="underline"] .tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: transparent;
+  transition: background 160ms ease;
+}
+
+.tabs[data-variant="underline"] .tab[aria-selected="true"]::after,
+.tabs[data-variant="underline"] .tab.is-active::after {
+  background: var(--accent);
+}
+
+.tabs[data-variant="underline"] .tab:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+/* ---------- Vertical orientation ---------- */
+
+.tabs[data-orientation="vertical"] {
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: 14px;
+  align-items: stretch;
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
+.tabs[data-orientation="vertical"] .tab {
+  text-align: start;
+  border-radius: 10px;
+}
+
+.tabs[data-orientation="vertical"][data-variant="underline"] {
+  border-bottom: 0;
+  border-inline-start: 1px solid var(--line);
+}
+
+.tabs[data-orientation="vertical"][data-variant="underline"] .tab::after {
+  inset-inline: auto;
+  inset-block: 0;
+  inset-inline-start: -1px;
+  width: 2px;
+  height: auto;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ---------- Dark theme accents ---------- */
+
+[data-theme="dark"] .tabs {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .tab[aria-selected="true"],
+[data-theme="dark"] .tab.is-active {
+  background: rgba(var(--starlight-rgb), 0.12);
+  border-color: rgba(var(--starlight-rgb), 0.25);
+  box-shadow: none;
+}
+
+[data-theme="dark"] .tabs[data-variant="underline"] .tab[aria-selected="true"]::after,
+[data-theme="dark"] .tabs[data-variant="underline"] .tab.is-active::after {
+  background: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tabs {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  :root:not([data-theme="light"]) .tab[aria-selected="true"],
+  :root:not([data-theme="light"]) .tab.is-active {
+    background: rgba(var(--starlight-rgb), 0.12);
+    border-color: rgba(var(--starlight-rgb), 0.25);
+    box-shadow: none;
+  }
+  :root:not([data-theme="light"]) .tabs[data-variant="underline"] .tab[aria-selected="true"]::after,
+  :root:not([data-theme="light"]) .tabs[data-variant="underline"] .tab.is-active::after {
+    background: rgb(var(--starlight-rgb));
+  }
+}

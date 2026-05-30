@@ -1,0 +1,263 @@
+/* Starscape v3 — menu flyout (ported from ss-orbit).
+ *
+ * The board / nav-menu dropdown: a raised surface with bezel-style items that
+ * share the `.topbar-chip` look, an optional sticky head, and an optional form
+ * section (e.g. "new board"). Radii + density from shape tokens.
+ *
+ *   <div class="menu-flyout menu-flyout--align-end" role="menu">
+ *     <div class="menu-flyout-head">Board</div>
+ *     <div class="menu-flyout-list">
+ *       <button class="menu-flyout-item is-current" role="menuitem">
+ *         <span class="menu-flyout-item-title">Production</span>
+ *         <span class="menu-flyout-item-meta">orbit-prod</span>
+ *       </button>
+ *     </div>
+ *     <div class="menu-flyout-section">
+ *       <h3 class="menu-flyout-heading">New board</h3>
+ *       <form class="menu-flyout-form">…</form>
+ *     </div>
+ *   </div>
+ */
+
+.menu-flyout {
+  position: absolute;
+  top: calc(100% + 0.28rem);
+  inset-inline-start: 0;
+  z-index: 35;
+  display: flex;
+  min-width: 13.5rem;
+  max-width: min(20rem, calc(100vw - 1.5rem));
+  max-height: min(24rem, calc(100vh - 4rem));
+  flex-direction: column;
+  overflow: hidden auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.menu-flyout--align-end {
+  inset-inline: auto 0;
+}
+
+.menu-flyout[hidden] {
+  display: none;
+}
+
+.menu-flyout-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--topbar-bg);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.menu-flyout-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  padding: 0.55rem;
+}
+
+/* Items share the topbar-chip bezel. */
+.menu-flyout-item {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  border: 1.5px solid rgba(var(--accent-rgb), 0.32);
+  border-radius: var(--radius-control);
+  color: var(--ink);
+  text-align: start;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.06), rgba(var(--paper-rgb), 0) 65%),
+    rgba(var(--paper-rgb), 0.95);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--paper-rgb), 0.9),
+    inset 0 0 0 2px rgba(var(--accent-rgb), 0.12),
+    0 4px 10px rgba(var(--accent-rgb), 0.07),
+    0 1px 4px rgba(var(--warmth-rgb), 0.05);
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.menu-flyout-item:hover {
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.12), rgba(var(--paper-rgb), 0) 65%),
+    rgba(var(--paper-rgb), 0.98);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--paper-rgb), 0.9),
+    inset 0 0 0 2px rgba(var(--accent-rgb), 0.2),
+    0 6px 14px rgba(var(--accent-rgb), 0.14),
+    0 1px 4px rgba(var(--warmth-rgb), 0.07);
+}
+
+.menu-flyout-item.is-current {
+  border-color: rgba(var(--accent-rgb), 0.65);
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(var(--accent-rgb), 0.04) 70%),
+    rgba(var(--paper-rgb), 0.98);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--paper-rgb), 0.9),
+    inset 0 0 0 2px rgba(var(--accent-rgb), 0.3),
+    0 6px 14px rgba(var(--accent-rgb), 0.18),
+    0 1px 4px rgba(var(--warmth-rgb), 0.07);
+}
+
+.menu-flyout-item-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.menu-flyout-item-meta {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* Optional form section. */
+.menu-flyout-section {
+  padding: 0.55rem 0.75rem 0.75rem;
+  border-top: 1px solid var(--line);
+  background: var(--subtle-bg-2);
+}
+
+.menu-flyout-heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.menu-flyout-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+}
+
+.menu-flyout-form input {
+  width: 100%;
+  padding: var(--field-pad-y) var(--field-pad-x);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius-control) - 2px);
+  background: var(--surface-input);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.menu-flyout-form button[type="submit"] {
+  padding: 0.42rem 0.65rem;
+  border: 1px solid var(--btn-border);
+  border-radius: calc(var(--radius-control) - 2px);
+  color: #fff;
+  background: var(--btn-gradient);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.folder-picker-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem;
+}
+
+.folder-picker-field button[type="button"] {
+  padding: 0.42rem 0.65rem;
+  border: 1px solid var(--btn-border);
+  border-radius: calc(var(--radius-control) - 2px);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+/* Dark — starlight bezel items over cosmos; glass blur on the surface. */
+[data-theme="dark"] .menu-flyout {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+[data-theme="dark"] .menu-flyout-item {
+  color: #e8efff;
+  border: 1.5px solid rgba(var(--starlight-rgb), 0.28);
+  background:
+    linear-gradient(135deg, rgba(var(--starlight-rgb), 0.05), rgba(var(--cosmos-rgb), 0) 65%),
+    rgba(var(--cosmos-rgb), 0.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+    inset 0 0 0 2px rgba(var(--starlight-rgb), 0.13),
+    0 4px 10px rgba(var(--void-rgb), 0.22),
+    0 1px 4px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] .menu-flyout-item:hover {
+  border-color: rgba(var(--starlight-rgb), 0.45);
+  background:
+    linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), rgba(var(--cosmos-rgb), 0) 65%),
+    rgba(var(--cosmos-rgb), 0.93);
+}
+[data-theme="dark"] .menu-flyout-item.is-current {
+  border-color: rgba(var(--starlight-rgb), 0.6);
+  background:
+    linear-gradient(135deg, rgba(var(--starlight-rgb), 0.16), rgba(var(--starlight-rgb), 0.04) 70%),
+    rgba(var(--cosmos-rgb), 0.94);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+    inset 0 0 0 2px rgba(var(--starlight-rgb), 0.32),
+    0 6px 14px rgba(var(--void-rgb), 0.34),
+    0 1px 4px rgba(0, 0, 0, 0.24);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .menu-flyout {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  :root:not([data-theme="light"]) .menu-flyout-item {
+    color: #e8efff;
+    border: 1.5px solid rgba(var(--starlight-rgb), 0.28);
+    background:
+      linear-gradient(135deg, rgba(var(--starlight-rgb), 0.05), rgba(var(--cosmos-rgb), 0) 65%),
+      rgba(var(--cosmos-rgb), 0.88);
+    box-shadow:
+      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+      inset 0 0 0 2px rgba(var(--starlight-rgb), 0.13),
+      0 4px 10px rgba(var(--void-rgb), 0.22),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  :root:not([data-theme="light"]) .menu-flyout-item:hover {
+    border-color: rgba(var(--starlight-rgb), 0.45);
+    background:
+      linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), rgba(var(--cosmos-rgb), 0) 65%),
+      rgba(var(--cosmos-rgb), 0.93);
+  }
+  :root:not([data-theme="light"]) .menu-flyout-item.is-current {
+    border-color: rgba(var(--starlight-rgb), 0.6);
+    background:
+      linear-gradient(135deg, rgba(var(--starlight-rgb), 0.16), rgba(var(--starlight-rgb), 0.04) 70%),
+      rgba(var(--cosmos-rgb), 0.94);
+    box-shadow:
+      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+      inset 0 0 0 2px rgba(var(--starlight-rgb), 0.32),
+      0 6px 14px rgba(var(--void-rgb), 0.34),
+      0 1px 4px rgba(0, 0, 0, 0.24);
+  }
+}

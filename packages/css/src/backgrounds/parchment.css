@@ -1,0 +1,46 @@
+/* Starscape v3 — parchment background (light theme).
+ *
+ * SVG-free port of the Obsidian Starscape "Earth Village" light theme. The 10
+ * decorative botanical SVGs are dropped intentionally — what remains is the
+ * parchment gradient and four atmospheric corner washes (sage, ochre, two
+ * sepia vignettes) that give the surface its warm, hand-made quality without
+ * any image assets to ship.
+ *
+ * Applied to <body> by default. Force the same look on any container by
+ * adding `data-starscape-bg="parchment"` to the element.
+ *
+ * The .grain element from the dark mode (see starscape.css) is repurposed
+ * here as a faint pixel-grid noise overlay that gives parchment a hand-made,
+ * paper-grain feel.
+ */
+
+body,
+[data-starscape-bg="parchment"] {
+  background-image:
+    radial-gradient(ellipse 70% 50% at 8% 6%,   var(--earth-stain-sage),  transparent 60%),
+    radial-gradient(ellipse 60% 55% at 95% 95%, var(--earth-stain-ochre), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, var(--earth-vignette),    transparent 70%),
+    radial-gradient(ellipse 45% 35% at 100% 0%, var(--earth-vignette),    transparent 70%),
+    linear-gradient(165deg, var(--parchment-1) 0%, var(--parchment-2) 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Light-mode .grain — pixel-grid noise overlay, fades at bottom.
+ * Quoted exactly from the kanban app's public/styles.css lines 144–154. */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgba(29, 37, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 37, 40, 0.025) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px;
+  mask-image: linear-gradient(to bottom, #000, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 90%);
+}
+
+/* When dark mode is active, .grain is reset and styled by starscape.css. */

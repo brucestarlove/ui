@@ -1,0 +1,63 @@
+/* Starscape v3 — skeleton loaders.
+ *
+ *   <div class="skeleton" style="width: 100%; height: 1rem"></div>
+ *   <div class="skeleton skeleton-text"></div>
+ *   <div class="skeleton skeleton-circle"></div>
+ *
+ * The pulse uses a subtle gradient sweep so it reads on both parchment and
+ * starscape backgrounds.
+ */
+
+.skeleton {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    var(--subtle-bg) 0%,
+    var(--subtle-bg-2) 50%,
+    var(--subtle-bg) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  animation: starscape-skeleton 1.6s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 0.85rem;
+  border-radius: 4px;
+}
+
+.skeleton-text + .skeleton-text {
+  margin-top: 0.4rem;
+}
+
+.skeleton-text:last-of-type {
+  width: 65%;
+}
+
+.skeleton-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.skeleton-rect {
+  width: 100%;
+  height: 8rem;
+  border-radius: 12px;
+}
+
+@keyframes starscape-skeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .skeleton {
+    animation: none;
+  }
+}
+
+[data-motion="reduce"] .skeleton {
+  animation: none;
+}

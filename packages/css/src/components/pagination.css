@@ -1,0 +1,94 @@
+/* Starscape v3 — pagination.
+ *
+ *   <nav class="pagination" aria-label="Pagination">
+ *     <button class="pagination-item" data-nav disabled>‹ Prev</button>
+ *     <button class="pagination-item" aria-current="page">1</button>
+ *     <button class="pagination-item">2</button>
+ *     <span class="pagination-gap">…</span>
+ *     <button class="pagination-item">9</button>
+ *     <button class="pagination-item" data-nav>Next ›</button>
+ *   </nav>
+ *
+ * Sizes: .pagination[data-size="sm"] for a denser control.
+ */
+
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.pagination-item {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.pagination[data-size="sm"] .pagination-item {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  font-size: 0.76rem;
+}
+
+.pagination-item[data-nav] {
+  font-weight: 700;
+}
+
+.pagination-item:hover:not(:disabled):not([aria-current="page"]) {
+  border-color: var(--accent-border);
+  background: var(--accent-hover);
+  filter: none;
+  transform: none;
+}
+
+.pagination-item[aria-current="page"] {
+  border-color: var(--accent-border);
+  background: rgba(var(--accent-rgb), 0.14);
+  color: var(--accent);
+  cursor: default;
+}
+
+.pagination-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination-item:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.pagination-gap {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.6rem;
+  color: var(--muted);
+  font-weight: 700;
+  user-select: none;
+}
+
+[data-theme="dark"] .pagination-item[aria-current="page"] {
+  background: rgba(var(--starlight-rgb), 0.16);
+  border-color: rgba(var(--starlight-rgb), 0.4);
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pagination-item[aria-current="page"] {
+    background: rgba(var(--starlight-rgb), 0.16);
+    border-color: rgba(var(--starlight-rgb), 0.4);
+    color: rgb(var(--starlight-rgb));
+  }
+}

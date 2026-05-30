@@ -1,0 +1,48 @@
+/* Starscape v3 — skip-to-content link.
+ *
+ *   <a class="skip-link" href="#main">Skip to content</a>
+ *   …
+ *   <main id="main" tabindex="-1">…</main>
+ *
+ * Visually hidden until keyboard focused. The first interactive element on
+ * keyboard-driven page entry — lets users bypass the topbar nav.
+ *
+ * Place as the very first child of <body> or your shell root. The href should
+ * point to a focusable landmark (the <main> needs tabindex="-1" if it isn't
+ * already focusable so the focus actually lands there).
+ */
+
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 100;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: var(--flyout-shadow);
+  transform: translateY(-200%);
+  transition: transform 200ms cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  outline: none;
+  transform: translateY(0);
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .skip-link {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .skip-link {
+  transition: none;
+}

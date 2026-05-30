@@ -1,0 +1,75 @@
+/* Starscape v3 — terminal / code-snippet shell.
+ *
+ * A dark snippet surface with an optional macOS-style traffic-light title bar.
+ * Ported from the kanban app's MCP setup. Use for install commands, config
+ * blocks, and any "copy this into your shell" snippet — independent of theme
+ * (always dark, like a real terminal).
+ *
+ *   <div class="terminal">
+ *     <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+ *     <pre class="code-snippet">npx @starlove/orbit init</pre>
+ *   </div>
+ *
+ * Or a bare snippet with no chrome:
+ *   <pre class="code-snippet">…</pre>
+ *
+ * `.code-snippet--compact` caps the height lower for short commands.
+ */
+
+.terminal {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.62rem 0.72rem;
+  background: rgba(10, 14, 28, 0.95);
+}
+
+.terminal-bar span {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: #a63d2f;
+}
+
+.terminal-bar span:nth-child(2) {
+  background: #bf8f21;
+}
+
+.terminal-bar span:nth-child(3) {
+  background: #3d7c46;
+}
+
+.code-snippet {
+  max-height: 16rem;
+  overflow: auto;
+  margin: 0;
+  border: 0;
+  padding: 0.9rem 1rem;
+  background: rgba(10, 14, 28, 0.95);
+  color: #d6e6ff;
+  font-family: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+/* Inside a terminal, the snippet squares off its top so it meets the bar. */
+.terminal > .code-snippet {
+  border-radius: 0;
+}
+
+.code-snippet--compact {
+  max-height: 8rem;
+}
+
+[data-theme="dark"] .terminal {
+  border-color: rgba(var(--starlight-rgb), 0.2);
+}

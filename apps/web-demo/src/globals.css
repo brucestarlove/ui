@@ -1,0 +1,108 @@
+/* Starscape v3 demo — full kitchen-sink import. */
+@import "@starlove/ui";
+/* Experimental "arc" button (the Hermes-technique port) — not in the default
+   bundle, so pull it in à-la-carte for the gallery. */
+@import "@starlove/ui/components/button-arc";
+
+/* ----- Demo-page-only layout helpers (not part of the library) ----- */
+
+body {
+  /* Allow vertical scroll in the demo so the gallery isn't capped. */
+  overflow: auto;
+  max-height: none;
+}
+
+.demo-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Reserve space for the fixed library .topbar so .demo-main content doesn't
+   slide under it. The topbar is roughly 4.5rem tall in our demo. */
+.demo-main {
+  padding-top: 5.5rem;
+  padding-left: clamp(1rem, 3vw, 2rem);
+  padding-right: clamp(1rem, 3vw, 2rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+  flex: 1 1 auto;
+}
+
+.demo-hero {
+  max-width: 56rem;
+  margin: 1rem auto 2.5rem;
+}
+
+.demo-hero .demo-row {
+  margin-top: 1.25rem;
+}
+
+/* Masonry gallery. A plain CSS grid forces every lane to the height of the
+   tallest lane in its row, so a tiny component (rating, breadcrumb, themed
+   scrollbar) gets stretched into a tall hollow panel. Multi-column packing
+   sizes each lane to its content and tucks short ones under tall ones, which
+   reads far better for a showcase of mixed-height components. */
+.lane-grid {
+  /* Override the library's `display: grid` — multicol props are ignored on a
+     grid container, which is why the gallery was still stretching lanes. */
+  display: block;
+  column-width: 21rem;
+  column-gap: 1.25rem;
+}
+
+.lane-grid > .lane,
+.lane-grid > .accordion-epic {
+  /* Keep each panel intact within a column; margin replaces the grid gap.
+     .accordion-epic (the Arc Lab) is a grid item too, so it gets the same
+     break + viewport-render treatment as a .lane. */
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+
+  /* Only render lanes near the viewport — off-screen lanes skip paint and
+     their CSS animations (ARC spins, avatar rings, pulses) idle until scrolled
+     into view. contain-intrinsic-size: auto remembers each lane's real height
+     after first render to keep the scrollbar stable. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 360px;
+}
+
+/* Opt-out: lanes whose tooltips / popovers / context-menus / modals escape the
+   lane box — content-visibility's paint containment would clip them. */
+.lane-grid > .lane.lane-cv-off {
+  content-visibility: visible;
+  contain-intrinsic-size: none;
+}
+
+/* Composite/hero lanes stay wide — they span every column as full-width
+   feature bands instead of fighting the narrow masonry track. */
+.lane-grid > .lane-span-2 {
+  column-span: all;
+}
+
+/* In-lane horizontal control rows. */
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The skeleton sits inside a .card — silence the card's settle animation
+   while loading state demos play. */
+.lane .card[style*="animation: none"] {
+  cursor: default;
+}
+
+/* Mobile: drop the topbar status badge so the row doesn't wrap. */
+@media (max-width: 720px) {
+  .demo-status {
+    display: none;
+  }
+}
+
+/* The Arc Lab's collapsible styling was promoted into the library as the
+   `.accordion-epic` component (CSS) + <EpicAccordion> (React). */

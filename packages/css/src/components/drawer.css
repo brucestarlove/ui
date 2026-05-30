@@ -1,0 +1,278 @@
+/* Starscape v3 — right-anchored drawer (sheet).
+ *
+ * Used for detail panes, side forms, contextual editing surfaces. Sliding
+ * iOS-style transition; tab strip in the header. The .drawer-backdrop pairs
+ * with it for click-outside dismissal.
+ *
+ * State is class-driven so it works with vanilla JS or React equally well:
+ *   - .drawer       → off-canvas, hidden
+ *   - .drawer.is-open → on-canvas
+ *   - .drawer-backdrop.is-visible → backdrop active
+ */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: var(--backdrop-bg);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.drawer-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  /* `--drawer-offcanvas` is the offscreen translate; flipped in RTL so the
+     drawer slides off the leading edge regardless of writing direction. */
+  --drawer-offcanvas: calc(100% + 1.5rem);
+
+  position: fixed;
+  top: clamp(0.75rem, 2vh, 1.5rem);
+  inset-inline-end: clamp(0.5rem, 1.5vw, 1rem);
+  bottom: clamp(0.75rem, 2vh, 1.5rem);
+  z-index: 50;
+  display: flex;
+  width: min(34rem, calc(100vw - 1rem));
+  max-width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--drawer-bg);
+  box-shadow: 0 24px 60px rgba(12, 18, 26, 0.28);
+  transform: translateX(var(--drawer-offcanvas));
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[dir="rtl"] .drawer {
+  --drawer-offcanvas: calc(-100% - 1.5rem);
+}
+
+.drawer.is-open {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .drawer,
+  :root:not([data-motion="full"]) .drawer-backdrop {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .drawer,
+[data-motion="reduce"] .drawer-backdrop {
+  transition: none;
+}
+
+.drawer-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--drawer-head-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.drawer-title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer-eyebrow {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.drawer-tabs {
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.drawer-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.drawer-tab {
+  flex-shrink: 0;
+  padding: 0.38rem 0.78rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease;
+}
+
+.drawer-tab:hover {
+  color: var(--ink);
+  background: var(--accent-hover);
+}
+
+.drawer-tab.is-active,
+.drawer-tab[aria-selected="true"] {
+  color: var(--ink);
+  background: var(--accent-active);
+  border-color: var(--accent-border);
+}
+
+.drawer-close {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.drawer-close:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-border);
+}
+
+.drawer-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.drawer-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  border-top: 1px solid var(--line);
+  background: var(--drawer-head-bg);
+}
+
+/* ---- Settings variant (ported from ss-orbit) -------------------------------
+ *
+ * A wider drawer whose header stacks a tab strip beneath the title, switching
+ * panels in the body. Scoped to `.is-settings` so the base drawer is unchanged.
+ * Shell radius flows from the --radius-drawer shape token.
+ *
+ *   <aside class="drawer is-settings is-wide is-open">
+ *     <header class="drawer-header">
+ *       <div class="drawer-title-block">
+ *         <span class="drawer-eyebrow">Settings</span>
+ *         <h2 class="drawer-title">Board</h2>
+ *       </div>
+ *       <button class="drawer-close">×</button>
+ *       <nav class="drawer-tabs" role="tablist">
+ *         <button class="drawer-tab is-active" role="tab">Appearance</button> …
+ *       </nav>
+ *     </header>
+ *     <div class="drawer-inner">…active panel…</div>
+ *   </aside>
+ */
+
+.drawer.is-wide {
+  width: min(58rem, calc(100vw - 1rem));
+}
+
+.drawer.is-settings {
+  border-radius: var(--radius-drawer);
+}
+
+.drawer.is-settings .drawer-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title close"
+    "tabs  tabs";
+  column-gap: 0.5rem;
+  row-gap: 0.55rem;
+  align-items: start;
+}
+
+.drawer-title-block {
+  grid-area: title;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.drawer.is-settings .drawer-close {
+  grid-area: close;
+}
+
+.drawer.is-settings .drawer-tabs {
+  grid-area: tabs;
+}
+
+/* Scrollable panel body (ss-orbit's `.drawer-inner`; mirrors `.drawer-body`). */
+.drawer-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* A grouped settings block inside the panel body. */
+.drawer-section {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: calc(var(--radius-control) + 2px);
+  background: var(--subtle-bg);
+}
+
+.drawer-section:first-child {
+  margin-top: 0;
+}
+
+[data-theme="dark"] .drawer {
+  background: rgba(16, 24, 48, 0.96);
+  box-shadow: -10px 0 48px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .drawer {
+    background: rgba(16, 24, 48, 0.96);
+    box-shadow: -10px 0 48px rgba(0, 0, 0, 0.4);
+  }
+}

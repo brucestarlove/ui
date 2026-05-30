@@ -1,0 +1,184 @@
+/* Starscape v3 — slider / range.
+ *
+ * Native input[type=range] tinted via accent-color (studio's approach), with
+ * an optional .slider wrapper for label + value readout. Pairs with
+ * .control-row / .control-label.
+ *
+ *   <label class="control-label">
+ *     Volume
+ *     <input type="range" class="slider" min="0" max="100" />
+ *     <span class="control-value">64%</span>
+ *   </label>
+ *
+ *   <div class="slider" data-size="lg">
+ *     <span class="slider-head"><b>Threshold</b><b>0.42</b></span>
+ *     <input type="range" min="0" max="1" step="0.01" />
+ *   </div>
+ *
+ * Sizes: data-size="sm | md (default) | lg".
+ */
+
+/* Charged track — the .slider component rebuilds the native track on both
+ * engines so the filled portion carries the accent (energized) and the thumb
+ * is a beveled chip with a glow-rim on interaction.
+ *
+ * Fill: Firefox fills automatically via ::-moz-range-progress (no JS). WebKit
+ * has no progress pseudo, so the fill reads from --value (0–100), set by the
+ * React <Slider> wrapper or by hand (style="--value: 64"); without it WebKit
+ * shows an empty rail — graceful, not broken. A bare <input type=range> with
+ * no .slider scope is left on the platform default. */
+input[type="range"].slider,
+.slider > input[type="range"],
+.control-label > input[type="range"] {
+  --track-h: 0.5rem;
+  --thumb-d: 1.1rem;
+  /* Filled portion + thumb are a gradient running amber→accent (reddish→green)
+   * in light, violet→cyan (purple→blue) in dark — left to right. The track
+   * gradient is anchored to the FULL width so a given point keeps its hue as
+   * the value changes; the rail just masks the unfilled part. */
+  --fill-1: rgb(var(--amber-rgb));
+  --fill-2: rgb(var(--accent-rgb));
+  --fill-gradient: linear-gradient(135deg, var(--fill-1), var(--fill-2));
+  --rail: var(--subtle-bg-2);
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  min-width: 7rem;
+  height: var(--thumb-d);
+  background: transparent;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+/* WebKit / Blink — track (fill driven by --value) + beveled thumb.
+ * Progress fill: the gradient is painted only across 0→--value (left of the
+ * thumb) over the rail base, so the unfilled portion is just the rail — a
+ * normal progress slider, and now consistent with Firefox's
+ * ::-moz-range-progress. (The old approach layered a translucent rail mask
+ * over a full-width gradient; since --rail is nearly transparent, the gradient
+ * bled through on the right of the thumb instead of stopping at it.) */
+input[type="range"].slider::-webkit-slider-runnable-track,
+.slider > input[type="range"]::-webkit-slider-runnable-track,
+.control-label > input[type="range"]::-webkit-slider-runnable-track {
+  height: var(--track-h);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, var(--fill-1), var(--fill-2)) 0 0 / calc(var(--value, 0) * 1%) 100% no-repeat,
+    var(--rail);
+}
+
+input[type="range"].slider::-webkit-slider-thumb,
+.slider > input[type="range"]::-webkit-slider-thumb,
+.control-label > input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--thumb-d);
+  height: var(--thumb-d);
+  margin-top: calc((var(--track-h) - var(--thumb-d)) / 2);
+  border-radius: 50%;
+  background: var(--fill-gradient);
+  border: 2px solid var(--surface-raised);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 1px 3px rgba(var(--ink-rgb), 0.3);
+}
+
+input[type="range"].slider:focus-visible::-webkit-slider-thumb,
+.slider > input[type="range"]:focus-visible::-webkit-slider-thumb,
+.control-label > input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 0.3rem rgba(var(--accent-rgb), 0.3);
+}
+
+/* Firefox — track + auto-filled progress + beveled thumb (no --value needed). */
+input[type="range"].slider::-moz-range-track,
+.slider > input[type="range"]::-moz-range-track,
+.control-label > input[type="range"]::-moz-range-track {
+  height: var(--track-h);
+  border-radius: 999px;
+  background: var(--rail);
+}
+
+input[type="range"].slider::-moz-range-progress,
+.slider > input[type="range"]::-moz-range-progress,
+.control-label > input[type="range"]::-moz-range-progress {
+  height: var(--track-h);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--fill-1), var(--fill-2));
+}
+
+input[type="range"].slider::-moz-range-thumb,
+.slider > input[type="range"]::-moz-range-thumb,
+.control-label > input[type="range"]::-moz-range-thumb {
+  width: var(--thumb-d);
+  height: var(--thumb-d);
+  border: 2px solid var(--surface-raised);
+  border-radius: 50%;
+  background: var(--fill-gradient);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 1px 3px rgba(var(--ink-rgb), 0.3);
+}
+
+/* Dark — cyan→violet fill, deepened unfilled rail. */
+[data-theme="dark"] input[type="range"].slider,
+[data-theme="dark"] .slider > input[type="range"],
+[data-theme="dark"] .control-label > input[type="range"] {
+  --fill-1: rgb(var(--violet-rgb));
+  --fill-2: rgb(var(--cyan-rgb));
+  --rail: rgba(var(--starlight-rgb), 0.16);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) input[type="range"].slider,
+  :root:not([data-theme="light"]) .slider > input[type="range"],
+  :root:not([data-theme="light"]) .control-label > input[type="range"] {
+    --fill-1: rgb(var(--cyan-rgb));
+    --fill-2: rgb(var(--violet-rgb));
+    --rail: rgba(var(--starlight-rgb), 0.16);
+  }
+}
+
+.slider {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.slider-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.slider-head b {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* lg — a larger, more focal track + thumb. */
+.slider[data-size="lg"] > input[type="range"] {
+  --track-h: 0.7rem;
+  --thumb-d: 1.35rem;
+}
+
+.slider[data-size="sm"] > input[type="range"] {
+  max-width: 9rem;
+}
+
+/* Focus shows on the thumb (glow-rim, above); kill the element outline. */
+input[type="range"].slider:focus-visible,
+.slider > input[type="range"]:focus-visible,
+.control-label > input[type="range"]:focus-visible {
+  outline: none;
+}
+
+input[type="range"]:disabled,
+.slider[data-disabled] > input[type="range"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

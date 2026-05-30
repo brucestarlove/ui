@@ -1,0 +1,101 @@
+/* Starscape v3 — topbar chip (ported from ss-orbit).
+ *
+ * The teal-bezel pill button used in the topbar for the board/nav-menu trigger.
+ * Shares its bezel look with `.menu-flyout-item`. Radius from --radius-control.
+ *
+ *   <button class="topbar-chip">Board ▾</button>
+ */
+
+.topbar-chip {
+  display: inline-flex;
+  max-width: 11.5rem;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.75rem;
+  border: 1.5px solid rgba(var(--accent-rgb), 0.32);
+  border-radius: var(--radius-control);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.06), rgba(var(--paper-rgb), 0) 65%),
+    rgba(var(--paper-rgb), 0.95);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--paper-rgb), 0.9),
+    inset 0 0 0 2px rgba(var(--accent-rgb), 0.12),
+    0 4px 10px rgba(var(--accent-rgb), 0.07),
+    0 1px 4px rgba(var(--warmth-rgb), 0.05);
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.topbar-chip:hover {
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.12), rgba(var(--paper-rgb), 0) 65%),
+    rgba(var(--paper-rgb), 0.98);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--paper-rgb), 0.9),
+    inset 0 0 0 2px rgba(var(--accent-rgb), 0.2),
+    0 6px 14px rgba(var(--accent-rgb), 0.14),
+    0 1px 4px rgba(var(--warmth-rgb), 0.07);
+}
+
+.topbar-chip:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+/* Dark — starlight bezel over cosmos. Shared selector list with menu-flyout. */
+[data-theme="dark"] .topbar-chip {
+  color: #e8efff;
+  border: 1.5px solid rgba(var(--starlight-rgb), 0.28);
+  background:
+    linear-gradient(135deg, rgba(var(--starlight-rgb), 0.05), rgba(var(--cosmos-rgb), 0) 65%),
+    rgba(var(--cosmos-rgb), 0.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+    inset 0 0 0 2px rgba(var(--starlight-rgb), 0.13),
+    0 4px 10px rgba(var(--void-rgb), 0.22),
+    0 1px 4px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] .topbar-chip:hover {
+  border-color: rgba(var(--starlight-rgb), 0.45);
+  background:
+    linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), rgba(var(--cosmos-rgb), 0) 65%),
+    rgba(var(--cosmos-rgb), 0.93);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+    inset 0 0 0 2px rgba(var(--starlight-rgb), 0.22),
+    0 6px 14px rgba(var(--void-rgb), 0.3),
+    0 1px 4px rgba(0, 0, 0, 0.24);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .topbar-chip {
+    color: #e8efff;
+    border: 1.5px solid rgba(var(--starlight-rgb), 0.28);
+    background:
+      linear-gradient(135deg, rgba(var(--starlight-rgb), 0.05), rgba(var(--cosmos-rgb), 0) 65%),
+      rgba(var(--cosmos-rgb), 0.88);
+    box-shadow:
+      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+      inset 0 0 0 2px rgba(var(--starlight-rgb), 0.13),
+      0 4px 10px rgba(var(--void-rgb), 0.22),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  :root:not([data-theme="light"]) .topbar-chip:hover {
+    border-color: rgba(var(--starlight-rgb), 0.45);
+    background:
+      linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), rgba(var(--cosmos-rgb), 0) 65%),
+      rgba(var(--cosmos-rgb), 0.93);
+    box-shadow:
+      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
+      inset 0 0 0 2px rgba(var(--starlight-rgb), 0.22),
+      0 6px 14px rgba(var(--void-rgb), 0.3),
+      0 1px 4px rgba(0, 0, 0, 0.24);
+  }
+}

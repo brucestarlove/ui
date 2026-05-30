@@ -1,0 +1,15 @@
+/* Starscape v3 — dividers. */
+
+.divider {
+  height: 1px;
+  margin: 1rem 0;
+  border: 0;
+  background: var(--line);
+}
+
+.divider[data-orientation="vertical"] {
+  width: 1px;
+  height: auto;
+  align-self: stretch;
+  margin: 0 1rem;
+}

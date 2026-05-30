@@ -1,0 +1,117 @@
+/* Starscape v3 — segmented control.
+ *
+ * The "joined pills" pattern. One value selected at a time from a small set,
+ * presented as a single grouped affordance — distinct from tabs (which navigate
+ * panels) and from a button row (which fires independent actions).
+ *
+ *   <div class="segmented" role="radiogroup" aria-label="Theme">
+ *     <button class="segmented-option" role="radio" aria-checked="false">Light</button>
+ *     <button class="segmented-option" role="radio" aria-checked="true">System</button>
+ *     <button class="segmented-option" role="radio" aria-checked="false">Dark</button>
+ *   </div>
+ *
+ * Both `aria-checked="true"` (radiogroup pattern) and `aria-pressed="true"`
+ * (toggle pattern) trigger the active visual, so the topbar can adopt this
+ * without rewriting handlers.
+ *
+ * Sizes via data-size: sm | (default) | lg.
+ */
+
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--subtle-bg-2);
+  gap: 0;
+}
+
+.segmented-option {
+  flex: 0 0 auto;
+  padding: 0.32rem 0.85rem;
+  min-height: 1.85rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-control) - 3px);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.segmented-option:hover {
+  color: var(--ink);
+}
+
+.segmented-option:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.segmented-option[aria-checked="true"],
+.segmented-option[aria-pressed="true"],
+.segmented-option.is-active {
+  color: var(--ink);
+  background: var(--surface-raised);
+  border-color: var(--accent-border);
+  box-shadow: 0 1px 2px rgba(var(--warmth-rgb), 0.08);
+}
+
+.segmented-option[disabled],
+.segmented-option[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Sizes ---------- */
+
+.segmented[data-size="sm"] .segmented-option {
+  padding: 0.22rem 0.65rem;
+  min-height: 1.5rem;
+  font-size: 0.72rem;
+}
+
+.segmented[data-size="lg"] .segmented-option {
+  padding: 0.5rem 1.1rem;
+  min-height: 2.3rem;
+  font-size: 0.88rem;
+}
+
+/* ---------- Dark theme ---------- */
+
+[data-theme="dark"] .segmented {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(var(--starlight-rgb), 0.18);
+}
+
+[data-theme="dark"] .segmented-option[aria-checked="true"],
+[data-theme="dark"] .segmented-option[aria-pressed="true"],
+[data-theme="dark"] .segmented-option.is-active {
+  background: rgba(var(--starlight-rgb), 0.16);
+  border-color: rgba(var(--starlight-rgb), 0.32);
+  box-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .segmented {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(var(--starlight-rgb), 0.18);
+  }
+  :root:not([data-theme="light"]) .segmented-option[aria-checked="true"],
+  :root:not([data-theme="light"]) .segmented-option[aria-pressed="true"],
+  :root:not([data-theme="light"]) .segmented-option.is-active {
+    background: rgba(var(--starlight-rgb), 0.16);
+    border-color: rgba(var(--starlight-rgb), 0.32);
+    box-shadow: none;
+  }
+}

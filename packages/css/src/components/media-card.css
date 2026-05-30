@@ -1,0 +1,225 @@
+/* Starscape v3 — media card.
+ *
+ * The rich "audition" card ported from studio's Soundscape pane: a selectable
+ * card with a title/meta header, a state-driven play button (idle → playing →
+ * error, icon morphs via clip-path), a waveform envelope, a chip row, and an
+ * actions footer.
+ *
+ *   <article class="media-card" data-selected="true">
+ *     <header>
+ *       <div><strong>Nebula pad</strong><span>suno · v3.5</span></div>
+ *       <button class="media-play" data-state="idle" aria-label="Play">Play</button>
+ *     </header>
+ *     <div class="media-envelope" aria-hidden><span style="width:62%"></span></div>
+ *     <div class="media-card-chips">
+ *       <span class="chip" data-tone="accent">ambient</span>
+ *     </div>
+ *     <p class="media-card-note">Analyzed: 0.42 RMS, soft transient.</p>
+ *     <div class="media-card-actions">
+ *       <button>Keep</button>
+ *       <button class="ghost">Discard</button>
+ *     </div>
+ *   </article>
+ *
+ * Play states: data-state="idle | playing | error".
+ */
+
+.media-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.media-card[data-selected="true"] {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
+
+.media-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.media-card > header > div {
+  min-width: 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.media-card strong {
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.media-card > header span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Play button — clip-path icon morphs across states ---------- */
+
+.media-play {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  min-width: 4.75rem;
+  min-height: 2rem;
+  padding: 0.38rem 0.72rem 0.38rem 0.58rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.18);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 5px 14px rgba(var(--ink-rgb), 0.1);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition:
+    transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.media-play::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: currentColor;
+  clip-path: polygon(18% 0, 18% 100%, 100% 50%);
+}
+
+.media-play:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--accent-rgb), 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 8px 18px rgba(var(--ink-rgb), 0.13);
+}
+
+.media-play:active {
+  transform: translateY(0);
+}
+
+.media-play:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.media-play[data-state="playing"] {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.48);
+  background: rgba(var(--accent-rgb), 0.12);
+}
+
+/* Two bars = pause glyph. */
+.media-play[data-state="playing"]::before {
+  clip-path: none;
+  background: linear-gradient(
+    90deg,
+    currentColor 0 34%,
+    transparent 34% 66%,
+    currentColor 66% 100%
+  );
+}
+
+.media-play[data-state="error"] {
+  color: var(--danger);
+  border-color: rgba(var(--coral-rgb), 0.4);
+  background: rgba(var(--coral-rgb), 0.12);
+}
+
+.media-play[data-state="error"]::before {
+  content: "!";
+  display: inline-grid;
+  place-items: center;
+  width: 0.82rem;
+  height: 0.82rem;
+  clip-path: none;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.media-play[data-state="error"]:hover {
+  transform: none;
+}
+
+.media-play:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ---------- Envelope — waveform-ish progress strip ---------- */
+
+.media-envelope {
+  height: 30px;
+  padding: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(var(--ink-rgb), 0.08) 0 1px,
+      transparent 1px 8px
+    ),
+    rgba(var(--ink-rgb), 0.03);
+}
+
+.media-envelope > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--blue));
+}
+
+/* ---------- Chip row + footer ---------- */
+
+.media-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.media-card-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.media-card-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.media-card-actions > button {
+  flex: 1 1 0;
+  min-height: 2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .media-play {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .media-play {
+  transition: none;
+}

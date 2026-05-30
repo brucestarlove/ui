@@ -1,0 +1,69 @@
+/* Starscape v3 — breadcrumb.
+ *
+ *   <nav class="breadcrumb" aria-label="Breadcrumb">
+ *     <ol>
+ *       <li><a href="#">Home</a></li>
+ *       <li><a href="#">Projects</a></li>
+ *       <li><span aria-current="page">Starscape</span></li>
+ *     </ol>
+ *   </nav>
+ *
+ * Separators are generated; the last item (aria-current="page") renders muted
+ * and non-interactive. Long trails truncate per item rather than overflow.
+ */
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.breadcrumb a {
+  max-width: 14rem;
+  overflow: hidden;
+  color: var(--muted);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 6px;
+  transition: color 140ms ease;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.breadcrumb a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.breadcrumb a:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+.breadcrumb [aria-current="page"] {
+  max-width: 14rem;
+  overflow: hidden;
+  color: var(--ink);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

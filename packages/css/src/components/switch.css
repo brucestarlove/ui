@@ -1,0 +1,144 @@
+/* Starscape v3 — toggle switch.
+ *
+ *   <label class="switch">
+ *     <input type="checkbox" />
+ *     <span class="switch-track" aria-hidden="true"></span>
+ *     <span class="switch-label">Email me updates</span>
+ *   </label>
+ *
+ * The native <input> is visually hidden but stays focusable, accessible,
+ * and form-submittable.
+ */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  user-select: none;
+}
+
+.switch > input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.switch-track {
+  position: relative;
+  display: inline-block;
+  width: 2.4rem;
+  height: 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-input);
+  overflow: hidden;            /* clips the ignition sweep to the track */
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+/* Ignition sweep — a light band runs the track once when switched on. */
+.switch-track::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.55) 50%,
+    transparent 100%
+  );
+}
+
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0.15rem;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 50%;
+  background: var(--ink);
+  /* Beveled thumb — inset-only so the track's overflow:hidden can't clip it. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 1px rgba(var(--ink-rgb), 0.25);
+  transform: translateY(-50%);
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), background 180ms ease;
+}
+
+.switch > input:checked + .switch-track {
+  border-color: var(--accent-border);
+  background: rgba(var(--accent-rgb), 0.32);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.25);
+}
+
+.switch > input:checked + .switch-track::after {
+  transform: translate(1.05rem, -50%);
+  background: var(--accent);
+}
+
+.switch > input:checked + .switch-track::before {
+  animation: switch-ignite 600ms ease-out;
+}
+
+@keyframes switch-ignite {
+  0%   { opacity: 0; transform: translateX(-70%); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(70%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch > input:checked + .switch-track::before {
+    animation: none;
+  }
+}
+
+.switch > input:focus-visible + .switch-track {
+  box-shadow: var(--accent-ring);
+}
+
+.switch > input:disabled + .switch-track {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-theme="dark"] .switch > input:checked + .switch-track {
+  background: rgba(var(--starlight-rgb), 0.32);
+  box-shadow: inset 0 0 0 1px rgba(var(--starlight-rgb), 0.3);
+}
+
+[data-theme="dark"] .switch > input:checked + .switch-track::after {
+  background: rgb(var(--starlight-rgb));
+}
+
+[data-theme="dark"] .switch-track::after {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .switch > input:checked + .switch-track {
+    background: rgba(var(--starlight-rgb), 0.32);
+    box-shadow: inset 0 0 0 1px rgba(var(--starlight-rgb), 0.3);
+  }
+  :root:not([data-theme="light"]) .switch > input:checked + .switch-track::after {
+    background: rgb(var(--starlight-rgb));
+  }
+  :root:not([data-theme="light"]) .switch-track::after {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}

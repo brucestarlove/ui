@@ -1,0 +1,189 @@
+/* Starscape v3 — light tokens (default).
+ *
+ * Applied at :root with no [data-theme] attribute. The system.css companion
+ * file overrides these inside `@media (prefers-color-scheme: dark)` for any
+ * root that doesn't carry data-theme="light", and dark.css forces them when
+ * data-theme="dark" is set explicitly.
+ *
+ * --*-rgb tokens are concrete color identities. They stay constant across
+ * themes; only the semantic tokens (paper, ink, accent, surface, …) flip.
+ */
+:root {
+  /* Concrete color channels — stable across themes, used as
+     `rgba(var(--name), alpha)` for arbitrary-opacity tints. */
+  --paper-rgb: 255, 252, 246;
+  --ink-rgb: 29, 37, 40;
+  --warmth-rgb: 53, 43, 28;
+  --accent-rgb: 15, 118, 110;
+  --amber-rgb: 191, 107, 33;
+  --purple-rgb: 192, 132, 252;
+  --red-rgb: 166, 61, 47;
+  --blue-rgb: 36, 92, 124;
+  --starlight-rgb: 168, 192, 255;
+  --cosmos-rgb: 22, 33, 62;
+  --void-rgb: 15, 52, 96;
+  --violet-rgb: 168, 128, 255;
+  --cyan-rgb: 6, 182, 212;
+  --indigo-rgb: 139, 92, 246;
+  --coral-rgb: 248, 113, 113;
+  --teal-deep: #0a4d47;
+
+  /* Parchment background (Obsidian Earth Village without SVGs). */
+  --parchment-1: #f5ecd6;
+  --parchment-2: #e8d9b4;
+  --earth-stain-sage: rgba(79, 112, 72, 0.22);
+  --earth-stain-ochre: rgba(184, 137, 61, 0.20);
+  --earth-vignette: rgba(124, 96, 56, 0.12);
+
+  /* Starfield ambient (used only in dark mode but defined globally). */
+  --starscape-twinkle-duration: 8s;
+  --starscape-twinkle-easing: ease-in-out;
+  --starscape-dim-opacity: 0.78;
+  --starscape-peak-opacity: 1;
+  --nebula-purple: rgba(168, 134, 247, 0.20);
+  --nebula-cyan: rgba(6, 182, 212, 0.16);
+  --milky-band: rgba(229, 237, 255, 0.11);
+
+  /* Semantic — light. */
+  --paper: #f5ecd6;
+  --paper-deep: #eadfcf;
+  --ink: #1d2528;
+  --muted: #7f8b87;
+  --line: rgba(29, 37, 40, 0.14);
+  --card: rgba(var(--paper-rgb), 0.86);
+  --accent: #0f766e;
+  --accent-2: #bf6b21;
+  --blue: #245c7c;
+  --danger: #a63d2f;
+  --shadow: 0 18px 60px rgba(var(--warmth-rgb), 0.14);
+  --radius: 18px;
+
+  /* Surfaces. */
+  --surface: rgba(var(--paper-rgb), 0.86);
+  --surface-raised: rgba(var(--paper-rgb), 0.98);
+  --surface-dim: rgba(var(--paper-rgb), 0.58);
+  --surface-input: rgba(var(--paper-rgb), 0.76);
+  --topbar-bg: rgba(246, 240, 229, 0.88);
+  --drawer-bg: rgba(var(--paper-rgb), 0.97);
+  --drawer-head-bg: rgba(246, 240, 229, 0.92);
+
+  /* Buttons.
+   *
+   * The default <button> primary is the ARC chip: a soft accent/amber gradient
+   * with a pixel-BEVEL (highlight top-left, warm shadow bottom-right) — no
+   * background glow. The animated sweep-ring + press-invert layer on from
+   * button-arc.css. The secondary keeps its solid teal→blue surface but adopts
+   * the same bevel grammar.
+   */
+  --btn-gradient: linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(var(--amber-rgb), 0.12));
+  --btn-color: var(--teal-deep);
+  --btn-border: rgba(var(--accent-rgb), 0.4);
+  --btn-shadow:
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.6),
+    inset -1px -1px 0 0 rgba(var(--warmth-rgb), 0.28);
+  --btn-hover-shadow: 0 0 0 0 transparent;   /* glow removed — lift comes from transform + ring */
+  /* Press-invert: :active flips to a filled accent surface. */
+  --btn-active-gradient: linear-gradient(135deg, rgb(var(--accent-rgb)), rgba(var(--amber-rgb), 0.85));
+  --btn-active-color: var(--paper);
+  --btn-active-shadow:
+    inset 1px 1px 0 0 rgba(var(--warmth-rgb), 0.28),
+    inset -1px -1px 0 0 rgba(255, 255, 255, 0.4);
+
+  /* Secondary — solid teal→blue surface (the blue stays), now bevel + press-invert. */
+  --btn-secondary-gradient: linear-gradient(135deg, rgba(var(--accent-rgb), 0.92), rgba(var(--blue-rgb), 0.88));
+  --btn-secondary-color: #fff;
+  --btn-secondary-border: rgba(var(--accent-rgb), 0.4);
+  --btn-secondary-shadow:
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset -1px -1px 0 0 rgba(var(--warmth-rgb), 0.38);
+  --btn-secondary-hover-shadow: 0 0 0 0 transparent;
+  --btn-secondary-active-gradient: linear-gradient(135deg, rgba(var(--blue-rgb), 0.95), rgba(var(--accent-rgb), 0.92));
+  --btn-secondary-active-shadow:
+    inset 1px 1px 0 0 rgba(var(--warmth-rgb), 0.4),
+    inset -1px -1px 0 0 rgba(255, 255, 255, 0.28);
+
+  /* Command-style monospace button (terminal palette). */
+  --command-bg: linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(var(--blue-rgb), 0.14) 55%, rgba(var(--paper-rgb), 0) 100%), rgba(var(--paper-rgb), 0.96);
+  --command-color: var(--teal-deep);
+  --command-border: rgba(var(--accent-rgb), 0.45);
+  --command-shadow: 0 2px 10px rgba(var(--accent-rgb), 0.14), inset 0 0 0 1px rgba(var(--paper-rgb), 0.92);
+
+  /* Stronger surface for tooltips, command palettes, popovers that need to
+     stand out from the page background. Distinct from --surface-raised. */
+  --surface-strong: rgba(var(--paper-rgb), 0.99);
+
+  /* Lede/intro paragraph color — slightly lower weight than --ink, higher
+     than --muted, suited for body intro text below an h1. */
+  --lede-color: rgba(29, 37, 40, 0.78);
+
+  /* Accent interactions. */
+  --accent-hover: rgba(var(--accent-rgb), 0.08);
+  --accent-active: rgba(var(--accent-rgb), 0.12);
+  --accent-border: rgba(var(--accent-rgb), 0.35);
+  --accent-ring: 0 0 0 4px rgba(var(--accent-rgb), 0.12);
+  --accent-focus-border: rgba(var(--accent-rgb), 0.65);
+
+  /* Subtle / overlay. */
+  --subtle-bg: rgba(29, 37, 40, 0.06);
+  --subtle-bg-2: rgba(29, 37, 40, 0.02);
+  --backdrop-bg: rgba(12, 18, 26, 0.38);
+  --flyout-shadow: 0 12px 36px rgba(12, 18, 26, 0.14), 0 4px 12px rgba(12, 18, 26, 0.06);
+
+  /* Generic surface tokens kept for app-level reuse (the kanban-specific
+     `--orbit-*` aliases below resolve to these). */
+  --orbit-surface: rgba(29, 37, 40, 0.05);
+  --orbit-surface-2: rgba(29, 37, 40, 0.07);
+  --orbit-grid: rgba(29, 37, 40, 0.05);
+  --orbit-line: rgba(29, 37, 40, 0.1);
+  --orbit-column: rgba(255, 255, 255, 0.5);
+  --orbit-column-border: rgba(29, 37, 40, 0.08);
+  --orbit-text: var(--ink);
+  --orbit-text-muted: var(--muted);
+  --orbit-accent: rgba(var(--accent-rgb), 0.12);
+  --orbit-accent-2: rgba(var(--blue-rgb), 0.1);
+  --orbit-column-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --orbit-count-bg: rgba(29, 37, 40, 0.08);
+  --orbit-add-bg: rgba(29, 37, 40, 0.06);
+  --orbit-add-border: rgba(29, 37, 40, 0.12);
+  --orbit-phantom-border: rgba(29, 37, 40, 0.14);
+  --orbit-phantom-bg: rgba(29, 37, 40, 0.03);
+
+  /* Scrollbar. */
+  --scrollbar-thumb: rgba(var(--accent-rgb), 0.45);
+  --scrollbar-thumb-hover: rgba(var(--accent-rgb), 0.65);
+  --scrollbar-track: transparent;
+
+  /* Native <select> chevron alignment. */
+  --select-chevron-pad-x: 0.55rem;
+  --select-chevron-size: 12px;
+
+  /* Spacing scale.
+   *
+   * Theme-stable (defined here, not duplicated in dark.css) — spacing is a
+   * structural concern, not a color one. The scale is roughly geometric so
+   * adjacent steps have a perceptible-but-not-jarring jump:
+   *
+   *   --space-0   0           none / collapse
+   *   --space-1   0.25rem     hairline gaps inside chips/badges
+   *   --space-2   0.5rem      tight clusters (icon + label)
+   *   --space-3   0.75rem     default form-row internal padding
+   *   --space-4   1rem        baseline body rhythm, card padding-y
+   *   --space-5   1.5rem      section-internal separation
+   *   --space-6   2rem        between adjacent sections
+   *   --space-7   3rem        between major page regions
+   *   --space-8   4rem        hero / landmark separation
+   *
+   * Consumers that want a denser theme can override these on :root or on a
+   * subtree. New components should reach for these tokens before hard-coding
+   * rem values; older components are being migrated gradually.
+   */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+}

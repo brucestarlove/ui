@@ -1,0 +1,11 @@
+/* Order matters:
+ *   light.css   → defaults at :root
+ *   system.css  → @media dark, conditional on no data-theme="light"
+ *   dark.css    → [data-theme="dark"], wins over both above
+ */
+@import "./light.css";
+@import "./system.css";
+@import "./dark.css";
+
+/* Shape & density tokens (radius/padding) — theme-stable, ss-orbit silhouette. */
+@import "./shape.css";

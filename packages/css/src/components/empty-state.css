@@ -1,0 +1,122 @@
+/* Starscape v3 — empty-state.
+ *
+ * The "you have no projects yet" surface. Centered illustration/icon + heading
+ * + supporting body + primary CTA. Lives inside a card, lane, or its own
+ * full-page region.
+ *
+ *   <div class="empty-state">
+ *     <div class="empty-state-icon" aria-hidden="true">
+ *       <!-- inline SVG, large emoji, or any decorative glyph -->
+ *     </div>
+ *     <h3 class="empty-state-title">No spaces yet</h3>
+ *     <p class="empty-state-body">
+ *       Spaces hold your projects, channels, and starscape boards.
+ *     </p>
+ *     <div class="empty-state-actions">
+ *       <button data-variant="cta">Create your first space</button>
+ *       <button class="ghost">Take a tour</button>
+ *     </div>
+ *   </div>
+ *
+ * Variants:
+ *   .empty-state[data-size="sm"]  → fits inside a card or lane
+ *   .empty-state[data-size="lg"]  → full-page hero (default is "md")
+ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  color: var(--ink);
+}
+
+.empty-state-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin-block-end: var(--space-1);
+  border-radius: 50%;
+  background: var(--accent-hover);
+  color: var(--accent);
+  font-size: 1.6rem;
+}
+
+.empty-state-icon svg {
+  width: 60%;
+  height: 60%;
+}
+
+.empty-state-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.empty-state-body {
+  max-width: 32ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.empty-state-actions {
+  margin-block-start: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+/* ---------- Sizes ---------- */
+
+.empty-state[data-size="sm"] {
+  padding: var(--space-4) var(--space-3);
+  gap: var(--space-2);
+}
+
+.empty-state[data-size="sm"] .empty-state-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  font-size: 1.1rem;
+}
+
+.empty-state[data-size="sm"] .empty-state-title {
+  font-size: 0.92rem;
+}
+
+.empty-state[data-size="lg"] {
+  padding: var(--space-8) var(--space-5);
+  gap: var(--space-4);
+}
+
+.empty-state[data-size="lg"] .empty-state-icon {
+  width: 6rem;
+  height: 6rem;
+  font-size: 2.4rem;
+}
+
+.empty-state[data-size="lg"] .empty-state-title {
+  font-size: 1.4rem;
+}
+
+/* ---------- Dark theme ---------- */
+
+[data-theme="dark"] .empty-state-icon {
+  background: rgba(var(--starlight-rgb), 0.1);
+  color: rgb(var(--starlight-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .empty-state-icon {
+    background: rgba(var(--starlight-rgb), 0.1);
+    color: rgb(var(--starlight-rgb));
+  }
+}

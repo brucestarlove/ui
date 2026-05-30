@@ -1,0 +1,85 @@
+/* Starscape v3 — minimal reset.
+ * Borrows from the v3 source's first 20 lines. Kept intentionally small —
+ * not a Reboot-style normalize. Just the essentials so component styles
+ * have a predictable starting point.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 1rem 0;
+}
+
+/* Cursor defaults — global "live arrow" everywhere; text controls get the
+ * "live select" cursor; clickable input types get "live link". Surfaces that
+ * pan/grab override per-component (e.g., kanban → live_move).
+ *
+ * The .cur files ship under @starlove/ui/cursors/. Consumers
+ * must serve them at a static path; if the URL fails to resolve, browsers
+ * fall back to the standard cursor token gracefully.
+ */
+html,
+body {
+  cursor: url('../cursors/live_arrow.cur'), default;
+}
+
+input,
+textarea,
+[contenteditable="true"],
+[contenteditable=""] {
+  cursor: url('../cursors/live_select.cur'), text;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+input[type="color"],
+input[type="file"] {
+  cursor: url('../cursors/live_link.cur'), pointer;
+}

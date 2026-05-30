@@ -1,0 +1,130 @@
+/* Starscape v3 — modal dialog.
+ *
+ * Centered overlay with backdrop. Pair the .modal element with a
+ * .modal-backdrop sibling.
+ */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--backdrop-bg);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.modal-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 61;
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  max-height: calc(100dvh - 4rem);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface-raised);
+  box-shadow: var(--flyout-shadow), 0 24px 60px rgba(12, 18, 26, 0.32);
+  transform: translate(-50%, -48%) scale(0.96);
+  opacity: 0;
+  transition:
+    transform 220ms cubic-bezier(0.21, 1.02, 0.73, 1),
+    opacity 200ms ease;
+  pointer-events: none;
+}
+
+.modal.is-open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
+/* Icon close button for the header — mirrors .drawer-close. */
+.modal-close {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1;
+  box-shadow: none;
+  cursor: url('../cursors/live_link.cur'), pointer;
+}
+
+.modal-close:hover {
+  transform: none;
+  filter: none;
+  background: var(--accent-hover);
+  border-color: var(--accent-border);
+}
+
+.modal-body {
+  flex: 1 1 auto;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .modal,
+  :root:not([data-motion="full"]) .modal-backdrop {
+    transition: none;
+  }
+}
+
+[data-motion="reduce"] .modal,
+[data-motion="reduce"] .modal-backdrop {
+  transition: none;
+}
+
+[data-theme="dark"] .modal {
+  background: rgba(16, 24, 48, 0.96);
+  border-color: rgba(var(--starlight-rgb), 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .modal {
+    background: rgba(16, 24, 48, 0.96);
+    border-color: rgba(var(--starlight-rgb), 0.18);
+  }
+}

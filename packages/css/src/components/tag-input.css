@@ -1,0 +1,93 @@
+/* Starscape v3 — tag input.
+ *
+ * A field that holds removable tags plus a bare text input. Tags reuse the
+ * .chip look; the × reuses the .alert-close affordance.
+ *
+ *   <div class="tag-input">
+ *     <span class="tag">design
+ *       <button class="tag-remove" aria-label="Remove design">×</button>
+ *     </span>
+ *     <input type="text" placeholder="Add tag…" aria-label="Add tag" />
+ *   </div>
+ */
+
+.tag-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.45rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-input);
+}
+
+.tag-input:focus-within {
+  border-color: var(--accent-focus-border);
+  box-shadow: var(--accent-ring);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 1.6rem;
+  padding: 0 0.3rem 0 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tag-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  box-shadow: none;
+  opacity: 0.6;
+  cursor: url('../cursors/live_link.cur'), pointer;
+  transition: background 140ms ease, opacity 140ms ease;
+}
+
+.tag-remove:hover {
+  background: rgba(var(--coral-rgb), 0.16);
+  color: var(--danger);
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.tag-remove:focus-visible {
+  outline: none;
+  opacity: 1;
+  box-shadow: var(--accent-ring);
+}
+
+.tag-input > input {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  padding: 0.25rem 0.3rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.tag-input > input:focus {
+  outline: none;
+  box-shadow: none;
+}
