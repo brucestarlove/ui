@@ -133,7 +133,6 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
   button[data-variant="arc"]::after,
   .btn-sun::after,
   button[data-variant="cta"]::after,
-  button[data-variant="arc"][data-arc="double"]::before,
   .btn-sun[data-cta="bstar"]::before,
   button[data-variant="cta"][data-cta="bstar"]::before,
   button[data-variant="arc"][data-loading]::after,
@@ -331,64 +330,9 @@ button[data-variant="cta"][data-cta="bstar"]:disabled::before {
   opacity: 0;
 }
 
-/* ---------- Double-radius — a second, larger-radius frame ----------
- *
- * Kept for branch compatibility: <button data-variant="arc" data-arc="double">.
- * The CTA's always-on twin ring moved to the explicit `data-cta="bstar"`
- * modifier above; this stays as a composable Arc Lab rim treatment.
- */
-button[data-variant="arc"][data-arc="double"]::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  z-index: -1;
-  border-radius: 17px;            /* > the 12px button radius */
-  padding: 1px;
-  pointer-events: none;
-  opacity: 0.35;
-  transition: opacity 220ms ease;
-
-  background: conic-gradient(
-    from var(--arc-spin),
-    transparent 0deg,
-    var(--arc-c0) 18deg,
-    var(--arc-c1) 40deg,
-    var(--arc-c2) 62deg,
-    transparent 120deg,
-    transparent 180deg,
-    var(--arc-c0) 198deg,
-    var(--arc-c1) 220deg,
-    var(--arc-c2) 242deg,
-    transparent 300deg,
-    transparent 360deg
-  );
-  animation: arc-spin calc(var(--arc-duration) * 1.6) linear infinite;
-
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-}
-
-button[data-variant="arc"][data-arc="double"]:hover::before,
-button[data-variant="arc"][data-arc="double"]:focus-visible::before,
-button[data-variant="arc"][data-arc="double"]:active::before {
-  opacity: 0.85;
-}
-
-button[data-variant="arc"][data-arc="double"]:disabled::before {
-  animation: none;
-  opacity: 0;
-}
-
 /* =========================================================================
  * Arc families — shape silhouettes and rim behaviors. The counter-rotating
- * twin ring now lives as the CTA's `bstar` modifier (above); `data-arc="double"`
- * remains available for Arc Lab buttons.
+ * twin ring lives as the CTA's `bstar` modifier (above).
  * ========================================================================= */
 
 /* ---------- Shape family — clip-path silhouettes with a shimmer fill --------

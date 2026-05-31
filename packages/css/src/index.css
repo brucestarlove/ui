@@ -31,7 +31,7 @@
 @import "./components/lane.css";
 @import "./components/state-pill.css";
 @import "./components/priority-pill.css";
-@import "./components/activity-dot.css";
+@import "./components/dot.css";
 @import "./components/card-accordion.css";
 @import "./components/search-results.css";
 @import "./components/lightbox.css";
@@ -43,13 +43,13 @@
 @import "./components/badge.css";
 @import "./components/slider.css";
 @import "./components/accordion.css";
-@import "./components/accordion-epic.css";
+@import "./components/epic-accordion.css";
 @import "./components/media-card.css";
 @import "./components/table.css";
 @import "./components/pagination.css";
 @import "./components/breadcrumb.css";
 @import "./components/avatar.css";
-@import "./components/divider.css";
+@import "./components/separator.css";
 @import "./components/kbd.css";
 @import "./components/progress.css";
 @import "./components/skeleton.css";

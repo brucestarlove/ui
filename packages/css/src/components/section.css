@@ -1,7 +1,7 @@
 /* Starscape v3 — collapsible section with badge mark.
  *
- * The "badge accordion" ported from the kanban app's MCP setup: a flat
- * disclosure section whose summary carries a small gradient badge ("mark")
+ * The "badge accordion": a flat disclosure section whose summary carries a
+ * small gradient badge ("mark")
  * beside the title and a rotating › chevron. Built on native <details>, so it
  * needs no JS.
  *

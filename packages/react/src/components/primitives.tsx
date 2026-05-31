@@ -4,24 +4,25 @@ import { cx } from './cx';
 /* ---------------- Avatar ---------------- */
 
 export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
-export type AvatarTone = 'accent' | 'amber' | 'cyan' | 'rose' | 'violet';
+/** Decorative identity color (not a semantic tone). */
+export type AvatarColor = 'accent' | 'amber' | 'cyan' | 'rose' | 'violet';
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: AvatarSize;
-  tone?: AvatarTone;
+  color?: AvatarColor;
   /** Image source — renders an `<img>`; otherwise children (initials) show. */
   src?: string;
   alt?: string;
 }
 
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-  function Avatar({ size = 'md', tone, src, alt = '', className, children, ...rest }, ref) {
+  function Avatar({ size = 'md', color, src, alt = '', className, children, ...rest }, ref) {
     return (
       <div
         ref={ref}
         className={cx('avatar', className)}
         data-size={size === 'md' ? undefined : size}
-        data-tone={tone}
+        data-color={color}
         {...rest}
       >
         {src ? <img src={src} alt={alt} /> : children}
@@ -38,20 +39,20 @@ export const AvatarStack = React.forwardRef<
   return <div ref={ref} className={cx('avatar-stack', className)} {...rest} />;
 });
 
-/* ---------------- Divider ---------------- */
+/* ---------------- Separator ---------------- */
 
-export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   orientation?: 'horizontal' | 'vertical';
 }
 
-export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
-  function Divider({ orientation = 'horizontal', className, ...rest }, ref) {
+export const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
+  function Separator({ orientation = 'horizontal', className, ...rest }, ref) {
     return (
       <div
         ref={ref}
         role="separator"
         aria-orientation={orientation}
-        className={cx('divider', className)}
+        className={cx('separator', className)}
         data-orientation={orientation === 'horizontal' ? undefined : orientation}
         {...rest}
       />

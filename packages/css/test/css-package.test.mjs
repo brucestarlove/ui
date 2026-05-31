@@ -32,9 +32,7 @@ test("CSS package exposes Orbit cockpit extensions", () => {
   for (const [subpath, file] of Object.entries({
     "./components/state-pill": "./src/components/state-pill.css",
     "./components/priority-pill": "./src/components/priority-pill.css",
-    "./components/activity-dot": "./src/components/activity-dot.css",
-    "./components/agent-dot": "./src/components/activity-dot.css",
-    "./components/unread-dot": "./src/components/activity-dot.css",
+    "./components/dot": "./src/components/dot.css",
     "./components/card-accordion": "./src/components/card-accordion.css",
     "./components/search-results": "./src/components/search-results.css",
     "./components/lightbox": "./src/components/lightbox.css"
@@ -44,24 +42,31 @@ test("CSS package exposes Orbit cockpit extensions", () => {
   }
 });
 
-test("button CSS supports explicit primary, secondary, ghost, and disabled ARC controls", () => {
+test("button CSS exposes every variant on data-variant only (no modifier-class aliases)", () => {
   const buttonCss = readCss("src/components/button.css");
   const arcCss = readCss("src/components/button-arc.css");
 
   assert.match(buttonCss, /button\[data-variant="primary"\]/);
   assert.match(buttonCss, /button\[data-variant="secondary"\]/);
   assert.match(buttonCss, /button\[data-variant="ghost"\]/);
+  assert.match(buttonCss, /button\[data-variant="cta"\]/);
+  assert.match(buttonCss, /button\[data-variant="command"\]/);
+  assert.match(buttonCss, /button\[data-variant="plus"\]/);
   assert.match(buttonCss, /button\[data-disabled\]/);
-  assert.match(buttonCss, /button\.is-disabled/);
   assert.match(buttonCss, /button\[aria-disabled="true"\]/);
-  assert.match(buttonCss, /\.btn-sun\s+\.btn-plus/);
-  assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus/);
-  assert.match(buttonCss, /\.column-add-btn/);
-  assert.match(buttonCss, /\.add-card-phantom/);
-  assert.match(buttonCss, /button\.column-add-btn[\s\S]*border-radius:\s*var\(--radius-control/);
-  assert.match(buttonCss, /button\.add-card-phantom[\s\S]*border-radius:\s*var\(--radius-control/);
-  assert.match(buttonCss, /button:not\(\[data-variant\]\)[\s\S]*:not\(\.card-expand-trigger\)/);
-  assert.match(buttonCss, /button\[data-variant="cta"\]\s+\.btn-plus[\s\S]*transform:\s*translateY\(-0\.02em\)/);
+
+  // Variant flavors live on data-variant only — the kanban/Orbit modifier-class
+  // aliases (.btn-sun, .btn-secondary, .btn-plus, .column-add-btn,
+  // .add-card-phantom) are pruned from the package; Orbit owns those locally.
+  assert.doesNotMatch(buttonCss, /\.btn-sun\b/);
+  assert.doesNotMatch(buttonCss, /\.btn-secondary\b/);
+  assert.doesNotMatch(buttonCss, /\.btn-plus\b/);
+  assert.doesNotMatch(buttonCss, /\.column-add-btn\b/);
+  assert.doesNotMatch(buttonCss, /\.add-card-phantom\b/);
+
+  // Primary press-invert is scoped to the default variant via a zero-specificity
+  // :where() exclusion chain (no escape-hatch alias classes).
+  assert.match(buttonCss, /button:where\(:not\(\[data-variant\]\)[\s\S]*\):active/);
   assert.match(arcCss, /\[data-variant="primary"\]/);
   assert.match(arcCss, /:not\(\[data-variant="card-accordion"\]\)/);
   assert.match(arcCss, /:not\(\.column-add-btn\)/);
@@ -133,15 +138,15 @@ test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitiv
   const indexCss = readCss("src/index.css");
   const laneCss = readCss("src/components/lane.css");
   const listCss = readCss("src/components/list.css");
-  const epicAccordionCss = readCss("src/components/accordion-epic.css");
+  const epicAccordionCss = readCss("src/components/epic-accordion.css");
   const cardAccordionCss = readCss("src/components/card-accordion.css");
   const statePillCss = readCss("src/components/state-pill.css");
   const priorityPillCss = readCss("src/components/priority-pill.css");
-  const activityDotCss = readCss("src/components/activity-dot.css");
+  const dotCss = readCss("src/components/dot.css");
   const searchCss = readCss("src/components/search-results.css");
   const lightboxCss = readCss("src/components/lightbox.css");
 
-  for (const component of ["state-pill", "priority-pill", "activity-dot", "card-accordion", "search-results", "lightbox"]) {
+  for (const component of ["state-pill", "priority-pill", "dot", "card-accordion", "search-results", "lightbox"]) {
     assert.match(indexCss, new RegExp(`@import "\\./components/${component}\\.css";`));
   }
 
@@ -152,7 +157,7 @@ test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitiv
   assert.match(listCss, /\.list-stars > li\s*\{[\s\S]*padding-inline-start:\s*2\.45rem/);
   assert.match(listCss, /\.list-stars > li::before\s*\{[\s\S]*top:\s*50%[\s\S]*transform:\s*translateY\(-50%\)/);
   assert.match(listCss, /\.list-stars > li::after\s*\{[\s\S]*top:\s*50%[\s\S]*transform:\s*translateY\(-50%\)/);
-  assert.doesNotMatch(epicAccordionCss, /accordion-epic-body\s+\.list-stars/);
+  assert.doesNotMatch(epicAccordionCss, /epic-accordion-body\s+\.list-stars/);
   assert.match(cardAccordionCss, /\.card-meta/);
   assert.match(cardAccordionCss, /\.card-expand-trigger/);
   assert.match(cardAccordionCss, /button\.card-expand-trigger/);
@@ -162,14 +167,23 @@ test("lane, signal, pill, search, and lightbox CSS carry Orbit reusable primitiv
   assert.match(cardAccordionCss, /\.card-type-id/);
   assert.match(cardAccordionCss, /\.card-priority-id/);
   assert.match(cardAccordionCss, /\.card-expand-chevron/);
-  assert.doesNotMatch(cardAccordionCss, /accordion-epic/);
-  assert.match(statePillCss, /\.state-pill-ai-ready/);
-  assert.match(statePillCss, /\.state-pill-in-progress/);
-  assert.match(statePillCss, /\.state-pill-review/);
-  assert.match(statePillCss, /\.state-pill-done/);
-  assert.match(priorityPillCss, /\.priority-pill-urgent/);
-  assert.match(activityDotCss, /\.agent-dot/);
-  assert.match(activityDotCss, /\.card-unread-dot\.has-count/);
+  assert.doesNotMatch(cardAccordionCss, /epic-accordion/);
+  // Pills carry their variants on data-variant; Orbit alias chains
+  // (.detail-state-badge/.search-hit-state combos, .detail-priority-badge,
+  // .card-priority-id, .priority) are pruned from these files.
+  assert.match(statePillCss, /\.state-pill\[data-variant="ai-ready"\]/);
+  assert.match(statePillCss, /\.state-pill\[data-variant="in-progress"\]/);
+  assert.match(statePillCss, /\.state-pill\[data-variant="review"\]/);
+  assert.match(statePillCss, /\.state-pill\[data-variant="done"\]/);
+  assert.doesNotMatch(statePillCss, /\.detail-state-badge|\.search-hit-state|\.detail-card-state/);
+  assert.match(priorityPillCss, /\.priority-pill\[data-variant="urgent"\]/);
+  assert.doesNotMatch(priorityPillCss, /\.detail-priority-badge|\.card-priority-id/);
+  // Presence dots: the .dot taxonomy (presence glow + tone-halo live + count
+  // bubble). Orbit's .agent-dot/.card-unread-dot/.agents-pill aliases are pruned.
+  assert.match(dotCss, /\.dot\s*\{/);
+  assert.match(dotCss, /\.dot\[data-live\]/);
+  assert.match(dotCss, /\.dot\[data-count\]/);
+  assert.doesNotMatch(dotCss, /\.agent-dot|\.card-unread-dot|\.agents-pill|\.activity-dot/);
   assert.match(searchCss, /\.search-hit-title/);
   assert.doesNotMatch(searchCss, /state-pill-ai-ready/);
   assert.match(lightboxCss, /\.attachment-lightbox/);

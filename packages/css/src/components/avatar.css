@@ -1,7 +1,7 @@
 /* Starscape v3 — avatars.
  *
  *   <div class="avatar"><img src="..." alt="" /></div>
- *   <div class="avatar" data-size="lg" data-tone="accent">BS</div>
+ *   <div class="avatar" data-size="lg" data-color="accent">BS</div>
  *
  *   <div class="avatar-stack">
  *     <div class="avatar">…</div>
@@ -121,21 +121,21 @@
 .avatar[data-size="lg"] { width: 3rem;    height: 3rem;    font-size: 0.95rem; }
 .avatar[data-size="xl"] { width: 4.25rem; height: 4.25rem; font-size: 1.25rem; }
 
-.avatar[data-tone="accent"]  { background: rgba(var(--accent-rgb), 0.18);  color: var(--accent); }
-.avatar[data-tone="amber"]   { background: rgba(var(--amber-rgb), 0.18);   color: #8a4d12; }
-.avatar[data-tone="violet"]  { background: rgba(var(--purple-rgb), 0.22);  color: #6b3ea1; }
-.avatar[data-tone="rose"]    { background: rgba(var(--coral-rgb), 0.22);   color: #b3344e; }
-.avatar[data-tone="cyan"]    { background: rgba(var(--cyan-rgb), 0.22);    color: #0a6885; }
+.avatar[data-color="accent"]  { background: rgba(var(--accent-rgb), 0.18);  color: var(--accent); }
+.avatar[data-color="amber"]   { background: rgba(var(--amber-rgb), 0.18);   color: #8a4d12; }
+.avatar[data-color="violet"]  { background: rgba(var(--purple-rgb), 0.22);  color: #6b3ea1; }
+.avatar[data-color="rose"]    { background: rgba(var(--coral-rgb), 0.22);   color: #b3344e; }
+.avatar[data-color="cyan"]    { background: rgba(var(--cyan-rgb), 0.22);    color: #0a6885; }
 
 [data-theme="dark"] .avatar {
   border-color: rgba(var(--cosmos-rgb), 0.95);
   background: rgba(var(--starlight-rgb), 0.16);
   color: rgba(var(--starlight-rgb), 1);
 }
-[data-theme="dark"] .avatar[data-tone="amber"]  { background: rgba(var(--amber-rgb), 0.18);   color: #fbbf24; }
-[data-theme="dark"] .avatar[data-tone="violet"] { background: rgba(var(--violet-rgb), 0.22);  color: #d8b4fe; }
-[data-theme="dark"] .avatar[data-tone="rose"]   { background: rgba(var(--coral-rgb), 0.22);   color: #fca5a5; }
-[data-theme="dark"] .avatar[data-tone="cyan"]   { background: rgba(var(--cyan-rgb), 0.22);    color: #67e8f9; }
+[data-theme="dark"] .avatar[data-color="amber"]  { background: rgba(var(--amber-rgb), 0.18);   color: #fbbf24; }
+[data-theme="dark"] .avatar[data-color="violet"] { background: rgba(var(--violet-rgb), 0.22);  color: #d8b4fe; }
+[data-theme="dark"] .avatar[data-color="rose"]   { background: rgba(var(--coral-rgb), 0.22);   color: #fca5a5; }
+[data-theme="dark"] .avatar[data-color="cyan"]   { background: rgba(var(--cyan-rgb), 0.22);    color: #67e8f9; }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .avatar {
@@ -143,10 +143,10 @@
     background: rgba(var(--starlight-rgb), 0.16);
     color: rgba(var(--starlight-rgb), 1);
   }
-  :root:not([data-theme="light"]) .avatar[data-tone="amber"]  { background: rgba(var(--amber-rgb), 0.18);   color: #fbbf24; }
-  :root:not([data-theme="light"]) .avatar[data-tone="violet"] { background: rgba(var(--violet-rgb), 0.22);  color: #d8b4fe; }
-  :root:not([data-theme="light"]) .avatar[data-tone="rose"]   { background: rgba(var(--coral-rgb), 0.22);   color: #fca5a5; }
-  :root:not([data-theme="light"]) .avatar[data-tone="cyan"]   { background: rgba(var(--cyan-rgb), 0.22);    color: #67e8f9; }
+  :root:not([data-theme="light"]) .avatar[data-color="amber"]  { background: rgba(var(--amber-rgb), 0.18);   color: #fbbf24; }
+  :root:not([data-theme="light"]) .avatar[data-color="violet"] { background: rgba(var(--violet-rgb), 0.22);  color: #d8b4fe; }
+  :root:not([data-theme="light"]) .avatar[data-color="rose"]   { background: rgba(var(--coral-rgb), 0.22);   color: #fca5a5; }
+  :root:not([data-theme="light"]) .avatar[data-color="cyan"]   { background: rgba(var(--cyan-rgb), 0.22);    color: #67e8f9; }
 }
 
 .avatar-stack {

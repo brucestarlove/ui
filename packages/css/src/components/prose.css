@@ -1,6 +1,6 @@
 /* Starscape v3 — prose (rendered markdown + preserved text).
  *
- * Two renderers, ported from the kanban app verbatim:
+ * Two renderers:
  *
  *   <div class="markdown-body">…rendered HTML…</div>   normalized markdown
  *   <pre class="preserved-text-body">…</pre>            literal text, spacing kept

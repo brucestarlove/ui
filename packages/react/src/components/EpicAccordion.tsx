@@ -19,7 +19,7 @@ export interface EpicAccordionProps
 }
 
 /**
- * Epic accordion — the ARC-grade disclosure panel (see accordion-epic.css).
+ * Epic accordion — the ARC-grade disclosure panel (see epic-accordion.css).
  * The whole head is a button (so it inherits the shared ARC sweep ring), with
  * an uppercase title, optional count badge, a Show/Hide label, and a chevron
  * that rotates on open.
@@ -63,18 +63,18 @@ export const EpicAccordion = React.forwardRef<HTMLElement, EpicAccordionProps>(
     return (
       <section
         ref={ref}
-        className={cx('accordion-epic', className)}
+        className={cx('epic-accordion', className)}
         data-open={open || undefined}
         {...rest}
       >
         <button
           type="button"
-          className="accordion-epic-toggle"
+          className="epic-accordion-toggle"
           aria-expanded={open}
           aria-controls={bodyId}
           onClick={handleToggle}
         >
-          <svg className="accordion-epic-chevron" viewBox="0 0 24 24" aria-hidden>
+          <svg className="epic-accordion-chevron" viewBox="0 0 24 24" aria-hidden>
             <path
               d="M9 6l6 6-6 6"
               fill="none"
@@ -84,12 +84,12 @@ export const EpicAccordion = React.forwardRef<HTMLElement, EpicAccordionProps>(
               strokeLinejoin="round"
             />
           </svg>
-          <span className="accordion-epic-title">{title}</span>
-          {count != null && <span className="accordion-epic-count">{count}</span>}
-          <span className="accordion-epic-state">{open ? hideLabel : showLabel}</span>
+          <span className="epic-accordion-title">{title}</span>
+          {count != null && <span className="epic-accordion-count">{count}</span>}
+          <span className="epic-accordion-state">{open ? hideLabel : showLabel}</span>
         </button>
         {open && (
-          <div className="accordion-epic-body" id={bodyId}>
+          <div className="epic-accordion-body" id={bodyId}>
             {children}
           </div>
         )}

@@ -10,18 +10,18 @@
  * its children only while open, so a heavy panel (e.g. a wall of animated demo
  * buttons) costs nothing while collapsed. Static markup works too:
  *
- *   <section class="accordion-epic" data-open>
- *     <button class="accordion-epic-toggle" aria-expanded="true" aria-controls="x">
- *       <svg class="accordion-epic-chevron" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
- *       <span class="accordion-epic-title">ARC lab</span>
- *       <span class="accordion-epic-count">10</span>
- *       <span class="accordion-epic-state">Hide</span>
+ *   <section class="epic-accordion" data-open>
+ *     <button class="epic-accordion-toggle" aria-expanded="true" aria-controls="x">
+ *       <svg class="epic-accordion-chevron" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+ *       <span class="epic-accordion-title">ARC lab</span>
+ *       <span class="epic-accordion-count">10</span>
+ *       <span class="epic-accordion-state">Hide</span>
  *     </button>
- *     <div class="accordion-epic-body" id="x">…</div>
+ *     <div class="epic-accordion-body" id="x">…</div>
  *   </section>
  */
 
-.accordion-epic {
+.epic-accordion {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -37,11 +37,11 @@
 }
 
 /* Collapsed → no body, so drop the body gap. */
-.accordion-epic:not([data-open]) {
+.epic-accordion:not([data-open]) {
   gap: 0;
 }
 
-.accordion-epic-toggle {
+.epic-accordion-toggle {
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -57,17 +57,17 @@
   transition: background 160ms ease, border-color 160ms ease;
 }
 
-.accordion-epic-toggle:hover {
+.epic-accordion-toggle:hover {
   background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), transparent 60%);
   border-color: rgba(var(--accent-rgb), 0.22);
 }
 
-.accordion-epic-toggle:focus-visible {
+.epic-accordion-toggle:focus-visible {
   outline: none;
   box-shadow: var(--accent-ring);
 }
 
-.accordion-epic-chevron {
+.epic-accordion-chevron {
   flex: 0 0 auto;
   width: 0.95rem;
   height: 0.95rem;
@@ -75,18 +75,18 @@
   transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.accordion-epic-toggle[aria-expanded="true"] .accordion-epic-chevron {
+.epic-accordion-toggle[aria-expanded="true"] .epic-accordion-chevron {
   transform: rotate(90deg);   /* right → down on open (matches .accordion) */
 }
 
-.accordion-epic-title {
+.epic-accordion-title {
   font-size: 0.86rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.accordion-epic-count {
+.epic-accordion-count {
   display: inline-grid;
   place-items: center;
   min-width: 1.4rem;
@@ -100,7 +100,7 @@
   line-height: 1;
 }
 
-.accordion-epic-state {
+.epic-accordion-state {
   margin-inline-start: auto;
   font-size: 0.7rem;
   font-weight: 600;
@@ -109,7 +109,7 @@
   color: var(--muted);
 }
 
-.accordion-epic-body {
+.epic-accordion-body {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -118,16 +118,16 @@
 
 /* Reduced motion — flip the chevron instantly (state still toggles). */
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion="full"]) .accordion-epic-chevron {
+  :root:not([data-motion="full"]) .epic-accordion-chevron {
     transition: none;
   }
 }
-[data-motion="reduce"] .accordion-epic-chevron {
+[data-motion="reduce"] .epic-accordion-chevron {
   transition: none;
 }
 
 /* ---------- Dark theme — deepen the surface + glow. ---------- */
-[data-theme="dark"] .accordion-epic {
+[data-theme="dark"] .epic-accordion {
   border-color: rgba(var(--starlight-rgb), 0.14);
   background:
     radial-gradient(ellipse 90% 60% at 50% 0%, rgba(var(--starlight-rgb), 0.06), transparent 60%),
@@ -136,13 +136,13 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 10px 30px rgba(0, 0, 0, 0.3);
 }
-[data-theme="dark"] .accordion-epic-toggle:hover {
+[data-theme="dark"] .epic-accordion-toggle:hover {
   background: linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), transparent 60%);
   border-color: rgba(var(--starlight-rgb), 0.22);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .accordion-epic {
+  :root:not([data-theme="light"]) .epic-accordion {
     border-color: rgba(var(--starlight-rgb), 0.14);
     background:
       radial-gradient(ellipse 90% 60% at 50% 0%, rgba(var(--starlight-rgb), 0.06), transparent 60%),
@@ -151,7 +151,7 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
       0 10px 30px rgba(0, 0, 0, 0.3);
   }
-  :root:not([data-theme="light"]) .accordion-epic-toggle:hover {
+  :root:not([data-theme="light"]) .epic-accordion-toggle:hover {
     background: linear-gradient(135deg, rgba(var(--starlight-rgb), 0.1), transparent 60%);
     border-color: rgba(var(--starlight-rgb), 0.22);
   }

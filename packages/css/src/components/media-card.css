@@ -1,7 +1,7 @@
 /* Starscape v3 — media card.
  *
- * The rich "audition" card ported from studio's Soundscape pane: a selectable
- * card with a title/meta header, a state-driven play button (idle → playing →
+ * The rich "audition" card: a selectable card with a title/meta header, a
+ * state-driven play button (idle → playing →
  * error, icon morphs via clip-path), a waveform envelope, a chip row, and an
  * actions footer.
  *

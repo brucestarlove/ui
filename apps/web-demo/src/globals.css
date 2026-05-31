@@ -54,9 +54,9 @@ body {
 }
 
 .lane-grid > .lane,
-.lane-grid > .accordion-epic {
+.lane-grid > .epic-accordion {
   /* Keep each panel intact within a column; margin replaces the grid gap.
-     .accordion-epic (the Arc Lab) is a grid item too, so it gets the same
+     .epic-accordion (the Arc Lab) is a grid item too, so it gets the same
      break + viewport-render treatment as a .lane. */
   -webkit-column-break-inside: avoid;
   break-inside: avoid;
@@ -105,7 +105,7 @@ body {
 }
 
 /* The Arc Lab's collapsible styling was promoted into the library as the
-   `.accordion-epic` component (CSS) + <EpicAccordion> (React). */
+   `.epic-accordion` component (CSS) + <EpicAccordion> (React). */
 
 /* ----- Demo view switcher (components / shell / sidebar) ----- */
 .demo-view-switch {

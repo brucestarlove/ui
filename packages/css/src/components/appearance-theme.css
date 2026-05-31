@@ -1,4 +1,4 @@
-/* Starscape v3 — appearance theme selector (ported from ss-orbit).
+/* Starscape v3 — appearance theme selector.
  *
  * Radio-card picker (icon mark + label) for choosing a theme/option. The native
  * radio is visually hidden; the card reflects `:checked` via `:has()`. Generic

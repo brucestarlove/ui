@@ -16,7 +16,7 @@ createRoot(container).render(
 // for a minimum of 786ms from navigation start so a fast load doesn't flash it.
 // Mounting first means the breathe and fade-out run on a quiet main thread, so
 // the star leaves smoothly instead of stuttering mid-fade.
-const splash = document.getElementById('ss-loader');
+const splash = document.getElementById('loader');
 if (splash) {
   const SPLASH_MIN_MS = 786;
   setTimeout(() => {

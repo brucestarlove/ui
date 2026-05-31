@@ -41,7 +41,7 @@
  *   </div>
  *
  * The React layer ships <PageSidebar> (+ .Header/.Search/.Section/.NavItem/
- * .NavGroup/.NavDivider/.Footer) which manages collapse + group-expand state.
+ * NavGroup/NavSeparator/Footer) which manages collapse + group-expand state.
  *
  * Pair with `import '@starlove/ui/templates/sidebar';`.
  */
@@ -349,7 +349,7 @@
   display: none;
 }
 
-.page-sidebar-nav-divider {
+.page-sidebar-nav-separator {
   height: 1px;
   margin: 0.6rem 0.75rem;
   background: var(--line);
@@ -386,13 +386,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Legacy single-line foot. */
-.page-sidebar-foot {
-  padding: 0.5rem 1.05rem;
-  font-size: 0.72rem;
-  color: var(--muted);
 }
 
 .page-sidebar-toggle-wrap {

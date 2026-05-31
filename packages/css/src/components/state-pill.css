@@ -1,97 +1,66 @@
-/* Starscape v3 — workflow state/status pills.
+/* Starscape v3 — workflow state / status pills.
  *
- * Generic API:
- *   <span class="state-pill state-pill-ai-ready">AI Ready</span>
+ *   <span class="state-pill" data-variant="ai-ready">AI Ready</span>
  *
- * Orbit compatibility aliases:
- *   .detail-state-badge, .search-hit-state, .detail-card-state
+ * Variants via data-variant: ai-ready, in-progress, review, done.
+ * Bare .state-pill = the neutral blue resting state.
  */
 
-.state-pill,
-.detail-state-badge,
-.search-hit-state,
-.detail-card-state {
+.state-pill {
   color: #3657c8;
   background-color: rgba(96, 165, 250, 0.12);
   border-color: rgba(96, 165, 250, 0.28);
 }
 
-.state-pill-ai-ready,
-.detail-state-badge.state-pill-ai-ready,
-.search-hit-state.state-pill-ai-ready,
-.detail-card-state.state-pill-ai-ready {
+.state-pill[data-variant="ai-ready"] {
   color: #7c3aed;
   background-color: rgba(var(--purple-rgb), 0.12);
   border-color: rgba(var(--purple-rgb), 0.28);
 }
 
-.state-pill-in-progress,
-.detail-state-badge.state-pill-in-progress,
-.search-hit-state.state-pill-in-progress,
-.detail-card-state.state-pill-in-progress {
+.state-pill[data-variant="in-progress"] {
   color: #0369a1;
   background-color: rgba(14, 165, 233, 0.13);
   border-color: rgba(14, 165, 233, 0.28);
 }
 
-.state-pill-review,
-.detail-state-badge.state-pill-review,
-.search-hit-state.state-pill-review,
-.detail-card-state.state-pill-review {
+.state-pill[data-variant="review"] {
   color: #a4550f;
   background-color: rgba(var(--amber-rgb), 0.16);
   border-color: rgba(var(--amber-rgb), 0.32);
 }
 
-.state-pill-done,
-.detail-state-badge.state-pill-done,
-.search-hit-state.state-pill-done,
-.detail-card-state.state-pill-done {
+.state-pill[data-variant="done"] {
   color: #1e6f5c;
   background-color: rgba(var(--accent-rgb), 0.14);
   border-color: rgba(var(--accent-rgb), 0.28);
 }
 
-[data-theme="dark"] .state-pill,
-[data-theme="dark"] .detail-state-badge,
-[data-theme="dark"] .search-hit-state,
-[data-theme="dark"] .detail-card-state {
+[data-theme="dark"] .state-pill {
   color: #93c5fd;
   background-color: rgba(96, 165, 250, 0.15);
   border-color: rgba(147, 197, 253, 0.3);
 }
 
-[data-theme="dark"] .state-pill-ai-ready,
-[data-theme="dark"] .detail-state-badge.state-pill-ai-ready,
-[data-theme="dark"] .search-hit-state.state-pill-ai-ready,
-[data-theme="dark"] .detail-card-state.state-pill-ai-ready {
+[data-theme="dark"] .state-pill[data-variant="ai-ready"] {
   color: #c084fc;
   background-color: rgba(var(--purple-rgb), 0.16);
   border-color: rgba(var(--purple-rgb), 0.35);
 }
 
-[data-theme="dark"] .state-pill-in-progress,
-[data-theme="dark"] .detail-state-badge.state-pill-in-progress,
-[data-theme="dark"] .search-hit-state.state-pill-in-progress,
-[data-theme="dark"] .detail-card-state.state-pill-in-progress {
+[data-theme="dark"] .state-pill[data-variant="in-progress"] {
   color: #67e8f9;
   background-color: rgba(14, 165, 233, 0.16);
   border-color: rgba(103, 232, 249, 0.32);
 }
 
-[data-theme="dark"] .state-pill-review,
-[data-theme="dark"] .detail-state-badge.state-pill-review,
-[data-theme="dark"] .search-hit-state.state-pill-review,
-[data-theme="dark"] .detail-card-state.state-pill-review {
+[data-theme="dark"] .state-pill[data-variant="review"] {
   color: #fbbf24;
   background-color: rgba(251, 191, 36, 0.18);
   border-color: rgba(251, 191, 36, 0.35);
 }
 
-[data-theme="dark"] .state-pill-done,
-[data-theme="dark"] .detail-state-badge.state-pill-done,
-[data-theme="dark"] .search-hit-state.state-pill-done,
-[data-theme="dark"] .detail-card-state.state-pill-done {
+[data-theme="dark"] .state-pill[data-variant="done"] {
   color: #4ade80;
   background-color: rgba(74, 222, 128, 0.15);
   border-color: rgba(74, 222, 128, 0.32);

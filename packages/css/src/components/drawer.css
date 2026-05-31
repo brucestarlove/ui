@@ -229,7 +229,7 @@ button.drawer-close::after {
   background: var(--drawer-head-bg);
 }
 
-/* ---- Settings variant (ported from ss-orbit) -------------------------------
+/* ---- Settings variant -------------------------------
  *
  * A wider drawer whose header stacks a tab strip beneath the title, switching
  * panels in the body. Scoped to `.is-settings` so the base drawer is unchanged.

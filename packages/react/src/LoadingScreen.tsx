@@ -45,15 +45,15 @@ export function LoadingScreen({
     <div
       role="status"
       aria-live="polite"
-      className={cx('ss-loader', hiding && 'is-hiding', className)}
+      className={cx('loader', hiding && 'is-hiding', className)}
       {...rest}
     >
       {logo ? (
-        <img className="ss-loader__logo" src={logo} alt={logoAlt} aria-hidden={!logoAlt} />
+        <img className="loader__logo" src={logo} alt={logoAlt} aria-hidden={!logoAlt} />
       ) : (
-        <span className="ss-loader__star" aria-hidden="true" />
+        <span className="loader__star" aria-hidden="true" />
       )}
-      {label != null && <p className="ss-loader__label">{label}</p>}
+      {label != null && <p className="loader__label">{label}</p>}
     </div>
   );
 }

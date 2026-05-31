@@ -1,5 +1,19 @@
 import { useState, type ReactNode } from 'react';
-import { PageSidebar, Lane, LaneGrid, Card, Button, Badge } from '@starlove/ui-react';
+import {
+  PageSidebar,
+  PageSidebarHeader,
+  PageSidebarSearch,
+  PageSidebarNav,
+  PageSidebarSection,
+  PageSidebarNavItem,
+  PageSidebarNavGroup,
+  PageSidebarFooter,
+  Lane,
+  LaneGrid,
+  Card,
+  Button,
+  Chip,
+} from '@starlove/ui-react';
 import { ThemeToggle } from './ThemeToggle';
 import {
   HomeIcon,
@@ -73,7 +87,7 @@ export function SidebarDemo() {
     id;
 
   const item = (n: NavDef) => (
-    <PageSidebar.NavItem
+    <PageSidebarNavItem
       key={n.id}
       icon={n.icon}
       badge={n.badge}
@@ -81,15 +95,15 @@ export function SidebarDemo() {
       onClick={() => setActive(n.id)}
     >
       {n.label}
-    </PageSidebar.NavItem>
+    </PageSidebarNavItem>
   );
 
   return (
     <PageSidebar
       storageKey="demo.sidebar"
-      brand={<PageSidebar.Header logo="✦" title="Starscape" subtitle="sidebar template" />}
+      brand={<PageSidebarHeader logo="✦" title="Starscape" subtitle="sidebar template" />}
       search={
-        <PageSidebar.Search>
+        <PageSidebarSearch>
           <div style={{ position: 'relative' }}>
             <span
               aria-hidden
@@ -111,17 +125,17 @@ export function SidebarDemo() {
               style={{ paddingInlineStart: '2rem' }}
             />
           </div>
-        </PageSidebar.Search>
+        </PageSidebarSearch>
       }
       nav={
-        <PageSidebar.Nav>
-          <PageSidebar.Section label="workspace">
+        <PageSidebarNav>
+          <PageSidebarSection label="workspace">
             {WORKSPACE.map(item)}
-          </PageSidebar.Section>
+          </PageSidebarSection>
 
-          <PageSidebar.Section label="system">
+          <PageSidebarSection label="system">
             {SYSTEM.map(item)}
-            <PageSidebar.NavGroup
+            <PageSidebarNavGroup
               label="profiles"
               icon={<UserIcon />}
               badge={String(PROFILES.length)}
@@ -129,25 +143,25 @@ export function SidebarDemo() {
               defaultExpanded
             >
               {PROFILES.map((p) => (
-                <PageSidebar.NavItem
+                <PageSidebarNavItem
                   key={p.id}
                   icon={<Dot color={p.color} />}
                   active={active === p.id}
                   onClick={() => setActive(p.id)}
                 >
                   {p.id}
-                </PageSidebar.NavItem>
+                </PageSidebarNavItem>
               ))}
-            </PageSidebar.NavGroup>
-          </PageSidebar.Section>
+            </PageSidebarNavGroup>
+          </PageSidebarSection>
 
-          <PageSidebar.Section label="studio">
+          <PageSidebarSection label="studio">
             {STUDIO.map(item)}
-          </PageSidebar.Section>
-        </PageSidebar.Nav>
+          </PageSidebarSection>
+        </PageSidebarNav>
       }
       footer={
-        <PageSidebar.Footer>
+        <PageSidebarFooter>
           <span
             aria-hidden
             className="page-sidebar-logo"
@@ -159,7 +173,7 @@ export function SidebarDemo() {
             <span className="page-sidebar-footer-name">astralvitz</span>
             <span className="page-sidebar-footer-meta">owner · v0.1</span>
           </div>
-        </PageSidebar.Footer>
+        </PageSidebarFooter>
       }
     >
       {/* Content header */}
@@ -213,7 +227,7 @@ export function SidebarDemo() {
             item, expand the <strong>profiles</strong> group, or collapse the rail.
           </Card>
         </Lane>
-        <Lane title="template notes" actions={<Badge tone="accent">v3</Badge>}>
+        <Lane title="template notes" actions={<Chip tone="accent">v3</Chip>}>
           <Card variant="task">
             Collapse persists across reloads via{' '}
             <code>storageKey="demo.sidebar"</code>. When collapsed, items show

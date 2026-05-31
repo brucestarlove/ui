@@ -51,16 +51,14 @@ function useCollapsed(
  * ------------------------------------------------------------------ */
 
 export interface PageSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Brand / header block (see `PageSidebar.Header` or `.Brand`). */
+  /** Brand / header block (see `PageSidebarHeader` or `PageSidebarBrand`). */
   brand?: React.ReactNode;
-  /** Optional search slot, rendered below the header (see `PageSidebar.Search`). */
+  /** Optional search slot, rendered below the header (see `PageSidebarSearch`). */
   search?: React.ReactNode;
-  /** Navigation (see `PageSidebar.Nav` + `.Section`/`.NavItem`/`.NavGroup`). */
+  /** Navigation (see `PageSidebarNav` + `PageSidebarSection`/`PageSidebarNavItem`/`PageSidebarNavGroup`). */
   nav?: React.ReactNode;
-  /** Footer block pinned to the bottom (see `PageSidebar.Footer`). */
+  /** Footer block pinned to the bottom (see `PageSidebarFooter`). */
   footer?: React.ReactNode;
-  /** @deprecated single-line footer; prefer `footer` + `PageSidebar.Footer`. */
-  sidebarFooter?: React.ReactNode;
   /** Render the collapse toggle button (default true). */
   collapsible?: boolean;
   /** Controlled collapsed state. */
@@ -77,21 +75,6 @@ export interface PageSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   mainClassName?: string;
 }
 
-interface PageSidebarComponent
-  extends React.ForwardRefExoticComponent<
-    PageSidebarProps & React.RefAttributes<HTMLDivElement>
-  > {
-  Header: typeof Header;
-  Brand: typeof Brand;
-  Search: typeof Search;
-  Nav: typeof Nav;
-  Section: typeof Section;
-  NavItem: typeof NavItem;
-  NavGroup: typeof NavGroup;
-  NavDivider: typeof NavDivider;
-  Footer: typeof Footer;
-}
-
 /**
  * `sidebar` page template — a two-column app layout with a collapsible left
  * navigation rail (264px ↔ 72px) and a content region. Compose the rail from
@@ -99,19 +82,19 @@ interface PageSidebarComponent
  *
  * ```tsx
  * <PageSidebar
- *   brand={<PageSidebar.Header logo="✦" title="aeva" subtitle="command deck" />}
- *   search={<PageSidebar.Search><input className="input" placeholder="Search…" /></PageSidebar.Search>}
+ *   brand={<PageSidebarHeader logo="✦" title="aeva" subtitle="command deck" />}
+ *   search={<PageSidebarSearch><input className="input" placeholder="Search…" /></PageSidebarSearch>}
  *   nav={
- *     <PageSidebar.Nav>
- *       <PageSidebar.Section label="workspace">
- *         <PageSidebar.NavItem icon={<HomeIcon />} active badge="3">overview</PageSidebar.NavItem>
- *         <PageSidebar.NavGroup label="profile" icon={<UserIcon />} defaultExpanded>
- *           <PageSidebar.NavItem>aeva</PageSidebar.NavItem>
- *         </PageSidebar.NavGroup>
- *       </PageSidebar.Section>
- *     </PageSidebar.Nav>
+ *     <PageSidebarNav>
+ *       <PageSidebarSection label="workspace">
+ *         <PageSidebarNavItem icon={<HomeIcon />} active badge="3">overview</PageSidebarNavItem>
+ *         <PageSidebarNavGroup label="profile" icon={<UserIcon />} defaultExpanded>
+ *           <PageSidebarNavItem>aeva</PageSidebarNavItem>
+ *         </PageSidebarNavGroup>
+ *       </PageSidebarSection>
+ *     </PageSidebarNav>
  *   }
- *   footer={<PageSidebar.Footer>…</PageSidebar.Footer>}
+ *   footer={<PageSidebarFooter>…</PageSidebarFooter>}
  *   storageKey="app.sidebar"
  * >
  *   …content…
@@ -127,7 +110,6 @@ export const PageSidebar = React.forwardRef<HTMLDivElement, PageSidebarProps>(
       search,
       nav,
       footer,
-      sidebarFooter,
       collapsible = true,
       collapsed: collapsedProp,
       defaultCollapsed = false,
@@ -160,7 +142,6 @@ export const PageSidebar = React.forwardRef<HTMLDivElement, PageSidebarProps>(
           {search}
           {nav}
           {footer}
-          {sidebarFooter && <div className="page-sidebar-foot">{sidebarFooter}</div>}
           {collapsible && (
             <div className="page-sidebar-toggle-wrap">
               <button
@@ -185,7 +166,7 @@ export const PageSidebar = React.forwardRef<HTMLDivElement, PageSidebarProps>(
       </div>
     );
   },
-) as PageSidebarComponent;
+);
 
 /* ------------------------------------------------------------------ *
  * Sub-components
@@ -199,7 +180,7 @@ export interface PageSidebarHeaderProps
   subtitle?: React.ReactNode;
 }
 
-const Header = React.forwardRef<HTMLDivElement, PageSidebarHeaderProps>(
+export const PageSidebarHeader = React.forwardRef<HTMLDivElement, PageSidebarHeaderProps>(
   function PageSidebarHeader(
     { logo, title, subtitle, className, children, ...rest },
     ref,
@@ -227,7 +208,7 @@ export interface PageSidebarBrandProps
   subtitle?: React.ReactNode;
 }
 
-const Brand = React.forwardRef<HTMLDivElement, PageSidebarBrandProps>(
+export const PageSidebarBrand = React.forwardRef<HTMLDivElement, PageSidebarBrandProps>(
   function PageSidebarBrand({ title, subtitle, className, children, ...rest }, ref) {
     return (
       <div ref={ref} className={cx('page-sidebar-brand', className)} {...rest}>
@@ -239,13 +220,13 @@ const Brand = React.forwardRef<HTMLDivElement, PageSidebarBrandProps>(
   },
 );
 
-const Search = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const PageSidebarSearch = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function PageSidebarSearch({ className, ...rest }, ref) {
     return <div ref={ref} className={cx('page-sidebar-search', className)} {...rest} />;
   },
 );
 
-const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
+export const PageSidebarNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   function PageSidebarNav({ className, ...rest }, ref) {
     return <nav ref={ref} className={cx('page-sidebar-nav', className)} {...rest} />;
   },
@@ -256,7 +237,7 @@ export interface PageSidebarSectionProps extends React.HTMLAttributes<HTMLDivEle
   label?: React.ReactNode;
 }
 
-const Section = React.forwardRef<HTMLDivElement, PageSidebarSectionProps>(
+export const PageSidebarSection = React.forwardRef<HTMLDivElement, PageSidebarSectionProps>(
   function PageSidebarSection({ label, className, children, ...rest }, ref) {
     return (
       <div ref={ref} className={cx('page-sidebar-section', className)} {...rest}>
@@ -279,13 +260,13 @@ export interface PageSidebarNavItemProps
   trailing?: React.ReactNode;
   /** Element to render as (default `'button'`; pass `'a'` for links). */
   as?: React.ElementType;
-  /** Apply the smaller nested-child styling (no leading accent rail). */
-  child?: boolean;
+  /** Apply the smaller nested styling (no leading accent rail). */
+  nested?: boolean;
 }
 
-const NavItem = React.forwardRef<HTMLElement, PageSidebarNavItemProps>(
+export const PageSidebarNavItem = React.forwardRef<HTMLElement, PageSidebarNavItemProps>(
   function PageSidebarNavItem(
-    { active, icon, badge, trailing, as, child, title, className, children, ...rest },
+    { active, icon, badge, trailing, as, nested, title, className, children, ...rest },
     ref,
   ) {
     const Comp = (as ?? 'button') as React.ElementType;
@@ -295,7 +276,7 @@ const NavItem = React.forwardRef<HTMLElement, PageSidebarNavItemProps>(
         ref={ref}
         className={cx(
           'page-sidebar-nav-item',
-          child && 'page-sidebar-nav-child',
+          nested && 'page-sidebar-nav-nested',
           className,
         )}
         data-active={active ? '' : undefined}
@@ -346,7 +327,7 @@ export interface PageSidebarNavGroupProps
   as?: React.ElementType;
 }
 
-const NavGroup = React.forwardRef<HTMLDivElement, PageSidebarNavGroupProps>(
+export const PageSidebarNavGroup = React.forwardRef<HTMLDivElement, PageSidebarNavGroupProps>(
   function PageSidebarNavGroup(
     {
       label,
@@ -380,7 +361,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, PageSidebarNavGroupProps>(
         data-expanded={expanded ? '' : undefined}
         {...rest}
       >
-        <NavItem
+        <PageSidebarNavItem
           as={as}
           icon={icon}
           badge={badge}
@@ -391,7 +372,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, PageSidebarNavGroupProps>(
           onClick={toggle}
         >
           {label}
-        </NavItem>
+        </PageSidebarNavItem>
         <div className="page-sidebar-nav-children">
           <div className="page-sidebar-nav-children-inner">{children}</div>
         </div>
@@ -400,32 +381,22 @@ const NavGroup = React.forwardRef<HTMLDivElement, PageSidebarNavGroupProps>(
   },
 );
 
-const NavDivider = React.forwardRef<
+export const PageSidebarNavSeparator = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(function PageSidebarNavDivider({ className, ...rest }, ref) {
+>(function PageSidebarNavSeparator({ className, ...rest }, ref) {
   return (
     <div
       ref={ref}
       aria-hidden="true"
-      className={cx('page-sidebar-nav-divider', className)}
+      className={cx('page-sidebar-nav-separator', className)}
       {...rest}
     />
   );
 });
 
-const Footer = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const PageSidebarFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function PageSidebarFooter({ className, ...rest }, ref) {
     return <div ref={ref} className={cx('page-sidebar-footer', className)} {...rest} />;
   },
 );
-
-PageSidebar.Header = Header;
-PageSidebar.Brand = Brand;
-PageSidebar.Search = Search;
-PageSidebar.Nav = Nav;
-PageSidebar.Section = Section;
-PageSidebar.NavItem = NavItem;
-PageSidebar.NavGroup = NavGroup;
-PageSidebar.NavDivider = NavDivider;
-PageSidebar.Footer = Footer;

@@ -27,8 +27,13 @@ export { Button } from './components/Button';
 export type { ButtonProps, ButtonVariant } from './components/Button';
 export { Card } from './components/Card';
 export type { CardProps, CardVariant } from './components/Card';
-export { Badge } from './components/Badge';
-export type { BadgeProps, BadgeTone } from './components/Badge';
+export { Badge, Chip, Dot } from './components/Badge';
+export type {
+  BadgeProps,
+  ChipProps,
+  ChipTone,
+  DotProps,
+} from './components/Badge';
 export { EpicAccordion } from './components/EpicAccordion';
 export type { EpicAccordionProps } from './components/EpicAccordion';
 export { Tabs, Tab } from './components/Tabs';
@@ -76,7 +81,7 @@ export type { TagInputProps } from './components/TagInput';
 export {
   Avatar,
   AvatarStack,
-  Divider,
+  Separator,
   Kbd,
   Skeleton,
   Progress,
@@ -88,8 +93,8 @@ export {
 export type {
   AvatarProps,
   AvatarSize,
-  AvatarTone,
-  DividerProps,
+  AvatarColor,
+  SeparatorProps,
   SkeletonProps,
   SkeletonShape,
   ProgressProps,
@@ -120,7 +125,18 @@ export type { LaneProps } from './components/Lane';
 // Page templates
 export { PageShell } from './components/PageShell';
 export type { PageShellProps } from './components/PageShell';
-export { PageSidebar } from './components/PageSidebar';
+export {
+  PageSidebar,
+  PageSidebarHeader,
+  PageSidebarBrand,
+  PageSidebarSearch,
+  PageSidebarNav,
+  PageSidebarSection,
+  PageSidebarNavItem,
+  PageSidebarNavGroup,
+  PageSidebarNavSeparator,
+  PageSidebarFooter,
+} from './components/PageSidebar';
 export type {
   PageSidebarProps,
   PageSidebarHeaderProps,

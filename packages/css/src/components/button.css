@@ -1,31 +1,26 @@
 /* Starscape v3 — buttons.
  *
- * The primary, secondary, ghost, and CTA variants now share the ARC grammar
- * (bevel surface + animated sweep-ring + press-invert) — the ring machinery
- * lives in button-arc.css and layers on by selector. No background glow.
+ * Element-first: the bare `<button>` IS the primary variant. Everything else is
+ * a `data-variant`. The primary, secondary, ghost, and CTA variants share the
+ * ARC grammar (bevel surface + animated sweep-ring + press-invert) — the ring
+ * machinery lives in button-arc.css and layers on by selector. No background glow.
  *
- * Variants:
- *   <button>, [data-variant="primary"] → primary ARC chip: soft accent/amber bevel
- *                                    (light) or cyan/violet (dark); sweep ring
- *                                    fades in on hover; press-invert on :active
- *   .btn-secondary                 → solid teal→blue surface (the blue stays),
- *                                    now ARC bevel + ring + press-invert
- *   .ghost                         → outlined/surface-tinted; sweep ring on hover
- *   [data-variant="cta"]           → "epic" tier: double-line bevel + soft glow;
- *                                    may host the ARC sweep ring (button-arc.css)
+ * Variants (all via data-variant; bare <button> = primary):
+ *   <button> / [data-variant="primary"] → primary ARC chip: soft accent/amber
+ *                                    bevel (light) or cyan/violet (dark); sweep
+ *                                    ring fades in on hover; press-invert on :active
+ *   [data-variant="secondary"]     → solid teal→blue surface, ARC bevel + ring
+ *   [data-variant="ghost"]         → outlined/surface-tinted; sweep ring on hover
+ *   [data-variant="cta"]           → "epic" ARC tier: bolder + bigger bevel; opt
+ *                                    into the twin ring with data-cta="bstar"
+ *                                    (see button-arc.css)
  *   [data-variant="command"]       → monospace command/terminal-flavored (no ring)
- *   [data-variant="plus"]          → small "+" glyph (no ring); Orbit lane
- *                                    .column-add-btn overrides it with CTA chrome
- *
- * Class aliases for kanban-source compatibility: .btn-sun = data-variant="cta",
- * .btn-plus = data-variant="plus", .column-add-btn and .add-card-phantom =
- * Orbit lane create controls with the same epic CTA surface.
+ *   [data-variant="plus"]          → small "+" glyph (no ring)
  *
  * Theme strategy: the primary background, color, border, and shadow flow from
- * the --btn-* token group, which is redefined in tokens/dark.css and
- * tokens/system.css. There is NO `[data-theme="dark"] button` rule — theming
- * happens at the token level, so the same button rule renders correctly in
- * light, system-resolved-dark, and explicit dark.
+ * the --btn-* token group, redefined in tokens/dark.css and tokens/system.css.
+ * There is NO `[data-theme="dark"] button` rule — theming happens at the token
+ * level, so the same rule renders correctly in light, system-dark, and explicit dark.
  */
 
 button,
@@ -65,12 +60,12 @@ button:active {
   transform: translateY(0);
 }
 
-/* Primary press-invert — flip to a filled accent surface. Scoped to the
- * DEFAULT variant only (no data-variant, none of the alias classes) so it
- * never leaks onto secondary / ghost / cta / command / plus / compact card
- * accordion / the epic accordion toggle, which own their :active surfaces. */
+/* Primary press-invert — flip to a filled accent surface. Scoped to the DEFAULT
+ * variant only (no data-variant) so it never leaks onto the other variants or
+ * the epic-accordion / number-step buttons, which own their :active surfaces.
+ * The exclusion chain is wrapped in :where() so it adds zero specificity. */
 button[data-variant="primary"]:active,
-button:not([data-variant]):not(.btn-secondary):not(.ghost):not(.btn-sun):not(.btn-plus):not(.card-expand-trigger):not(.accordion-epic-toggle):not(.tab):not(.drawer-tab):not(.drawer-close):not(.create-flyout-close):not(.modal-close):not(.alert-close):not(.input-search-clear):not(.toast-close):not(.tag-remove):not(.code-block-copy):not(.number-step):active {
+button:where(:not([data-variant]):not(.epic-accordion-toggle):not(.number-step)):active {
   background: var(--btn-active-gradient);
   color: var(--btn-active-color);
   box-shadow: var(--btn-active-shadow);
@@ -83,9 +78,9 @@ button:focus-visible {
 
 button:disabled,
 button[data-disabled],
-button[aria-disabled="true"],
-button.is-disabled {
+button[aria-disabled="true"] {
   cursor: not-allowed;
+  pointer-events: none;
   filter: saturate(0.55) brightness(0.95);
   opacity: 0.55;
   box-shadow: none;
@@ -93,8 +88,7 @@ button.is-disabled {
 
 [data-theme="dark"] button:disabled,
 [data-theme="dark"] button[data-disabled],
-[data-theme="dark"] button[aria-disabled="true"],
-[data-theme="dark"] button.is-disabled {
+[data-theme="dark"] button[aria-disabled="true"] {
   filter: saturate(0.5) brightness(1.15);
   opacity: 0.45;
 }
@@ -102,8 +96,7 @@ button.is-disabled {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) button:disabled,
   :root:not([data-theme="light"]) button[data-disabled],
-  :root:not([data-theme="light"]) button[aria-disabled="true"],
-  :root:not([data-theme="light"]) button.is-disabled {
+  :root:not([data-theme="light"]) button[aria-disabled="true"] {
     filter: saturate(0.5) brightness(1.15);
     opacity: 0.45;
   }
@@ -112,11 +105,9 @@ button.is-disabled {
 /* ---------- Secondary — the prior default primary, preserved ----------
  *
  * Theming flows through the --btn-secondary-* token group (redefined in
- * tokens/dark.css and tokens/system.css), so there is no [data-theme] rule —
- * same strategy as the default primary.
+ * tokens/dark.css and tokens/system.css), so there is no [data-theme] rule.
  */
 
-button.btn-secondary,
 button[data-variant="secondary"] {
   border-color: var(--btn-secondary-border);
   background: var(--btn-secondary-gradient);
@@ -124,28 +115,24 @@ button[data-variant="secondary"] {
   box-shadow: var(--btn-secondary-shadow);
 }
 
-button.btn-secondary:hover,
 button[data-variant="secondary"]:hover {
   transform: none;
   filter: brightness(1.06);
   box-shadow: var(--btn-secondary-shadow), var(--btn-secondary-hover-shadow);
 }
 
-button.btn-secondary:active,
 button[data-variant="secondary"]:active {
   transform: translateY(0);
   background: var(--btn-secondary-active-gradient);
   box-shadow: var(--btn-secondary-active-shadow);
 }
 
-button.btn-secondary:focus-visible,
 button[data-variant="secondary"]:focus-visible {
   box-shadow: var(--btn-secondary-shadow), var(--accent-ring);
 }
 
 /* ---------- Ghost — outlined secondary ---------- */
 
-button.ghost,
 button[data-variant="ghost"] {
   border: 1px solid var(--line);
   background: var(--surface);
@@ -155,19 +142,16 @@ button[data-variant="ghost"] {
   -webkit-backdrop-filter: blur(12px);
 }
 
-button.ghost:hover,
 button[data-variant="ghost"]:hover {
   border-color: var(--accent-border);
   background: var(--accent-hover);
   filter: none;
 }
 
-button.ghost:active,
 button[data-variant="ghost"]:active {
   background: var(--accent-active);
 }
 
-[data-theme="dark"] button.ghost,
 [data-theme="dark"] button[data-variant="ghost"] {
   color: rgba(232, 239, 255, 0.95);
   background: rgba(var(--starlight-rgb), 0.07);
@@ -175,7 +159,6 @@ button[data-variant="ghost"]:active {
   font-weight: 600;
 }
 
-[data-theme="dark"] button.ghost:hover,
 [data-theme="dark"] button[data-variant="ghost"]:hover {
   color: #fff;
   background: rgba(var(--starlight-rgb), 0.14);
@@ -184,14 +167,12 @@ button[data-variant="ghost"]:active {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) button.ghost,
   :root:not([data-theme="light"]) button[data-variant="ghost"] {
     color: rgba(232, 239, 255, 0.95);
     background: rgba(var(--starlight-rgb), 0.07);
     border-color: rgba(var(--starlight-rgb), 0.24);
     font-weight: 600;
   }
-  :root:not([data-theme="light"]) button.ghost:hover,
   :root:not([data-theme="light"]) button[data-variant="ghost"]:hover {
     color: #fff;
     background: rgba(var(--starlight-rgb), 0.14);
@@ -202,16 +183,14 @@ button[data-variant="ghost"]:active {
 
 /* ---------- CTA — the "epic" tier ----------
  *
- * Headline/create actions: a double-line dual bezel (paper hairline + amber or
- * violet inner ring) over the orbit wash, with the old Orbit kanban glow kept
- * as the tactile create-action signal. `.btn-sun`, `.column-add-btn`, and
- * `.add-card-phantom` are compatibility aliases from Orbit's source markup.
+ * The headline action: the double-LINE dual bezel (a paper hairline wrapping an
+ * amber inner ring) over the orbit wash — bolder + bigger than the primary. The
+ * hover behaves exactly like the primary (sweep ring fades in + 1px lift). For
+ * the always-on counter-rotating twin ring, opt in with data-cta="bstar"
+ * (see button-arc.css).
  */
 
-.btn-sun,
-button[data-variant="cta"],
-.column-add-btn,
-.add-card-phantom {
+button[data-variant="cta"] {
   color: var(--teal-deep);
   border: 1.5px solid rgba(var(--accent-rgb), 0.55);
   box-shadow:
@@ -222,19 +201,12 @@ button[data-variant="cta"],
   background:
     linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(var(--amber-rgb), 0.1) 55%, rgba(var(--paper-rgb), 0) 100%),
     rgba(var(--paper-rgb), 0.96);
-}
-
-.btn-sun,
-button[data-variant="cta"] {
   min-height: 2.7rem;
   padding: 0.62rem 1.3rem;
   font-weight: 800;
 }
 
-.btn-sun:hover,
-button[data-variant="cta"]:hover,
-.column-add-btn:hover,
-.add-card-phantom:hover {
+button[data-variant="cta"]:hover {
   transform: translateY(-1px);
   border-color: rgba(var(--accent-rgb), 0.72);
   filter: brightness(1.04);
@@ -248,7 +220,6 @@ button[data-variant="cta"]:hover,
     rgba(var(--paper-rgb), 0.98);
 }
 
-.btn-sun:active,
 button[data-variant="cta"]:active {
   transform: translateY(0);
   background: linear-gradient(135deg, rgb(var(--accent-rgb)), rgba(var(--amber-rgb), 0.85));
@@ -258,10 +229,7 @@ button[data-variant="cta"]:active {
     inset -1px -1px 0 0 rgba(255, 255, 255, 0.4);
 }
 
-[data-theme="dark"] .btn-sun,
-[data-theme="dark"] button[data-variant="cta"],
-[data-theme="dark"] .column-add-btn,
-[data-theme="dark"] .add-card-phantom {
+[data-theme="dark"] button[data-variant="cta"] {
   color: #e8efff;
   border: 1.5px solid rgba(var(--starlight-rgb), 0.5);
   box-shadow:
@@ -274,10 +242,7 @@ button[data-variant="cta"]:active {
     rgba(var(--cosmos-rgb), 0.92);
 }
 
-[data-theme="dark"] .btn-sun:hover,
-[data-theme="dark"] button[data-variant="cta"]:hover,
-[data-theme="dark"] .column-add-btn:hover,
-[data-theme="dark"] .add-card-phantom:hover {
+[data-theme="dark"] button[data-variant="cta"]:hover {
   color: #e8efff;
   border-color: rgba(var(--starlight-rgb), 0.7);
   box-shadow:
@@ -290,7 +255,6 @@ button[data-variant="cta"]:active {
     rgba(var(--cosmos-rgb), 0.95);
 }
 
-[data-theme="dark"] .btn-sun:active,
 [data-theme="dark"] button[data-variant="cta"]:active {
   background: linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.9));
   color: #fff;
@@ -300,10 +264,7 @@ button[data-variant="cta"]:active {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .btn-sun,
-  :root:not([data-theme="light"]) button[data-variant="cta"],
-  :root:not([data-theme="light"]) .column-add-btn,
-  :root:not([data-theme="light"]) .add-card-phantom {
+  :root:not([data-theme="light"]) button[data-variant="cta"] {
     color: #e8efff;
     border: 1.5px solid rgba(var(--starlight-rgb), 0.5);
     box-shadow:
@@ -315,10 +276,7 @@ button[data-variant="cta"]:active {
       linear-gradient(135deg, rgba(var(--cyan-rgb), 0.12), rgba(var(--indigo-rgb), 0.1) 55%, rgba(var(--cosmos-rgb), 0) 100%),
       rgba(var(--cosmos-rgb), 0.92);
   }
-  :root:not([data-theme="light"]) .btn-sun:hover,
-  :root:not([data-theme="light"]) button[data-variant="cta"]:hover,
-  :root:not([data-theme="light"]) .column-add-btn:hover,
-  :root:not([data-theme="light"]) .add-card-phantom:hover {
+  :root:not([data-theme="light"]) button[data-variant="cta"]:hover {
     color: #e8efff;
     border-color: rgba(var(--starlight-rgb), 0.7);
     box-shadow:
@@ -330,7 +288,6 @@ button[data-variant="cta"]:active {
       linear-gradient(135deg, rgba(var(--cyan-rgb), 0.18), rgba(var(--indigo-rgb), 0.14) 55%, rgba(var(--cosmos-rgb), 0) 100%),
       rgba(var(--cosmos-rgb), 0.95);
   }
-  :root:not([data-theme="light"]) .btn-sun:active,
   :root:not([data-theme="light"]) button[data-variant="cta"]:active {
     background: linear-gradient(135deg, rgb(var(--cyan-rgb)), rgba(var(--violet-rgb), 0.9));
     color: #fff;
@@ -369,7 +326,6 @@ button[data-variant="command"]:hover {
 
 /* ---------- Plus — compact "+" glyph ---------- */
 
-.btn-plus,
 button[data-variant="plus"] {
   display: inline-grid;
   place-items: center;
@@ -387,210 +343,21 @@ button[data-variant="plus"] {
   letter-spacing: 0;
 }
 
-.btn-plus:hover,
 button[data-variant="plus"]:hover {
   border-color: var(--accent-border);
   background: var(--accent-hover);
 }
 
-/* Orbit lane create controls: same epic CTA surface, but structural geometry is
- * lane-specific. These rules sit after [data-variant="plus"] so Orbit can keep
- * data-variant="plus" as a no-ARC marker while .column-add-btn restores the
- * old small square epic-card button. */
-button.column-add-btn,
-.column-add-btn,
-button.add-card-phantom,
-.add-card-phantom {
-  color: var(--teal-deep);
-  border: 1.5px solid rgba(var(--accent-rgb), 0.55);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--paper-rgb), 0.92),
-    inset 0 0 0 2px rgba(var(--amber-rgb), 0.45),
-    0 8px 20px rgba(var(--accent-rgb), 0.16),
-    0 0 14px rgba(var(--accent-rgb), 0.1);
-  background:
-    linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(var(--amber-rgb), 0.1) 55%, rgba(var(--paper-rgb), 0) 100%),
-    rgba(var(--paper-rgb), 0.96);
-}
-
-button.column-add-btn:hover,
-.column-add-btn:hover,
-button.add-card-phantom:hover,
-.add-card-phantom:hover {
-  transform: translateY(-1px);
-  border-color: rgba(var(--accent-rgb), 0.72);
-  filter: brightness(1.04);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--paper-rgb), 0.95),
-    inset 0 0 0 2.5px rgba(var(--amber-rgb), 0.55),
-    0 10px 24px rgba(var(--accent-rgb), 0.26),
-    0 0 20px rgba(var(--accent-rgb), 0.18);
-  background:
-    linear-gradient(135deg, rgba(var(--accent-rgb), 0.22), rgba(var(--amber-rgb), 0.14) 55%, rgba(var(--paper-rgb), 0) 100%),
-    rgba(var(--paper-rgb), 0.98);
-}
-
-button.column-add-btn,
-.column-add-btn {
-  display: inline-grid;
-  place-items: center;
-  width: 1.85rem;
-  min-width: 1.85rem;
-  height: 1.85rem;
-  min-height: 1.85rem;
-  padding: 0;
-  border-radius: var(--radius-control, 10px);
-  font-size: 1.15rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-button.column-add-btn::before,
-button.column-add-btn::after,
-.column-add-btn::before,
-.column-add-btn::after {
-  content: none;
-  display: none;
-}
-
-button.add-card-phantom,
-.add-card-phantom {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  min-height: var(--topbar-ctl-h, 2.35rem);
-  padding: 0.55rem 0.85rem;
-  border-radius: var(--radius-control, 10px);
-  font: inherit;
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-align: left;
-}
-
-button.add-card-phantom::before,
-button.add-card-phantom::after,
-.add-card-phantom::before,
-.add-card-phantom::after {
-  content: none;
-  display: none;
-}
-
-[data-theme="dark"] .btn-plus,
 [data-theme="dark"] button[data-variant="plus"] {
   color: #d2deff;
   background: rgba(var(--starlight-rgb), 0.1);
   border-color: rgba(var(--starlight-rgb), 0.22);
 }
 
-[data-theme="dark"] button.column-add-btn,
-[data-theme="dark"] .column-add-btn,
-[data-theme="dark"] button.add-card-phantom,
-[data-theme="dark"] .add-card-phantom {
-  color: #e8efff;
-  border: 1.5px solid rgba(var(--starlight-rgb), 0.5);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
-    inset 0 0 0 2.5px rgba(var(--violet-rgb), 0.42),
-    0 10px 24px rgba(var(--void-rgb), 0.4),
-    0 0 16px rgba(var(--starlight-rgb), 0.18);
-  background:
-    linear-gradient(135deg, rgba(var(--cyan-rgb), 0.12), rgba(var(--indigo-rgb), 0.1) 55%, rgba(var(--cosmos-rgb), 0) 100%),
-    rgba(var(--cosmos-rgb), 0.92);
-}
-
-[data-theme="dark"] button.column-add-btn:hover,
-[data-theme="dark"] .column-add-btn:hover,
-[data-theme="dark"] button.add-card-phantom:hover,
-[data-theme="dark"] .add-card-phantom:hover {
-  color: #e8efff;
-  border-color: rgba(var(--starlight-rgb), 0.7);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
-    inset 0 0 0 2.5px rgba(var(--violet-rgb), 0.55),
-    0 12px 28px rgba(var(--void-rgb), 0.55),
-    0 0 24px rgba(var(--starlight-rgb), 0.26);
-  background:
-    linear-gradient(135deg, rgba(var(--cyan-rgb), 0.18), rgba(var(--indigo-rgb), 0.14) 55%, rgba(var(--cosmos-rgb), 0) 100%),
-    rgba(var(--cosmos-rgb), 0.95);
-}
-
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .btn-plus,
   :root:not([data-theme="light"]) button[data-variant="plus"] {
     color: #d2deff;
     background: rgba(var(--starlight-rgb), 0.1);
     border-color: rgba(var(--starlight-rgb), 0.22);
   }
-
-  :root:not([data-theme="light"]) button.column-add-btn,
-  :root:not([data-theme="light"]) .column-add-btn,
-  :root:not([data-theme="light"]) button.add-card-phantom,
-  :root:not([data-theme="light"]) .add-card-phantom {
-    color: #e8efff;
-    border: 1.5px solid rgba(var(--starlight-rgb), 0.5);
-    box-shadow:
-      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
-      inset 0 0 0 2.5px rgba(var(--violet-rgb), 0.42),
-      0 10px 24px rgba(var(--void-rgb), 0.4),
-      0 0 16px rgba(var(--starlight-rgb), 0.18);
-    background:
-      linear-gradient(135deg, rgba(var(--cyan-rgb), 0.12), rgba(var(--indigo-rgb), 0.1) 55%, rgba(var(--cosmos-rgb), 0) 100%),
-      rgba(var(--cosmos-rgb), 0.92);
-  }
-
-  :root:not([data-theme="light"]) button.column-add-btn:hover,
-  :root:not([data-theme="light"]) .column-add-btn:hover,
-  :root:not([data-theme="light"]) button.add-card-phantom:hover,
-  :root:not([data-theme="light"]) .add-card-phantom:hover {
-    color: #e8efff;
-    border-color: rgba(var(--starlight-rgb), 0.7);
-    box-shadow:
-      inset 0 0 0 1px rgba(var(--cosmos-rgb), 0.85),
-      inset 0 0 0 2.5px rgba(var(--violet-rgb), 0.55),
-      0 12px 28px rgba(var(--void-rgb), 0.55),
-      0 0 24px rgba(var(--starlight-rgb), 0.26);
-    background:
-      linear-gradient(135deg, rgba(var(--cyan-rgb), 0.18), rgba(var(--indigo-rgb), 0.14) 55%, rgba(var(--cosmos-rgb), 0) 100%),
-      rgba(var(--cosmos-rgb), 0.95);
-  }
-}
-
-/* Inside a CTA, `.btn-plus` is a glyph, not a standalone plus button. */
-.btn-sun .btn-plus,
-button[data-variant="cta"] .btn-plus {
-  width: 0.95rem;
-  min-height: 0;
-  height: 0.95rem;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  color: currentColor;
-  font-size: 1.15rem;
-  line-height: 0.95;
-  transform: translateY(-0.02em);
-}
-
-/* Disabled aliases are repeated last so variant surfaces cannot reintroduce
- * hover shadows or active-looking chroma after the generic disabled block. */
-button:disabled,
-button[data-disabled],
-button[aria-disabled="true"],
-button.is-disabled {
-  cursor: not-allowed;
-  pointer-events: none;
-  filter: saturate(0.55) brightness(0.95);
-  opacity: 0.55;
-  box-shadow: none;
-}
-
-[data-theme="dark"] button:disabled,
-[data-theme="dark"] button[data-disabled],
-[data-theme="dark"] button[aria-disabled="true"],
-[data-theme="dark"] button.is-disabled {
-  filter: saturate(0.5) brightness(1.15);
-  opacity: 0.45;
 }

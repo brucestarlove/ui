@@ -1,8 +1,36 @@
-/* Starscape v3 — badges & chips.
- * Generic pill components for tags, counts, status labels.
+/* Starscape v3 — badges, chips & type pills.
+ *
+ * Three flat indicators, one file (presence dots live in dot.css):
+ *   .badge     — numeric notification count (a small pill of digits). Hidden
+ *                when empty. (This is the old `.count`.)
+ *   .chip      — labeled tag / status pill. Quiet tinted default; `data-tone`
+ *                sets the semantic color; `data-variant="solid"` is the bolder
+ *                filled emphasis; `button.chip` / `[data-interactive]` turn it
+ *                into a filter toggle.
+ *   .type-pill — uppercase category label for ticket types (`data-variant`).
  */
 
-.badge,
+/* ---------- Badge — numeric notification (formerly .count) ---------- */
+
+.badge {
+  display: inline-grid;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--orbit-text-muted);
+  background: var(--orbit-count-bg);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* A count of zero / no content collapses the badge. */
+.badge:empty {
+  display: none;
+}
+
+/* ---------- Chip — labeled tag / status pill ---------- */
+
 .chip {
   display: inline-flex;
   align-items: center;
@@ -19,77 +47,79 @@
   white-space: nowrap;
 }
 
-/* Live badge — a leading dot that pulses a fading halo outward (ARC's
- * orbit/commit energy, distilled to a status pulse). Default tone red. */
-.badge[data-live] {
-  --live-color: var(--red-rgb);
-}
-.badge[data-live]::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background: rgb(var(--live-color));
-  animation: badge-pulse 1.8s ease-out infinite;
-}
-.badge[data-live][data-tone="success"] { --live-color: 34, 197, 94; }
-.badge[data-live][data-tone="accent"]  { --live-color: var(--accent-rgb); }
-
-@keyframes badge-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--live-color), 0.55); }
-  70%  { box-shadow: 0 0 0 0.45rem rgba(var(--live-color), 0); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--live-color), 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .badge[data-live]::before { animation: none; }
-}
-
-.badge[data-tone="accent"],
 .chip[data-tone="accent"] {
   border-color: rgba(var(--accent-rgb), 0.35);
   background: rgba(var(--accent-rgb), 0.1);
   color: var(--accent);
 }
 
-.badge[data-tone="success"],
 .chip[data-tone="success"] {
-  border-color: rgba(34, 197, 94, 0.4);
-  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(var(--green-rgb), 0.4);
+  background: rgba(var(--green-rgb), 0.12);
   color: #1a8a3e;
 }
 
-.badge[data-tone="warning"],
 .chip[data-tone="warning"] {
   border-color: rgba(var(--amber-rgb), 0.45);
   background: rgba(var(--amber-rgb), 0.12);
   color: #8a4d12;
 }
 
-.badge[data-tone="danger"],
 .chip[data-tone="danger"] {
   border-color: rgba(var(--red-rgb), 0.45);
   background: rgba(var(--red-rgb), 0.1);
   color: var(--danger);
 }
 
-.count {
-  display: inline-grid;
-  min-width: 1.8rem;
-  height: 1.8rem;
-  place-items: center;
-  border-radius: 999px;
-  color: var(--orbit-text-muted);
-  background: var(--orbit-count-bg);
-  font-size: 0.78rem;
-  font-weight: 700;
+[data-theme="dark"] .chip[data-tone="success"] {
+  background: rgba(var(--green-rgb), 0.18);
+  color: #4ade80;
 }
 
+[data-theme="dark"] .chip[data-tone="warning"] {
+  background: rgba(var(--amber-rgb), 0.18);
+  color: #facc15;
+}
+
+[data-theme="dark"] .chip[data-tone="danger"] {
+  border-color: rgba(var(--coral-rgb), 0.45);
+  background: rgba(var(--coral-rgb), 0.16);
+  color: #fca5a5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chip[data-tone="success"] {
+    background: rgba(var(--green-rgb), 0.18);
+    color: #4ade80;
+  }
+  :root:not([data-theme="light"]) .chip[data-tone="warning"] {
+    background: rgba(var(--amber-rgb), 0.18);
+    color: #facc15;
+  }
+  :root:not([data-theme="light"]) .chip[data-tone="danger"] {
+    border-color: rgba(var(--coral-rgb), 0.45);
+    background: rgba(var(--coral-rgb), 0.16);
+    color: #fca5a5;
+  }
+}
+
+/* Solid — the bolder, fully-filled emphasis (the old emphatic badge look).
+ * Additive: the quiet default above is unchanged; opt into this for a louder tag. */
+.chip[data-variant="solid"] {
+  border-color: transparent;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chip[data-variant="solid"][data-tone="accent"]  { background: var(--accent); color: #fff; }
+.chip[data-variant="solid"][data-tone="success"] { background: #1a8a3e; color: #fff; }
+.chip[data-variant="solid"][data-tone="warning"] { background: #8a4d12; color: #fff; }
+.chip[data-variant="solid"][data-tone="danger"]  { background: var(--danger); color: #fff; }
+
 /* Type pills — uppercase, monospace-feel labels for ticket types or category
- * tags. Quieter than .badge; lives inside cards or alongside titles.
+ * tags. Quieter than .chip; lives inside cards or alongside titles.
  *
- *   <span class="type-pill" data-type="epic">EPIC</span>
+ *   <span class="type-pill" data-variant="epic">EPIC</span>
  */
 .type-pill {
   display: inline-flex;
@@ -106,69 +136,31 @@
   text-transform: uppercase;
 }
 
-.type-pill[data-type="epic"]    { background: rgba(var(--purple-rgb), 0.12); border-color: rgba(var(--purple-rgb), 0.28); color: #6b3ea1; }
-.type-pill[data-type="feature"] { background: rgba(var(--accent-rgb), 0.12); border-color: rgba(var(--accent-rgb), 0.28); color: var(--teal-deep); }
-.type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.10);   border-color: rgba(var(--blue-rgb), 0.24);   color: #1e4a66; }
-.type-pill[data-type="bug"]     { background: rgba(var(--red-rgb), 0.10);    border-color: rgba(var(--red-rgb), 0.28);    color: #8a2d24; }
-.type-pill[data-type="done"]    { background: rgba(34, 197, 94, 0.12);       border-color: rgba(34, 197, 94, 0.28);        color: #16703a; }
+.type-pill[data-variant="epic"]    { background: rgba(var(--purple-rgb), 0.12); border-color: rgba(var(--purple-rgb), 0.28); color: #6b3ea1; }
+.type-pill[data-variant="feature"] { background: rgba(var(--accent-rgb), 0.12); border-color: rgba(var(--accent-rgb), 0.28); color: var(--teal-deep); }
+.type-pill[data-variant="task"]    { background: rgba(var(--blue-rgb), 0.10);   border-color: rgba(var(--blue-rgb), 0.24);   color: #1e4a66; }
+.type-pill[data-variant="bug"]     { background: rgba(var(--red-rgb), 0.10);    border-color: rgba(var(--red-rgb), 0.28);    color: #8a2d24; }
+.type-pill[data-variant="done"]    { background: rgba(var(--green-rgb), 0.12);       border-color: rgba(var(--green-rgb), 0.28);        color: #16703a; }
 
-[data-theme="dark"] .type-pill[data-type="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
-[data-theme="dark"] .type-pill[data-type="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
-[data-theme="dark"] .type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
-[data-theme="dark"] .type-pill[data-type="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
-[data-theme="dark"] .type-pill[data-type="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .type-pill[data-type="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
-  :root:not([data-theme="light"]) .type-pill[data-type="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
-  :root:not([data-theme="light"]) .type-pill[data-type="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
-  :root:not([data-theme="light"]) .type-pill[data-type="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
-  :root:not([data-theme="light"]) .type-pill[data-type="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
-}
-
-[data-theme="dark"] .badge[data-tone="success"],
-[data-theme="dark"] .chip[data-tone="success"] {
-  background: rgba(34, 197, 94, 0.18);
-  color: #4ade80;
-}
-
-[data-theme="dark"] .badge[data-tone="warning"],
-[data-theme="dark"] .chip[data-tone="warning"] {
-  background: rgba(var(--amber-rgb), 0.18);
-  color: #facc15;
-}
-
-[data-theme="dark"] .badge[data-tone="danger"],
-[data-theme="dark"] .chip[data-tone="danger"] {
-  border-color: rgba(var(--coral-rgb), 0.45);
-  background: rgba(var(--coral-rgb), 0.16);
-  color: #fca5a5;
-}
+[data-theme="dark"] .type-pill[data-variant="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
+[data-theme="dark"] .type-pill[data-variant="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
+[data-theme="dark"] .type-pill[data-variant="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
+[data-theme="dark"] .type-pill[data-variant="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
+[data-theme="dark"] .type-pill[data-variant="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .badge[data-tone="success"],
-  :root:not([data-theme="light"]) .chip[data-tone="success"] {
-    background: rgba(34, 197, 94, 0.18);
-    color: #4ade80;
-  }
-  :root:not([data-theme="light"]) .badge[data-tone="warning"],
-  :root:not([data-theme="light"]) .chip[data-tone="warning"] {
-    background: rgba(var(--amber-rgb), 0.18);
-    color: #facc15;
-  }
-  :root:not([data-theme="light"]) .badge[data-tone="danger"],
-  :root:not([data-theme="light"]) .chip[data-tone="danger"] {
-    border-color: rgba(var(--coral-rgb), 0.45);
-    background: rgba(var(--coral-rgb), 0.16);
-    color: #fca5a5;
-  }
+  :root:not([data-theme="light"]) .type-pill[data-variant="epic"]    { background: rgba(var(--violet-rgb), 0.16);  border-color: rgba(var(--violet-rgb), 0.32);  color: #d8b4fe; }
+  :root:not([data-theme="light"]) .type-pill[data-variant="feature"] { background: rgba(var(--starlight-rgb), 0.12); border-color: rgba(var(--starlight-rgb), 0.28); color: #d2deff; }
+  :root:not([data-theme="light"]) .type-pill[data-variant="task"]    { background: rgba(var(--blue-rgb), 0.16);    border-color: rgba(var(--blue-rgb), 0.32);    color: #93c5fd; }
+  :root:not([data-theme="light"]) .type-pill[data-variant="bug"]     { background: rgba(var(--coral-rgb), 0.16);   border-color: rgba(var(--coral-rgb), 0.32);   color: #fca5a5; }
+  :root:not([data-theme="light"]) .type-pill[data-variant="done"]    { background: rgba(74, 222, 128, 0.14);       border-color: rgba(74, 222, 128, 0.3);         color: #86efac; }
 }
 
 /* Interactive chip — a filter/toggle pill. Add data-interactive (or use a
- * <button class="chip">) for hover/press affordance. Ported from studio's
- * .studio-chip; hover colors flow from the --chip-hover-* token pair.
+ * <button class="chip">) for hover/press affordance. Hover colors flow from the
+ * --chip-hover-* token pair.
  *
- *   <button class="chip" data-tone="accent">All <span class="count">12</span></button>
+ *   <button class="chip" data-tone="accent">All <span class="badge">12</span></button>
  *   <span class="chip" data-interactive>Drafts</span>
  */
 

@@ -1,8 +1,7 @@
 /* Starscape v3 — accordion / disclosure.
  *
  * Native <details>/<summary> — zero JS. The marker is hidden and replaced
- * with an accent-tinted circular chevron that rotates 90° when open. Ported
- * from studio's .token-disclosure / .sound-disclosure.
+ * with an accent-tinted circular chevron that rotates 90° when open.
  *
  *   <details class="accordion" open>
  *     <summary>Effects</summary>

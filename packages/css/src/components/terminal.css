@@ -1,9 +1,8 @@
 /* Starscape v3 — terminal / code-snippet shell.
  *
  * A dark snippet surface with an optional macOS-style traffic-light title bar.
- * Ported from the kanban app's MCP setup. Use for install commands, config
- * blocks, and any "copy this into your shell" snippet — independent of theme
- * (always dark, like a real terminal).
+ * Use for install commands, config blocks, and any "copy this into your shell"
+ * snippet — independent of theme (always dark, like a real terminal).
  *
  *   <div class="terminal">
  *     <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>

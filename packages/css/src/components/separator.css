@@ -1,13 +1,13 @@
-/* Starscape v3 — dividers. */
+/* Starscape v3 — separators. */
 
-.divider {
+.separator {
   height: 1px;
   margin: 1rem 0;
   border: 0;
   background: var(--line);
 }
 
-.divider[data-orientation="vertical"] {
+.separator[data-orientation="vertical"] {
   width: 1px;
   height: auto;
   align-self: stretch;

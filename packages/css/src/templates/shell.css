@@ -2,8 +2,7 @@
  *
  * The single-column app shell used by the preview app: an optional animated
  * Starscape background, a fixed `.topbar`, and a scrollable content region.
- * Ported from the web-demo's bespoke `.demo-shell` / `.demo-main` helpers and
- * promoted into the library so any app can drop into the same layout.
+ * Any app can drop into the same layout.
  *
  *   <div class="page-shell">
  *     <a class="skip-link" href="#main">Skip to content</a>

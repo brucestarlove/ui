@@ -1,8 +1,8 @@
 /* Starscape v3 — control row.
  *
  * The compact inline layout that hosts sliders, themed <select>s, and number
- * fields inside settings/token panels. Ported from studio's token-control
- * pattern. Pure layout — colors come from the controls themselves.
+ * fields inside settings/token panels. Pure layout — colors come from the
+ * controls themselves.
  *
  *   <div class="control-row">
  *     <label class="control-label">

@@ -1,84 +1,44 @@
 /* Starscape v3 — priority pills.
  *
- * Generic API:
- *   <span class="priority-pill priority-pill-high">HIGH</span>
+ *   <span class="priority-pill" data-variant="high">HIGH</span>
  *
- * Orbit compatibility aliases:
- *   .card-priority-id, .detail-priority-badge
+ * Variants via data-variant: maybe, low, med, high, urgent.
  */
 
-.card-priority-id {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.card-priority-label {
-  line-height: 1;
-}
-
-.priority,
 .priority-pill {
   border-radius: var(--radius-pill, 999px);
   padding: 0.18rem 0.5rem;
   font-weight: 800;
-}
-
-.priority {
-  background: rgba(var(--amber-rgb), 0.12);
-  color: var(--accent-2);
-}
-
-.priority-pill {
   letter-spacing: 0.04em;
   font-size: 0.72rem;
 }
 
-.priority-pill-maybe,
-.detail-priority-badge.priority-pill-maybe {
+.priority-pill[data-variant="maybe"] {
   color: #6b7280;
   background: rgba(100, 116, 139, 0.14);
 }
 
-.priority-pill-low,
-.detail-priority-badge.priority-pill-low {
+.priority-pill[data-variant="low"] {
   color: #1e6f5c;
   background: rgba(var(--accent-rgb), 0.14);
 }
 
-.priority-pill-med,
-.detail-priority-badge.priority-pill-med {
+.priority-pill[data-variant="med"] {
   color: #a4550f;
   background: rgba(var(--amber-rgb), 0.16);
 }
 
-.priority-pill-high,
-.detail-priority-badge.priority-pill-high {
+.priority-pill[data-variant="high"] {
   color: #b53a1a;
   background: rgba(214, 86, 46, 0.2);
   box-shadow: inset 0 0 0 1px rgba(214, 86, 46, 0.35);
 }
 
-.priority-pill-urgent,
-.detail-priority-badge.priority-pill-urgent {
+.priority-pill[data-variant="urgent"] {
   color: #fff;
   background: linear-gradient(135deg, #c72e1a, #a0281a);
   box-shadow: 0 0 0 1px rgba(var(--red-rgb), 0.35), 0 4px 10px rgba(var(--red-rgb), 0.3);
   animation: urgentPulse 2.6s ease-in-out infinite;
-}
-
-.detail-priority-badge.priority-pill-maybe,
-.detail-priority-badge.priority-pill-low,
-.detail-priority-badge.priority-pill-med,
-.detail-priority-badge.priority-pill-high,
-.detail-priority-badge.priority-pill-urgent {
-  border-color: currentColor;
 }
 
 @keyframes urgentPulse {
@@ -93,47 +53,42 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion="full"]) .priority-pill-urgent {
+  :root:not([data-motion="full"]) .priority-pill[data-variant="urgent"] {
     animation: none;
   }
 }
 
-[data-theme="dark"] .priority-pill-maybe,
-[data-theme="dark"] .detail-priority-badge.priority-pill-maybe {
+[data-theme="dark"] .priority-pill[data-variant="maybe"] {
   color: rgba(255, 255, 255, 0.62);
   background: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .priority-pill-low,
-[data-theme="dark"] .detail-priority-badge.priority-pill-low {
+[data-theme="dark"] .priority-pill[data-variant="low"] {
   color: #4ade80;
   background: rgba(74, 222, 128, 0.15);
 }
 
-[data-theme="dark"] .priority-pill-med,
-[data-theme="dark"] .detail-priority-badge.priority-pill-med {
+[data-theme="dark"] .priority-pill[data-variant="med"] {
   color: #fbbf24;
   background: rgba(251, 191, 36, 0.18);
 }
 
-[data-theme="dark"] .priority-pill-high,
-[data-theme="dark"] .detail-priority-badge.priority-pill-high {
+[data-theme="dark"] .priority-pill[data-variant="high"] {
   color: #f87171;
   background: rgba(var(--coral-rgb), 0.2);
   box-shadow: inset 0 0 0 1px rgba(var(--coral-rgb), 0.35);
 }
 
-[data-theme="dark"] .priority-pill-urgent,
-[data-theme="dark"] .detail-priority-badge.priority-pill-urgent {
+[data-theme="dark"] .priority-pill[data-variant="urgent"] {
   background: linear-gradient(135deg, #dc2626, #991b1b);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  :root:not([data-motion="reduce"])[data-theme="dark"] .priority-pill-urgent {
+  :root:not([data-motion="reduce"])[data-theme="dark"] .priority-pill[data-variant="urgent"] {
     box-shadow: 0 0 0 1px rgba(var(--coral-rgb), 0.35), 0 4px 10px rgba(var(--coral-rgb), 0.3);
   }
 }
 
-:root[data-motion="full"][data-theme="dark"] .priority-pill-urgent {
+:root[data-motion="full"][data-theme="dark"] .priority-pill[data-variant="urgent"] {
   box-shadow: 0 0 0 1px rgba(var(--coral-rgb), 0.35), 0 4px 10px rgba(var(--coral-rgb), 0.3);
 }

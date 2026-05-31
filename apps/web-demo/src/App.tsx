@@ -269,7 +269,8 @@ function Topbar({
 
           <button
             type="button"
-            className="btn-sun topbar-ctl-shrink"
+            className="topbar-ctl-shrink"
+            data-variant="cta"
             onClick={newCard.toggle}
             {...newCard.triggerProps}
           >
@@ -348,7 +349,8 @@ function Topbar({
 
           <button
             type="button"
-            className="topbar-btn ghost topbar-ctl-shrink"
+            className="topbar-btn topbar-ctl-shrink"
+            data-variant="ghost"
             onClick={settings.open}
             {...settings.triggerProps}
           >
@@ -526,7 +528,7 @@ function Hero() {
       </p>
       <div className="demo-row">
         <button data-variant="cta">Get started</button>
-        <button className="ghost" onClick={() => setWelcome(true)}>Read the docs</button>
+        <button data-variant="ghost" onClick={() => setWelcome(true)}>Read the docs</button>
         <button data-variant="command">$ pnpm add @starlove/ui</button>
       </div>
       <WelcomeDialog
@@ -563,13 +565,13 @@ function ButtonsLane() {
     <section className="lane lane-cv-off">
       <header className="lane-head">
         <h3 className="lane-title">Buttons</h3>
-        <span className="count">5</span>
+        <span className="badge">5</span>
       </header>
       <div className="lane-body lane-stack">
         <div className="demo-row">
           <button>primary</button>
-          <button className="btn-secondary">secondary</button>
-          <button className="ghost">ghost</button>
+          <button data-variant="secondary">secondary</button>
+          <button data-variant="ghost">ghost</button>
           <button data-variant="cta">epic CTA</button>
           <button data-variant="command">$ orbit deploy</button>
         </div>
@@ -808,7 +810,7 @@ function UniversalCardsLane() {
 
         <article className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div className="avatar" data-size="lg" data-tone="violet">AS</div>
+            <div className="avatar" data-size="lg" data-color="violet">AS</div>
             <div style={{ minWidth: 0 }}>
               <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Aeva Skywalker</h4>
               <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>aeva@orbit.dev · principal engineer</p>
@@ -857,22 +859,22 @@ function BezelCardsLane() {
       </header>
       <div className="lane-body lane-stack">
         <article className="card" data-variant="epic">
-          <span className="type-pill" data-type="epic">epic · OBJ-44</span>
+          <span className="type-pill" data-variant="epic">epic · OBJ-44</span>
           <h4 style={{ margin: '6px 0 4px', fontSize: '0.95rem' }}>Build the v3 design system</h4>
           <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>Cross-cutting initiative · 6 sub-tasks</p>
         </article>
         <article className="card" data-variant="feature">
-          <span className="type-pill" data-type="feature">feature · F-101</span>
+          <span className="type-pill" data-variant="feature">feature · F-101</span>
           <h4 style={{ margin: '6px 0 4px', fontSize: '0.95rem' }}>Add Sonner toast theming</h4>
           <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>3 components · 2 days</p>
         </article>
         <article className="card" data-variant="task">
-          <span className="type-pill" data-type="task">task · T-007</span>
+          <span className="type-pill" data-variant="task">task · T-007</span>
           <h4 style={{ margin: '6px 0 4px', fontSize: '0.95rem' }}>Generalize lane container</h4>
           <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>Drop the column-specific cruft</p>
         </article>
         <article className="card" data-variant="bug">
-          <span className="type-pill" data-type="bug">bug · #482</span>
+          <span className="type-pill" data-variant="bug">bug · #482</span>
           <h4 style={{ margin: '6px 0 4px', fontSize: '0.95rem' }}>Drawer slides past viewport on iOS</h4>
           <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>Reproducible on iOS 18 · regression</p>
         </article>
@@ -893,46 +895,55 @@ function BadgesAvatarsLane() {
       </header>
       <div className="lane-body lane-stack">
         <div className="demo-row">
-          <span className="badge">default</span>
-          <span className="badge" data-tone="accent">accent</span>
-          <span className="badge" data-tone="success">success</span>
-          <span className="badge" data-tone="warning">warning</span>
-          <span className="badge" data-tone="danger">danger</span>
+          <span className="chip">default</span>
+          <span className="chip" data-tone="accent">accent</span>
+          <span className="chip" data-tone="success">success</span>
+          <span className="chip" data-tone="warning">warning</span>
+          <span className="chip" data-tone="danger">danger</span>
         </div>
         <div className="demo-row">
-          <span className="badge" data-live>live</span>
-          <span className="badge" data-live data-tone="success">recording</span>
-          <span className="badge" data-live data-tone="accent">streaming</span>
+          <span className="chip" data-variant="solid">solid</span>
+          <span className="chip" data-variant="solid" data-tone="accent">accent</span>
+          <span className="chip" data-variant="solid" data-tone="success">success</span>
+          <span className="chip" data-variant="solid" data-tone="warning">warning</span>
+          <span className="chip" data-variant="solid" data-tone="danger">danger</span>
+        </div>
+        <div className="demo-row">
+          <span className="dot" />
+          <span className="dot" data-live />
+          <span className="dot" data-live data-tone="success" />
+          <span className="dot" data-live data-tone="accent" />
+          <span className="dot" data-count>9</span>
           <span style={{ color: 'var(--muted)', fontSize: '0.78rem' }}>
-            <code>data-live</code> — pulsing presence dot
+            <code>.dot</code> — presence glow, <code>data-live</code> tone halo
           </span>
         </div>
         <div className="demo-row">
-          <span className="chip">v3.0.1</span>
-          <span className="chip" data-tone="success">● online</span>
-          <span className="chip" data-tone="warning">● degraded</span>
-          <span className="chip" data-tone="danger">● outage</span>
-          <span className="count">128</span>
+          <span className="badge">3</span>
+          <span className="badge">128</span>
+          <span style={{ color: 'var(--muted)', fontSize: '0.78rem' }}>
+            <code>.badge</code> — numeric count
+          </span>
         </div>
         <div className="demo-row">
-          <span className="type-pill" data-type="epic">epic</span>
-          <span className="type-pill" data-type="feature">feature</span>
-          <span className="type-pill" data-type="task">task</span>
-          <span className="type-pill" data-type="bug">bug</span>
-          <span className="type-pill" data-type="done">done</span>
+          <span className="type-pill" data-variant="epic">epic</span>
+          <span className="type-pill" data-variant="feature">feature</span>
+          <span className="type-pill" data-variant="task">task</span>
+          <span className="type-pill" data-variant="bug">bug</span>
+          <span className="type-pill" data-variant="done">done</span>
         </div>
         <div className="demo-row">
           <div className="avatar-stack" data-tooltip="Aeva, Bruce, Lyra and 5 more">
-            <div className="avatar" data-tone="violet">AS</div>
-            <div className="avatar" data-tone="cyan">BR</div>
-            <div className="avatar" data-tone="amber">LY</div>
+            <div className="avatar" data-color="violet">AS</div>
+            <div className="avatar" data-color="cyan">BR</div>
+            <div className="avatar" data-color="amber">LY</div>
             <div className="avatar">+5</div>
           </div>
-          <div className="avatar" data-size="sm" data-tone="rose" data-status="online">JM</div>
-          <div className="avatar" data-tone="cyan" data-status="busy">KZ</div>
-          <div className="avatar" data-tone="amber" data-status="away">LY</div>
-          <div className="avatar" data-size="lg" data-tone="accent" data-status="live">BS</div>
-          <div className="avatar" data-size="lg" data-tone="violet" data-featured>AE</div>
+          <div className="avatar" data-size="sm" data-color="rose" data-status="online">JM</div>
+          <div className="avatar" data-color="cyan" data-status="busy">KZ</div>
+          <div className="avatar" data-color="amber" data-status="away">LY</div>
+          <div className="avatar" data-size="lg" data-color="accent" data-status="live">BS</div>
+          <div className="avatar" data-size="lg" data-color="violet" data-featured>AE</div>
         </div>
         <div className="demo-row">
           <span style={{ color: 'var(--muted)', fontSize: '0.78rem' }}>
@@ -965,8 +976,8 @@ function ProgressLoadersLane() {
             <div className="progress-bar" style={{ ['--value' as string]: `${pct}%` }} />
           </div>
           <div className="demo-row" style={{ marginTop: 8 }}>
-            <button className="ghost" onClick={() => setPct(p => Math.max(0, p - 10))}>−10</button>
-            <button className="ghost" onClick={() => setPct(p => Math.min(100, p + 10))}>+10</button>
+            <button data-variant="ghost" onClick={() => setPct(p => Math.max(0, p - 10))}>−10</button>
+            <button data-variant="ghost" onClick={() => setPct(p => Math.min(100, p + 10))}>+10</button>
           </div>
         </div>
 
@@ -1026,7 +1037,7 @@ function SplashPreview() {
 
   return (
     <>
-      <button className="ghost" onClick={() => setShow(true)} disabled={show}>
+      <button data-variant="ghost" onClick={() => setShow(true)} disabled={show}>
         Replay boot splash
       </button>
       {show && (
@@ -1136,9 +1147,9 @@ function OverlaysLane() {
       <div className="lane-body lane-stack">
         <div className="demo-row">
           <button onClick={modal.open} {...modal.triggerProps}>Open modal</button>
-          <button className="ghost" onClick={drawer.open} {...drawer.triggerProps}>Open drawer</button>
+          <button data-variant="ghost" onClick={drawer.open} {...drawer.triggerProps}>Open drawer</button>
           <div ref={flyoutWrapRef} style={{ position: 'relative' }}>
-            <button className="ghost" onClick={flyout.toggle} {...flyout.triggerProps}>Menu ▾</button>
+            <button data-variant="ghost" onClick={flyout.toggle} {...flyout.triggerProps}>Menu ▾</button>
             <div
               className={`flyout ${flyout.isOpen ? 'is-open' : ''}`}
               style={{ top: '100%', marginTop: 6, right: 0 }}
@@ -1171,7 +1182,7 @@ function OverlaysLane() {
         <header className="modal-header">
           <h3 className="modal-title">Confirm publish</h3>
           <button
-            className="ghost"
+            data-variant="ghost"
             aria-label="Close"
             style={{ minHeight: 'auto', padding: '0.25rem 0.55rem', borderRadius: 8 }}
             onClick={modal.close}
@@ -1181,7 +1192,7 @@ function OverlaysLane() {
           <p>Publishing makes this space visible to everyone in your org. You can revert any time.</p>
         </div>
         <footer className="modal-footer">
-          <button className="ghost" onClick={modal.close}>Cancel</button>
+          <button data-variant="ghost" onClick={modal.close}>Cancel</button>
           <button data-variant="cta" onClick={() => { modal.close(); toast.success('Published'); }}>
             Publish
           </button>
@@ -1221,7 +1232,7 @@ function OverlaysLane() {
           </label>
         </div>
         <footer className="drawer-footer">
-          <button className="ghost" onClick={drawer.close}>Cancel</button>
+          <button data-variant="ghost" onClick={drawer.close}>Cancel</button>
           <button onClick={() => { drawer.close(); toast.success('Saved'); }}>Save</button>
         </footer>
       </aside>
@@ -1410,7 +1421,7 @@ function AlertsLane() {
               <button data-variant="cta" style={{ minHeight: 0, padding: '0.4rem 0.8rem', fontSize: '0.82rem' }}>
                 Add payment
               </button>
-              <button className="ghost" style={{ minHeight: 0, padding: '0.4rem 0.8rem', fontSize: '0.82rem' }}>
+              <button data-variant="ghost" style={{ minHeight: 0, padding: '0.4rem 0.8rem', fontSize: '0.82rem' }}>
                 Remind later
               </button>
             </div>
@@ -1466,7 +1477,7 @@ function EmptyStateLane() {
             </p>
             <div className="empty-state-actions">
               <button data-variant="cta">Create your first space</button>
-              <button className="ghost">Take a tour</button>
+              <button data-variant="ghost">Take a tour</button>
             </div>
           </div>
         </div>
@@ -1502,7 +1513,7 @@ function EmptyStateLgLane() {
           </p>
           <div className="empty-state-actions">
             <button data-variant="cta">Create a space</button>
-            <button className="ghost">Import from existing tool</button>
+            <button data-variant="ghost">Import from existing tool</button>
             <button data-variant="command">$ starscape init</button>
           </div>
         </div>
@@ -1524,13 +1535,13 @@ function ToastsLane() {
       </header>
       <div className="lane-body lane-stack">
         <div className="demo-row">
-          <button className="ghost" onClick={() => toast.message('Heads up', { description: 'Just letting you know.' })}>
+          <button data-variant="ghost" onClick={() => toast.message('Heads up', { description: 'Just letting you know.' })}>
             message
           </button>
-          <button className="ghost" onClick={() => toast.info('Sync started', { description: 'Indexing 1,204 documents.' })}>info</button>
-          <button className="ghost" onClick={() => toast.success('Published', { description: 'Visible to everyone in your org.' })}>success</button>
-          <button className="ghost" onClick={() => toast.warning('Rate limited', { description: 'Backing off for 30 seconds.' })}>warning</button>
-          <button className="ghost" onClick={() => toast.error('Could not save', { description: 'Check your connection and try again.' })}>error</button>
+          <button data-variant="ghost" onClick={() => toast.info('Sync started', { description: 'Indexing 1,204 documents.' })}>info</button>
+          <button data-variant="ghost" onClick={() => toast.success('Published', { description: 'Visible to everyone in your org.' })}>success</button>
+          <button data-variant="ghost" onClick={() => toast.warning('Rate limited', { description: 'Backing off for 30 seconds.' })}>warning</button>
+          <button data-variant="ghost" onClick={() => toast.error('Could not save', { description: 'Check your connection and try again.' })}>error</button>
         </div>
         <div className="demo-row">
           <button onClick={() => toast.promise(
@@ -1561,12 +1572,12 @@ function TimelineLane() {
     <section className="lane lane-span-2">
       <header className="lane-head">
         <h3 className="lane-title">Composite · activity feed</h3>
-        <span className="count">{items.length}</span>
+        <span className="badge">{items.length}</span>
       </header>
       <div className="lane-body lane-stack">
         {items.map((it, i) => (
           <article key={i} className="card" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div className="avatar" data-tone={it.a}>{it.init}</div>
+            <div className="avatar" data-color={it.a}>{it.init}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: '0.85rem', lineHeight: 1.45 }}>
                 <strong>{it.who}</strong> {it.what}
@@ -1974,7 +1985,7 @@ function MediaCardLane() {
           <p className="media-card-note">Analyzed: 0.42 RMS, soft transient, no clipping.</p>
           <div className="media-card-actions">
             <button onClick={() => { setKept(true); toast.success('Kept'); }}>Keep</button>
-            <button className="ghost" onClick={() => { setKept(false); toast('Discarded'); }}>Discard</button>
+            <button data-variant="ghost" onClick={() => { setKept(false); toast('Discarded'); }}>Discard</button>
           </div>
         </article>
       </div>
@@ -1993,7 +2004,7 @@ function StepperLane() {
     <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Stepper</h3>
-        <span className="count">{s.current + 1}/{s.total}</span>
+        <span className="badge">{s.current + 1}/{s.total}</span>
       </header>
       <div className="lane-body lane-stack">
         <ol className="stepper">
@@ -2005,7 +2016,7 @@ function StepperLane() {
           ))}
         </ol>
         <div className="demo-row">
-          <button className="ghost" onClick={s.prev} disabled={s.isFirst}>Back</button>
+          <button data-variant="ghost" onClick={s.prev} disabled={s.isFirst}>Back</button>
           <button onClick={s.next} disabled={s.isLast}>Next</button>
         </div>
         <ol className="stepper" data-orientation="vertical">
@@ -2062,7 +2073,7 @@ function PopoverLane() {
       </header>
       <div className="lane-body">
         <div ref={wrapRef} style={{ position: 'relative', display: 'inline-block' }}>
-          <button className="ghost" onClick={pop.toggle} {...pop.triggerProps}>
+          <button data-variant="ghost" onClick={pop.toggle} {...pop.triggerProps}>
             Filters ▾
           </button>
           <div
@@ -2089,7 +2100,7 @@ function PopoverLane() {
               </label>
             </div>
             <footer className="popover-foot">
-              <button className="ghost" onClick={pop.close}>Reset</button>
+              <button data-variant="ghost" onClick={pop.close}>Reset</button>
               <button onClick={() => { pop.close(); toast.success('Filters applied'); }}>Apply</button>
             </footer>
           </div>
@@ -2156,7 +2167,7 @@ function TableLane() {
     <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Data table</h3>
-        <span className="count">{rows.length}</span>
+        <span className="badge">{rows.length}</span>
       </header>
       <div className="lane-body">
         <div className="table-wrap scroll-themed">

@@ -1,0 +1,75 @@
+/* Starscape v3 — presence dots.
+ *
+ *   <span class="dot"></span>                     presence (purple glow pulse)
+ *   <span class="dot" data-live></span>           live status (tone halo pulse)
+ *   <span class="dot" data-live data-tone="success"></span>
+ *   <span class="dot" data-count>3</span>          count bubble
+ *
+ * The presence base is the former activity-dot; the tone-halo `[data-live]`
+ * pulse is the former badge live dot, folded in here. (Orbit's agent-dot /
+ * card-unread-dot / agents-pill aliases live in Orbit's own styles now.)
+ */
+
+.dot {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #f4e4ff 0%, #c084fc 50%, #7c3aed 100%);
+  box-shadow:
+    0 0 5px rgba(168, 85, 247, 0.85),
+    0 0 12px rgba(168, 85, 247, 0.5);
+  animation: dot-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 5px rgba(168, 85, 247, 0.85),
+      0 0 12px rgba(168, 85, 247, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 7px rgba(var(--purple-rgb), 0.95),
+      0 0 18px rgba(168, 85, 247, 0.7);
+  }
+}
+
+/* Live — a solid tone dot that pulses a fading halo outward. Default tone red. */
+.dot[data-live] {
+  --live-color: var(--red-rgb);
+  background: rgb(var(--live-color));
+  box-shadow: none;
+  animation: dot-live-pulse 1.8s ease-out infinite;
+}
+
+.dot[data-live][data-tone="success"] { --live-color: var(--green-rgb); }
+.dot[data-live][data-tone="accent"]  { --live-color: var(--accent-rgb); }
+
+@keyframes dot-live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--live-color), 0.55); }
+  70%  { box-shadow: 0 0 0 0.45rem rgba(var(--live-color), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--live-color), 0); }
+}
+
+/* Count bubble — a dot grown to wrap a small number (the former count dot). */
+.dot[data-count] {
+  width: auto;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.32rem;
+  border-radius: var(--radius-pill, 999px);
+  display: grid;
+  place-items: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .dot {
+    animation: none;
+  }
+}
