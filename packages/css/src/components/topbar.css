@@ -1,6 +1,6 @@
 /* Starscape v3 — scroll-aware topbar.
  *
- * Backgroundless until the page scrolls — then a soft gradient + blur slides
+ * Backgroundless until the page scrolls — then a soft gradient surface slides
  * in. Pattern is 100% CSS; the only JS is toggling `is-scrolled` on <body>
  * (or any ancestor of the topbar) when scroll passes a threshold. The React
  * package ships `useScrollAware()` which does this for you.
@@ -31,8 +31,6 @@
   transition:
     background 260ms ease,
     box-shadow 260ms ease,
-    backdrop-filter 260ms ease,
-    -webkit-backdrop-filter 260ms ease,
     border-color 260ms ease;
   border-bottom: 1px solid transparent;
 }
@@ -42,12 +40,10 @@ body.is-scrolled .topbar,
 .topbar[data-scrolled] {
   background: linear-gradient(
     to bottom,
-    rgba(246, 240, 229, 0.85) 0%,
-    rgba(255, 252, 246, 0.6) 100%
+    rgba(246, 240, 229, 0.96) 0%,
+    rgba(255, 252, 246, 0.9) 100%
   );
   border-bottom-color: var(--line);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
   box-shadow: 0 10px 30px rgba(var(--warmth-rgb), 0.08);
 }
 
@@ -56,8 +52,8 @@ body.is-scrolled .topbar,
 [data-theme="dark"] .topbar[data-scrolled] {
   background: linear-gradient(
     to bottom,
-    rgba(26, 26, 46, 0.82) 0%,
-    rgba(15, 52, 96, 0.55) 100%
+    rgba(26, 26, 46, 0.94) 0%,
+    rgba(15, 52, 96, 0.86) 100%
   );
   border-bottom-color: rgba(var(--starlight-rgb), 0.18);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
@@ -68,8 +64,8 @@ body.is-scrolled .topbar,
   :root:not([data-theme="light"]) .topbar[data-scrolled] {
     background: linear-gradient(
       to bottom,
-      rgba(26, 26, 46, 0.82) 0%,
-      rgba(15, 52, 96, 0.55) 100%
+      rgba(26, 26, 46, 0.94) 0%,
+      rgba(15, 52, 96, 0.86) 100%
     );
     border-bottom-color: rgba(var(--starlight-rgb), 0.18);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);

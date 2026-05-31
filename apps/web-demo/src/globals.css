@@ -1,8 +1,5 @@
 /* Starscape v3 demo — full kitchen-sink import. */
 @import "@starlove/ui";
-/* Experimental "arc" button (the Hermes-technique port) — not in the default
-   bundle, so pull it in à-la-carte for the gallery. */
-@import "@starlove/ui/components/button-arc";
 
 /* ----- Demo-page-only layout helpers (not part of the library) ----- */
 
@@ -62,17 +59,9 @@ body {
   break-inside: avoid;
   margin-bottom: 1.25rem;
 
-  /* Only render lanes near the viewport — off-screen lanes skip paint and
-     their CSS animations (ARC spins, avatar rings, pulses) idle until scrolled
-     into view. contain-intrinsic-size: auto remembers each lane's real height
-     after first render to keep the scrollbar stable. */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 360px;
-}
-
-/* Opt-out: lanes whose tooltips / popovers / context-menus / modals escape the
-   lane box — content-visibility's paint containment would clip them. */
-.lane-grid > .lane.lane-cv-off {
+  /* Keep lanes fully rendered. `content-visibility: auto` made scrolling pay
+     for lane layout/paint right as each demo entered the viewport, which was
+     more noticeable than the idle animation savings on this kitchen-sink page. */
   content-visibility: visible;
   contain-intrinsic-size: none;
 }

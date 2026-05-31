@@ -100,6 +100,9 @@
   gap: 0.7rem;
   padding: 1.05rem 1.05rem 0.85rem;
   min-height: 64px;
+  /* Render clean when used as a link (e.g. a brand link to home). */
+  text-decoration: none;
+  color: inherit;
 }
 
 .page-sidebar-logo {
@@ -224,6 +227,7 @@
   text-align: start;
   white-space: nowrap;
   color: var(--muted);
+  text-decoration: none;
   cursor: pointer;
   transition:
     background 160ms ease,
@@ -234,6 +238,7 @@
 .page-sidebar-nav-item:hover {
   background: var(--subtle-bg);
   color: var(--ink);
+  text-decoration: none;
 }
 
 .page-sidebar-nav-item:focus-visible {

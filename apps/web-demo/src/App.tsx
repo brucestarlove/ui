@@ -38,6 +38,8 @@ function initialView(): DemoView {
   return DEMO_VIEWS.some((v) => v.id === h) ? h : 'components';
 }
 
+const PREVIEW_VERSION = 'v3.2';
+
 export function App() {
   const [view, setView] = useState<DemoView>(initialView);
 
@@ -165,7 +167,7 @@ function ReleaseBanner() {
     >
       <span className="alert-icon" aria-hidden>★</span>
       <div className="alert-body">
-        <strong className="alert-title">v0.4 is here.</strong>{' '}
+        <strong className="alert-title">{PREVIEW_VERSION} is here.</strong>{' '}
         A full React component layer (typed wrappers for Button, Card, Modal, Table, and ~20 more), the experimental <code>data-variant="arc"</code> button — a Starscape-colored adaptation of the Hermes dashboard's animated-rim technique — and an MIT license.
       </div>
       <button className="alert-close" aria-label="Dismiss" onClick={() => setShow(false)}>×</button>
@@ -179,8 +181,7 @@ function ReleaseBanner() {
 
 // ss-orbit chrome: search, New Card composer, board dropdown, theme toggle,
 // and a Settings drawer with a working tabbed pane. Overlays render as siblings
-// of the <header> (not inside it) so the topbar's scrolled-state
-// backdrop-filter doesn't capture their fixed positioning.
+// of the <header> (not inside it) so their fixed positioning stays independent.
 const DEMO_BOARDS = [
   { slug: 'orbit-prod', name: 'Orbit · production' },
   { slug: 'nebula-stg', name: 'Nebula · staging' },
@@ -229,7 +230,7 @@ function Topbar({
     <>
       <header className="topbar">
         <div className="topbar-brand">
-          Starscape <span className="badge" data-tone="accent" style={{ marginInlineStart: 6 }}>v0.4</span>
+          Starscape <span className="badge" data-tone="accent" style={{ marginInlineStart: 6 }}>{PREVIEW_VERSION}</span>
         </div>
 
         <div className="controls">
@@ -517,12 +518,12 @@ function Hero() {
   const [welcome, setWelcome] = useState(false);
   return (
     <header className="demo-hero">
-      <div className="eyebrow">design system · v3</div>
+      <div className="eyebrow">design system · {PREVIEW_VERSION}</div>
       <h1>
         <span className="text-gradient">A pure-CSS palette</span> for cosmic web apps.
       </h1>
       <p className="lede">
-        Starscape v3 ships tokens, base type, two backgrounds (parchment + animated starfield),
+        Starscape {PREVIEW_VERSION} ships tokens, base type, two backgrounds (parchment + animated starfield),
         and a generous component set. No Tailwind, no shadcn — just CSS and a thin React layer
         for theming and Sonner toasts.
       </p>
@@ -562,7 +563,7 @@ function Hero() {
 
 function ButtonsLane() {
   return (
-    <section className="lane lane-cv-off">
+    <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Buttons</h3>
         <span className="badge">5</span>
@@ -890,7 +891,7 @@ function BezelCardsLane() {
 
 function BadgesAvatarsLane() {
   return (
-    <section className="lane lane-cv-off">
+    <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Badges, chips, avatars</h3>
       </header>
@@ -1141,7 +1142,7 @@ function OverlaysLane() {
   useEscapeKey(drawer.close, { enabled: drawer.isOpen });
 
   return (
-    <section className="lane lane-cv-off">
+    <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Overlays</h3>
       </header>
@@ -2068,7 +2069,7 @@ function PopoverLane() {
   useClickOutside(wrapRef, pop.close, { enabled: pop.isOpen });
   useEscapeKey(pop.close, { enabled: pop.isOpen });
   return (
-    <section className="lane lane-cv-off">
+    <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Popover</h3>
       </header>
@@ -2121,7 +2122,7 @@ function ContextMenuLane() {
   useClickOutside(menuRef, menu.close, { enabled: menu.isOpen });
   useEscapeKey(menu.close, { enabled: menu.isOpen });
   return (
-    <section className="lane lane-cv-off">
+    <section className="lane">
       <header className="lane-head">
         <h3 className="lane-title">Context menu</h3>
       </header>
