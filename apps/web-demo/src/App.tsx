@@ -572,6 +572,7 @@ function ButtonsLane() {
           <button>primary</button>
           <button data-variant="secondary">secondary</button>
           <button data-variant="ghost">ghost</button>
+          <button data-variant="translucent">translucent</button>
           <button data-variant="cta">epic CTA</button>
           <button data-variant="command">$ orbit deploy</button>
         </div>

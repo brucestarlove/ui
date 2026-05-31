@@ -46,7 +46,7 @@
  * and silence them. The same `:where(:not(…))` is reused verbatim for the
  * ::after ring, its hover/disabled triggers, and the dark rim colors. */
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])) {
   /* Arc ring colors — overridable per-instance. Defaults: light theme. */
   --arc-c0: rgba(var(--accent-rgb), 0);
   --arc-c1: rgba(var(--accent-rgb), 0.95);
@@ -61,7 +61,7 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
 }
 
 /* The sweeping arc ring — a masked-border pseudo-element behind the host. */
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip]))::after {
   content: "";
   position: absolute;
   inset: var(--arc-inset);
@@ -109,17 +109,17 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
   mask-composite: exclude;
 }
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):hover::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):focus-visible::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):active::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])):hover::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])):focus-visible::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])):active::after {
   opacity: 1;
   animation-play-state: running;   /* sweep only while the ring is shown */
 }
 
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])):disabled::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[data-disabled]::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip]))[aria-disabled="true"]::after,
-button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])).is-disabled::after {
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])):disabled::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip]))[data-disabled]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip]))[aria-disabled="true"]::after,
+button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])).is-disabled::after {
   animation: none;
   opacity: 0;
 }
@@ -196,14 +196,14 @@ button[data-variant="arc"]:disabled {
 
 /* ---------- Dark: cyan + violet rim (ring vars, shared) ---------- */
 
-[data-theme="dark"] button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+[data-theme="dark"] button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])) {
   --arc-c0: rgba(var(--cyan-rgb), 0);
   --arc-c1: rgba(var(--cyan-rgb), 0.95);
   --arc-c2: rgba(var(--violet-rgb), 0.9);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-tooltip])) {
+  :root:not([data-theme="light"]) button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data-variant="card-accordion"]):not([data-no-arc]):not(.btn-plus):not(.column-add-btn):not(.add-card-phantom):not([data-variant="arc-star"]):not([data-variant="arc-hex"]):not([data-variant="arc-shield"]):not([data-variant="translucent"]):not([data-tooltip])) {
     --arc-c0: rgba(var(--cyan-rgb), 0);
     --arc-c1: rgba(var(--cyan-rgb), 0.95);
     --arc-c2: rgba(var(--violet-rgb), 0.9);

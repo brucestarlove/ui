@@ -10,7 +10,10 @@
  *                                    bevel (light) or cyan/violet (dark); sweep
  *                                    ring fades in on hover; press-invert on :active
  *   [data-variant="secondary"]     → solid teal→blue surface, ARC bevel + ring
- *   [data-variant="ghost"]         → outlined/surface-tinted; sweep ring on hover
+ *   [data-variant="ghost"]         → frosted surface (backdrop-blur) + sweep ring
+ *   [data-variant="translucent"]   → like ghost but NO blur: a soft translucent
+ *                                    tint over whatever sits behind it (the old
+ *                                    Settings-chip look — quieter, less gray)
  *   [data-variant="cta"]           → "epic" ARC tier: bolder + bigger bevel; opt
  *                                    into the twin ring with data-cta="bstar"
  *                                    (see button-arc.css)
@@ -179,6 +182,34 @@ button[data-variant="ghost"]:active {
     border-color: rgba(var(--starlight-rgb), 0.5);
     box-shadow: 0 0 14px rgba(var(--starlight-rgb), 0.2);
   }
+}
+
+/* ---------- Translucent — quiet dim chip, no frost ----------
+ *
+ * Ghost's sibling, minus the backdrop-filter. Ghost frosts the backdrop into a
+ * light gray panel; translucent lays a neutral dim scrim that darkens what sits
+ * behind it (the old Orbit Settings chip). Surface + border + ink all flow from
+ * the theme tokens, so a single rule renders in light, system-dark, and explicit
+ * dark — no [data-theme] blocks. (--surface-dim is the dim translucent surface:
+ * a dark scrim in dark themes, a soft paper veil in light.)
+ */
+
+button[data-variant="translucent"] {
+  border: 1px solid var(--line);
+  background: var(--surface-dim);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+button[data-variant="translucent"]:hover {
+  transform: none;
+  filter: none;
+  border-color: var(--accent-border);
+  background: var(--surface);
+}
+
+button[data-variant="translucent"]:active {
+  background: var(--surface-dim);
 }
 
 /* ---------- CTA — the "epic" tier ----------

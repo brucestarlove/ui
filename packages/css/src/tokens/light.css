@@ -76,6 +76,10 @@
    * button-arc.css. The secondary keeps its solid teal→blue surface but adopts
    * the same bevel grammar.
    */
+  /* --btn-gradient and --btn-color are a contrast PAIR: override them together.
+   * This default is a pale wash + dark ink; if a consumer swaps in a dark/opaque
+   * --btn-gradient they must also set a light --btn-color, or the label goes
+   * dark-on-dark. */
   --btn-gradient: linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(var(--amber-rgb), 0.12));
   --btn-color: var(--teal-deep);
   --btn-border: rgba(var(--accent-rgb), 0.4);

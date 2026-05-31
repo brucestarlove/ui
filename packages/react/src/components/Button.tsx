@@ -12,6 +12,7 @@ export type ButtonVariant =
   | 'primary'
   | 'secondary'
   | 'ghost'
+  | 'translucent'
   | 'cta'
   | 'command'
   | 'plus';
