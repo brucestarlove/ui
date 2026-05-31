@@ -1,4 +1,8 @@
-export { Toaster } from './Toaster';
+// NOTE: Toaster is intentionally NOT re-exported here — it lives on the
+// `@starlove/ui-react/toaster` subpath so the main barrel never statically
+// imports the optional `sonner` peer (which otherwise forced every consumer to
+// install sonner and broke unbundled loaders like Vitest). See the `./toaster`
+// export in package.json and the second tsup entry.
 export { useTheme } from './useTheme';
 export type { ThemeMode, ResolvedTheme } from './useTheme';
 export { useMotion } from './useMotion';

@@ -1,6 +1,5 @@
 import {
   PageShell,
-  Toaster,
   Topbar,
   TopbarBrand,
   TopbarSpacer,
@@ -9,6 +8,7 @@ import {
   Lane,
   LaneGrid,
 } from '@starlove/ui-react';
+import { Toaster } from '@starlove/ui-react/toaster';
 import { toast } from 'sonner';
 import { ThemeToggle } from './ThemeToggle';
 

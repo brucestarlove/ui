@@ -15,8 +15,8 @@ See [CHANGELOG.md](./CHANGELOG.md) for what's in each version.
 
 | App | Description |
 |---|---|
-| [`web-demo`](./apps/web-demo) | Vite + React preview app. Scaffolded; gallery content lives in a follow-up phase. |
-| [`docs`](./apps/docs) | Astro Starlight documentation app for the CSS package and optional React layer. |
+| [`web-demo`](./apps/web-demo) | Vite + React preview app with a masonry gallery of the component surface. |
+| [`docs`](./docs) | Astro Starlight documentation app for the UI packages and future Starscape project adoption notes. |
 
 ## Quick start
 

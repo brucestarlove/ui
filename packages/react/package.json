@@ -1,6 +1,6 @@
 {
   "name": "@starlove/ui-react",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Starscape v3 — React layer: typed component wrappers + theme/motion/disclosure hooks for @starlove/ui",
   "type": "module",
   "license": "MIT",
@@ -34,6 +34,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./toaster": {
+      "types": "./dist/Toaster.d.ts",
+      "import": "./dist/Toaster.js"
     }
   },
   "files": [
@@ -57,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@starlove/ui": "^3.2.0"
+    "@starlove/ui": "^3.2.1"
   },
   "devDependencies": {
     "@types/react": "catalog:",

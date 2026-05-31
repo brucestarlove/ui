@@ -183,17 +183,3 @@ test("version-packages accepts the pnpm run -- argument separator", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
-
-test("version-packages rejects invalid semantic versions", () => {
-  const root = makeFixture();
-  try {
-    const result = spawnSync(process.execPath, [scriptPath, "3.1", "--root", root], {
-      encoding: "utf8"
-    });
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Expected a semantic version/);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});

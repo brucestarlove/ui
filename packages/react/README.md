@@ -40,7 +40,7 @@ Each component pairs with its CSS file — import the whole library
 | `useDisclosure()` | open/close primitive for modals, drawers, flyouts, popovers — returns `{ isOpen, open, close, toggle, triggerProps, surfaceProps }` |
 | `useClickOutside(ref, handler, opts?)` | dismiss-on-outside-click, gated by `enabled` |
 | `useEscapeKey(handler, opts?)` | dismiss-on-Escape, gated by `enabled` |
-| `<Toaster />` | wraps `sonner`'s `<Toaster>` with theme tracking |
+| `<Toaster />` | wraps `sonner`'s `<Toaster>` with theme tracking — imported from `@starlove/ui-react/toaster` (keeps `sonner` off the main barrel) |
 | `<Starscape />` | mounts the dark-mode background system (canvas starfield, meteors, nebulas) |
 
 ## Install
@@ -77,10 +77,16 @@ function MenuButton() {
 
 ## Theme + Toaster
 
+`<Toaster />` ships on its own subpath so the main barrel never imports the
+optional `sonner` peer — import it from `@starlove/ui-react/toaster` (and install
+`sonner`). Everything else imports from `@starlove/ui-react` with no `sonner`
+dependency.
+
 ```tsx
 import '@starlove/ui';
 import '@starlove/ui/components/sonner';
-import { Toaster, useTheme } from '@starlove/ui-react';
+import { useTheme } from '@starlove/ui-react';
+import { Toaster } from '@starlove/ui-react/toaster';
 import { toast } from 'sonner';
 
 function ThemeButton() {

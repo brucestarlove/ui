@@ -43,11 +43,8 @@ function parseArgs(argv) {
   if (!version) {
     throw new Error(`Missing version.\n\n${usage()}`);
   }
-  // npm versions must be full major.minor.patch — normalize a 2-part "3.2" to
-  // "3.2.0" so the shorthand works as people expect.
-  if (/^(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(version)) {
-    version = `${version}.0`;
-  }
+  // npm versions must be full major.minor.patch. Keep shorthand such as "3.2"
+  // invalid so releases are explicit.
   if (!VERSION_RE.test(version)) {
     throw new Error(`Expected a semantic version like 3.1.2, got: ${version}`);
   }
