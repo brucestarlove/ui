@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -32,3 +32,29 @@ test("every exports subpath resolves to a file that exists", () => {
     assert.equal(existsSync(join(pkgRoot, file)), true, `${subpath} -> ${file} should exist`);
   }
 });
+
+test("default CSS does not force package-relative cursor asset requests", () => {
+  for (const file of cssFiles(join(pkgRoot, "src"))) {
+    if (file.includes("/src/cursors/")) continue;
+
+    const css = readFileSync(file, "utf8");
+    assert.doesNotMatch(css, /url\(['"]?\.\.\/cursors\//, file);
+  }
+
+  const resetCss = readFileSync(join(pkgRoot, "src/base/reset.css"), "utf8");
+  assert.match(resetCss, /cursor: var\(--sl-cursor-arrow, default\);/);
+  assert.match(resetCss, /cursor: var\(--sl-cursor-link, pointer\);/);
+  assert.match(resetCss, /cursor: var\(--sl-cursor-select, text\);/);
+});
+
+function cssFiles(dir) {
+  return readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
+    const stat = statSync(path);
+
+    if (stat.isDirectory()) return cssFiles(path);
+    if (entry.endsWith(".css")) return [path];
+
+    return [];
+  });
+}

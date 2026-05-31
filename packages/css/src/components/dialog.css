@@ -186,7 +186,7 @@
   font-weight: 700;
   color: var(--btn-color);
   background: var(--btn-gradient);
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     filter 150ms ease,
     transform 150ms ease,

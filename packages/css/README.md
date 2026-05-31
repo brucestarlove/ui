@@ -48,13 +48,37 @@ By default the library follows the OS via `prefers-color-scheme`. To force a the
 
 ## Custom cursors
 
-The components use `cursor: url('cursors/live_link.cur'), pointer;` style references. Serve the `cursors/` directory under your app's static path. With Vite, the simplest setup is:
+Components use cursor custom properties with native browser fallbacks by default. That means importing `@starlove/ui` never requires your app to serve `.cur` files, and missing cursor assets won't create noisy 404s.
+
+Default contract:
+
+```css
+cursor: var(--sl-cursor-link, pointer);
+```
+
+To opt into the Starscape cursor files, either set the variables to public URLs you control:
+
+```css
+:root {
+  --sl-cursor-arrow: url('/cursors/live_arrow.cur'), default;
+  --sl-cursor-link: url('/cursors/live_link.cur'), pointer;
+  --sl-cursor-select: url('/cursors/live_select.cur'), text;
+  --sl-cursor-move: url('/cursors/live_move.cur'), move;
+  --sl-cursor-unavailable: url('/cursors/live_unavail.cur'), not-allowed;
+}
+```
+
+…or, if your bundler/static server resolves package-adjacent `.cur` assets correctly, import the optional preset:
+
+```js
+import '@starlove/ui/cursors';
+```
+
+You can also import individual cursor assets for bundler-managed URLs:
 
 ```js
 import liveLink from '@starlove/ui/cursors/live_link.cur?url';
 ```
-
-…or copy the `.cur` files into your `public/cursors/` folder. If the cursor files aren't reachable, browsers fall back to the standard cursor (`pointer`, `grab`, etc.) gracefully.
 
 ## What's included
 

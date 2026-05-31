@@ -45,7 +45,7 @@
   white-space: nowrap;
   border-radius: 6px;
   transition: color 140ms ease;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .breadcrumb a:hover {

@@ -1,0 +1,17 @@
+/* Optional custom cursor preset.
+ *
+ * @starlove/ui components use cursor custom properties with native cursor
+ * fallbacks by default, so importing the design system never forces consumers
+ * to serve .cur files or tolerate 404s.
+ *
+ * Import this file only when your bundler/static server can resolve the .cur
+ * assets beside this stylesheet, or set these variables yourself to your app's
+ * public cursor URLs instead.
+ */
+:root {
+  --sl-cursor-arrow: url("./live_arrow.cur"), default;
+  --sl-cursor-link: url("./live_link.cur"), pointer;
+  --sl-cursor-select: url("./live_select.cur"), text;
+  --sl-cursor-move: url("./live_move.cur"), move;
+  --sl-cursor-unavailable: url("./live_unavail.cur"), not-allowed;
+}

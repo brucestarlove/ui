@@ -34,7 +34,7 @@
   color: var(--ink);
   text-align: start;
   font: inherit;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .search-hit:last-child {

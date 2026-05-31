@@ -41,7 +41,7 @@
   font: inherit;
   font-size: 0.85rem;
   text-align: start;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 140ms ease, color 140ms ease;
 }
 
@@ -61,7 +61,7 @@
 .flyout-item[aria-disabled="true"],
 .flyout-item:disabled {
   opacity: 0.55;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 .flyout-separator {

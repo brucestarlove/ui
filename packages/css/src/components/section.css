@@ -42,7 +42,7 @@
 
 details.section > summary {
   list-style: none;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   display: flex;
   align-items: center;
   gap: 0.4rem;

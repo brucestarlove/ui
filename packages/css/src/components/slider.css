@@ -46,7 +46,7 @@ input[type="range"].slider,
   min-width: 7rem;
   height: var(--thumb-d);
   background: transparent;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 /* WebKit / Blink — track (fill driven by --value) + beveled thumb.
@@ -180,5 +180,5 @@ input[type="range"].slider:focus-visible,
 input[type="range"]:disabled,
 .slider[data-disabled] > input[type="range"] {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }

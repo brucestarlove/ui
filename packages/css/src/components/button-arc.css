@@ -189,7 +189,7 @@ button[data-variant="arc"]:active {
 }
 
 button[data-variant="arc"]:disabled {
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
   opacity: 0.5;
   filter: saturate(0.55);
 }
@@ -393,7 +393,7 @@ button[data-variant="arc-shield"]:active {
 button[data-variant="arc-star"]:disabled,
 button[data-variant="arc-hex"]:disabled,
 button[data-variant="arc-shield"]:disabled {
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
   opacity: 0.45;
   filter: saturate(0.5);
   animation: none;

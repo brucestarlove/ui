@@ -105,7 +105,7 @@
   font-family: inherit;
   font-size: 0.82rem;
   font-weight: 700;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     border-color 180ms ease,
     background 180ms ease,

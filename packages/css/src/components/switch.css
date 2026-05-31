@@ -14,7 +14,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   user-select: none;
 }
 
@@ -108,7 +108,7 @@
 
 .switch > input:disabled + .switch-track {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 .switch-label {

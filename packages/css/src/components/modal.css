@@ -82,7 +82,7 @@ button.modal-close {
   font-weight: 400;
   line-height: 1;
   box-shadow: none;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .modal-close:hover,

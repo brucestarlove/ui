@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@starlove/ui-react": ["../../packages/react/src/index.ts"],
+      "@starlove/ui-react/toaster": ["../../packages/react/src/Toaster.tsx"],
       "@starlove/ui-react/*": ["../../packages/react/src/*"]
     }
   },

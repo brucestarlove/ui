@@ -50,7 +50,7 @@
 
 /* Close button alignment with v3 idiom (live_link cursor + soft hover). */
 [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 /* ---------- Dark — matches both:

@@ -44,7 +44,7 @@
     50% 70%,  21% 91%,   32% 56%,    2% 35%,   39% 34%
   );
   text-indent: -9999px;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 120ms ease, transform 120ms ease;
 }
 

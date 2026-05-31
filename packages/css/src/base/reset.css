@@ -53,24 +53,22 @@ hr {
   margin: 1rem 0;
 }
 
-/* Cursor defaults — global "live arrow" everywhere; text controls get the
- * "live select" cursor; clickable input types get "live link". Surfaces that
- * pan/grab override per-component (e.g., kanban → live_move).
- *
- * The .cur files ship under @starlove/ui/cursors/. Consumers
- * must serve them at a static path; if the URL fails to resolve, browsers
- * fall back to the standard cursor token gracefully.
+/* Cursor defaults — native browser cursors by default, with optional
+ * Starscape .cur files behind CSS custom properties. This keeps package imports
+ * quiet in apps that do not serve @starlove/ui cursor assets, while letting
+ * consumers opt in by setting --sl-cursor-* variables or importing
+ * @starlove/ui/cursors when their bundler can resolve the .cur files.
  */
 html,
 body {
-  cursor: url('../cursors/live_arrow.cur'), default;
+  cursor: var(--sl-cursor-arrow, default);
 }
 
 input,
 textarea,
 [contenteditable="true"],
 [contenteditable=""] {
-  cursor: url('../cursors/live_select.cur'), text;
+  cursor: var(--sl-cursor-select, text);
 }
 
 input[type="button"],
@@ -81,5 +79,5 @@ input[type="radio"],
 input[type="range"],
 input[type="color"],
 input[type="file"] {
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }

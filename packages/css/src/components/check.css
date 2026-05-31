@@ -45,7 +45,7 @@ input[type="radio"]:not(.switch > *) {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     0 1px 2px rgba(var(--ink-rgb), 0.08);
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     background 160ms ease,
     border-color 160ms ease,
@@ -144,7 +144,7 @@ input[type="radio"]:not(.switch > *):checked {
 input[type="checkbox"]:not(.switch > *):disabled,
 input[type="radio"]:not(.switch > *):disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 /* ---------- Block wrappers (label-aligned) ---------- */
@@ -154,13 +154,13 @@ input[type="radio"]:not(.switch > *):disabled {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   user-select: none;
 }
 
 .check:has(input:disabled),
 .radio:has(input:disabled) {
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
   opacity: 0.7;
 }
 

@@ -89,7 +89,7 @@
     inset 0 0 0 2px rgba(var(--accent-rgb), 0.12),
     0 4px 10px rgba(var(--accent-rgb), 0.07),
     0 1px 4px rgba(var(--warmth-rgb), 0.05);
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     border-color 160ms ease,
     background 160ms ease,
@@ -174,7 +174,7 @@
   background: var(--btn-gradient);
   font-size: 0.82rem;
   font-weight: 700;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .folder-picker-field {
@@ -192,7 +192,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   white-space: nowrap;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 /* Dark — starlight bezel items over cosmos; glass blur on the surface. */

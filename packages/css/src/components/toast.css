@@ -83,7 +83,7 @@ button.toast-close {
   color: inherit;
   box-shadow: none;
   opacity: 0.45;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   font-family: inherit;
   font-size: 1rem;
   line-height: 1;

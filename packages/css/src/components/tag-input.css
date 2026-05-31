@@ -60,7 +60,7 @@ button.tag-remove {
   line-height: 1;
   box-shadow: none;
   opacity: 0.6;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 140ms ease, opacity 140ms ease;
 }
 

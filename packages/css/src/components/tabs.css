@@ -49,7 +49,7 @@ button.tab {
   font-weight: 600;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     background 140ms ease,
     color 140ms ease,
@@ -89,7 +89,7 @@ button.tab::after {
 .tab[disabled],
 .tab[aria-disabled="true"] {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 /* ---------- Underline variant ---------- */

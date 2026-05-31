@@ -23,7 +23,7 @@
   opacity: 0;
   transition: opacity 280ms ease;
   pointer-events: none;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .drawer-backdrop.is-visible {
@@ -133,7 +133,7 @@ button.drawer-tab {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     background 140ms ease,
     color 140ms ease,
@@ -187,7 +187,7 @@ button.drawer-close {
   font-size: 1.35rem;
   font-weight: 400;
   line-height: 1;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .drawer-close:hover,

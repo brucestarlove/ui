@@ -44,7 +44,7 @@ input:disabled,
 select:disabled,
 textarea:disabled {
   opacity: 0.55;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 textarea {
@@ -195,7 +195,7 @@ button.input-search-clear {
   line-height: 1;
   display: inline-grid;
   place-items: center;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 140ms ease, color 140ms ease, opacity 140ms ease;
   box-shadow: none;
   opacity: 0;

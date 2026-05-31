@@ -86,7 +86,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
     border-color 140ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -163,7 +163,7 @@
 
 .media-play:disabled {
   opacity: 0.7;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 /* ---------- Envelope — waveform-ish progress strip ---------- */

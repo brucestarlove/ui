@@ -58,5 +58,5 @@
   background: rgba(15, 23, 42, 0.92);
   color: white;
   font-size: 1.4rem;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }

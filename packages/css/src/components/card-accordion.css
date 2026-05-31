@@ -46,7 +46,7 @@ button.card-expand-trigger[data-variant="card-accordion"],
   font: inherit;
   line-height: 1.2;
   text-align: left;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 160ms ease;
 }
 
@@ -65,7 +65,7 @@ button.card-expand-trigger:not(.card-expand-trigger--static):hover,
 }
 
 .card-meta .card-expand-trigger--static {
-  cursor: url('../cursors/live_arrow.cur'), default;
+  cursor: var(--sl-cursor-arrow, default);
 }
 
 .ticket-number {

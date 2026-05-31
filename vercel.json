@@ -1,5 +1,4 @@
 {
-  "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build:demo",
   "outputDirectory": "apps/web-demo/dist",
   "rewrites": [

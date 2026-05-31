@@ -1,6 +1,6 @@
 {
   "name": "@starlove/ui",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Starscape v3 — pure CSS design system (tokens, base, backgrounds, components)",
   "type": "module",
   "license": "MIT",
@@ -127,6 +127,7 @@
     "./utilities/skip-link":      "./src/utilities/skip-link.css",
     "./utilities/text-gradient":  "./src/utilities/text-gradient.css",
     "./utilities/scrollbar":      "./src/utilities/scrollbar.css",
+    "./cursors":                  "./src/cursors/index.css",
     "./cursors/*":                "./src/cursors/*"
   }
 }

@@ -59,7 +59,7 @@
   font-size: 1.05rem;
   font-weight: 800;
   line-height: 1;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition:
     background 140ms ease,
     border-color 140ms ease,
@@ -106,7 +106,7 @@
 
 .number-step:disabled {
   opacity: 0.4;
-  cursor: not-allowed;
+  cursor: var(--sl-cursor-unavailable, not-allowed);
 }
 
 .number-field[data-size="sm"] > input {

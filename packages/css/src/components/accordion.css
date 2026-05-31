@@ -34,7 +34,7 @@
   font-weight: 600;
   list-style: none;
   user-select: none;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .accordion > summary::-webkit-details-marker {

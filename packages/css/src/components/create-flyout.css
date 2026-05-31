@@ -103,7 +103,7 @@ button.create-flyout-close {
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 .create-flyout-close:hover,
@@ -175,7 +175,7 @@ button.create-flyout-close::after {
   background: var(--btn-gradient);
   font-weight: 700;
   font-size: 0.88rem;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
 }
 
 /* Dark — deeper backdrop + glass blur on the panel. */

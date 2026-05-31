@@ -99,7 +99,7 @@ button.alert-close {
   font-weight: 400;
   line-height: 1;
   opacity: 0.55;
-  cursor: url('../cursors/live_link.cur'), pointer;
+  cursor: var(--sl-cursor-link, pointer);
   transition: background 140ms ease, opacity 140ms ease, border-color 140ms ease;
   display: inline-grid;
   place-items: center;
