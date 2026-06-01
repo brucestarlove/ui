@@ -33,6 +33,22 @@ test("every exports subpath resolves to a file that exists", () => {
   }
 });
 
+test("topbar notes strip is exported and stays visually naked", () => {
+  const css = readFileSync(join(pkgRoot, "src/components/topbar-notes.css"), "utf8");
+  const indexCss = readFileSync(join(pkgRoot, "src/index.css"), "utf8");
+
+  assert.equal(pkg.exports["./components/topbar-notes"], "./src/components/topbar-notes.css");
+  assert.match(indexCss, /@import "\.\/components\/topbar-notes\.css";/);
+  assert.match(css, /\.topbar-notes\s*\{[\s\S]*max-width:\s*var\(--topbar-notes-max-width,\s*600px\);/);
+  assert.match(css, /\.topbar-notes\s*\{[\s\S]*overflow:\s*hidden;[\s\S]*text-overflow:\s*ellipsis;[\s\S]*white-space:\s*nowrap;/);
+  assert.match(css, /\.topbar-notes\s*\{[\s\S]*border:\s*0;/);
+  assert.match(css, /\.topbar-notes\s*\{[\s\S]*background:\s*transparent;/);
+  assert.match(css, /\.topbar-notes:is\(:hover,\s*:focus-visible,\s*\[aria-expanded="true"\],\s*\[data-state="open"\]\)\s*\{[\s\S]*border-color:\s*transparent;/);
+  assert.match(css, /\.topbar-notes:is\(:hover,\s*:focus-visible,\s*\[aria-expanded="true"\],\s*\[data-state="open"\]\)\s*\{[\s\S]*background:\s*transparent;/);
+  assert.match(css, /\.topbar-notes:is\(:hover,\s*:focus-visible,\s*\[aria-expanded="true"\],\s*\[data-state="open"\]\)\s*\{[\s\S]*box-shadow:\s*none;/);
+  assert.doesNotMatch(css, /@keyframes|animation\s*:/);
+});
+
 test("default CSS does not force package-relative cursor asset requests", () => {
   for (const file of cssFiles(join(pkgRoot, "src"))) {
     if (file.includes("/src/cursors/")) continue;

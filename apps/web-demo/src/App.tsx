@@ -123,6 +123,7 @@ function ComponentsGallery() {
           <UniversalCardsLane />
           <MediaCardLane />
           <BezelCardsLane />
+          <GlowCardsLane />
           <BadgesAvatarsLane />
           <ProgressLoadersLane />
           <StepperLane />
@@ -230,7 +231,10 @@ function Topbar({
     <>
       <header className="topbar">
         <div className="topbar-brand">
-          Starscape <span className="badge" data-tone="accent" style={{ marginInlineStart: 6 }}>{PREVIEW_VERSION}</span>
+          <button type="button" className="brand-focus-btn" aria-label="Starscape">
+            <img className="mark" src="/Starscape-Star.png" alt="Starscape logo" />
+          </button>
+          Starscape
         </div>
 
         <div className="controls">
@@ -878,7 +882,92 @@ function BezelCardsLane() {
         <article className="card" data-variant="bug">
           <span className="type-pill" data-variant="bug">bug · #482</span>
           <h4 style={{ margin: '6px 0 4px', fontSize: '0.95rem' }}>Drawer slides past viewport on iOS</h4>
-          <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>Reproducible on iOS 18 · regression</p>
+          <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>Mobile viewport QA needed</p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Glow cards (free color palette, non-semantic — the "Nebula pad" border)
+// ---------------------------------------------------------------------------
+
+function GlowCardsLane() {
+  const muted = { margin: 0, color: 'var(--muted)', fontSize: '0.78rem' } as const;
+  const title = { margin: '0 0 4px', fontSize: '0.95rem' } as const;
+  return (
+    <section className="lane">
+      <header className="lane-head">
+        <h3 className="lane-title">Cards · glow palette</h3>
+        <span className="lane-subtitle">data-variant="glow-*" — the Nebula-pad border as a free color</span>
+      </header>
+      <div className="lane-body lane-stack">
+        {/* The green you liked, now resting (not selected) */}
+        <article className="card" data-variant="glow-green">
+          <p style={muted}>Monthly active</p>
+          <h4 style={{ margin: '2px 0', fontSize: '1.6rem', letterSpacing: '-0.02em' }}>12,480</h4>
+          <p style={{ ...muted, color: 'var(--accent)' }}>▲ 8.2% vs last month</p>
+        </article>
+
+        {/* Media-ish row */}
+        <article className="card" data-variant="glow-violet" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div className="media-play" data-state="playing" aria-hidden style={{ pointerEvents: 'none' }}>Play</div>
+          <div style={{ minWidth: 0 }}>
+            <h4 style={title}>Nebula pad — warm</h4>
+            <p style={muted}>suno · v3.5 · 0:18</p>
+          </div>
+        </article>
+
+        {/* Checklist */}
+        <article className="card" data-variant="glow-amber">
+          <h4 style={title}>Pre-flight</h4>
+          <ul style={{ margin: 0, paddingLeft: '1.1rem', color: 'var(--muted)', fontSize: '0.8rem', lineHeight: 1.7 }}>
+            <li>Tokens regenerated</li>
+            <li>Dark theme verified</li>
+            <li>Snapshot diff clean</li>
+          </ul>
+        </article>
+
+        {/* Quote / callout */}
+        <article className="card" data-variant="glow-cyan">
+          <p style={{ margin: '0 0 8px', fontSize: '0.86rem', lineHeight: 1.55 }}>
+            “Just a 1px hued border and a soft ring — it only remaps one channel.”
+          </p>
+          <p style={muted}>— card.css</p>
+        </article>
+
+        {/* Mini progress */}
+        <article className="card" data-variant="glow-blue">
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <h4 style={title}>Indexing</h4>
+            <span style={muted}>72%</span>
+          </div>
+          <div style={{ height: 6, borderRadius: 999, background: 'rgba(var(--ink-rgb),0.08)' }}>
+            <div style={{ width: '72%', height: '100%', borderRadius: 999, background: 'rgba(var(--blue-rgb),0.7)' }} />
+          </div>
+        </article>
+
+        {/* Chips */}
+        <article className="card" data-variant="glow-coral">
+          <h4 style={title}>Tags</h4>
+          <div className="demo-row" style={{ marginTop: 4 }}>
+            <span className="chip" data-tone="danger">urgent</span>
+            <span className="chip">ambient</span>
+            <span className="chip" data-tone="accent">draft</span>
+          </div>
+        </article>
+
+        {/* Selected = the animated ARC sweep ring, in the card's own hue */}
+        <article className="card" data-variant="glow-indigo" data-selected>
+          <h4 style={title}>Selected · indigo</h4>
+          <p style={muted}>Selected hosts the ARC sweep ring — an animated rim that glows in this card's hue.</p>
+        </article>
+
+        {/* The original teal, resting */}
+        <article className="card" data-variant="glow-teal">
+          <h4 style={title}>Resting · teal</h4>
+          <p style={muted}>The exact border you liked, now available on any card without being selected.</p>
         </article>
       </div>
     </section>

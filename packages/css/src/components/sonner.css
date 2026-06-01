@@ -48,9 +48,53 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
-/* Close button alignment with v3 idiom (live_link cursor + soft hover). */
+/* Close button: hidden until the toast is hovered/focused, then reveals with
+ * a neutral v3 palette. Sonner's richColors mode otherwise paints the close
+ * button in the toast's type color (e.g. dark-green X on dark-green bg for a
+ * success toast), which leaves it visually empty. We override per-type with a
+ * higher-specificity selector so neutrals win regardless of toast type/theme.
+ */
 [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
   cursor: var(--sl-cursor-link, pointer);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+[data-sonner-toaster] [data-sonner-toast]:hover [data-close-button],
+[data-sonner-toaster] [data-sonner-toast]:focus-within [data-close-button] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Neutral palette — light. Specificity beats sonner's
+ * [data-rich-colors='true'][data-sonner-toast][data-type='...'] [data-close-button]
+ * so success/info/warning/error all share the same readable close button.
+ */
+[data-sonner-toaster] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
+[data-sonner-toaster] [data-sonner-toast] [data-close-button] {
+  background: rgba(var(--paper-rgb), 0.98);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+/* Neutral palette — dark. */
+[data-sonner-toaster][data-theme='dark'] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
+[data-sonner-toaster][data-theme='dark'] [data-sonner-toast] [data-close-button],
+[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
+[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
+  background: rgba(var(--cosmos-rgb), 0.96);
+  border-color: rgba(var(--starlight-rgb), 0.3);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-sonner-toaster]:not([data-theme='light']) [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
+  :root:not([data-theme='light']) [data-sonner-toaster]:not([data-theme='light']) [data-sonner-toast] [data-close-button] {
+    background: rgba(var(--cosmos-rgb), 0.96);
+    border-color: rgba(var(--starlight-rgb), 0.3);
+    color: rgba(255, 255, 255, 0.92);
+  }
 }
 
 /* ---------- Dark — matches both:

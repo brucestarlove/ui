@@ -1,0 +1,51 @@
+/* Starscape v3 — topbar notes strip.
+ *
+ * A visually naked, single-line text affordance for compact project/board notes
+ * in a topbar. It deliberately paints no border and no background, including
+ * hover/focus/open states: consumers can use it as a saved, clickable ambient
+ * text rail without it becoming a chip.
+ *
+ *   <button class="topbar-notes" type="button">
+ *     <span class="topbar-notes__text">Board notes…</span>
+ *   </button>
+ */
+
+.topbar-notes {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+  max-width: var(--topbar-notes-max-width, 600px);
+  padding: 0;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  cursor: var(--sl-cursor-link, pointer);
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.topbar-notes:is(:hover, :focus-visible, [aria-expanded="true"], [data-state="open"]) {
+  color: var(--topbar-notes-active-color, var(--ink));
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.topbar-notes__text {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

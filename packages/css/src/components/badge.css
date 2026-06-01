@@ -125,15 +125,18 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.12rem 0.42rem;
+  min-height: 1.25rem;
+  padding: 0 0.42rem;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: var(--subtle-bg);
   color: var(--muted);
   font-size: 0.66rem;
   font-weight: 800;
+  line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  vertical-align: middle;
 }
 
 .type-pill[data-variant="epic"]    { background: rgba(var(--purple-rgb), 0.12); border-color: rgba(var(--purple-rgb), 0.28); color: #6b3ea1; }

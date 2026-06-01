@@ -95,6 +95,47 @@ body.is-scrolled .topbar,
   letter-spacing: -0.02em;
 }
 
+/* Brand logo button — a round, tappable mark on the left of the topbar.
+ * Ported from ss-orbit's #brandFocusBtn; the popover that Orbit anchors to it
+ * is an Orbit-specific add-on and intentionally left out here. */
+.brand-focus-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  cursor: var(--sl-cursor-link, pointer);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.brand-focus-btn:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  border-color: rgba(var(--accent-rgb), 0.28);
+  background: rgba(var(--accent-rgb), 0.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.brand-focus-btn:focus-visible {
+  box-shadow: var(--accent-ring);
+}
+
+.brand-focus-btn .mark {
+  display: block;
+  width: 2.55rem;
+  height: 2.55rem;
+  object-fit: contain;
+}
+
 .topbar-nav {
   display: flex;
   align-items: center;

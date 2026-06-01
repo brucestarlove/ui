@@ -91,6 +91,14 @@ details.section > summary .section-title-row {
 
 /* ---------- Title row + badge mark ---------- */
 
+/* A lede `.description` paragraph inside a section needs breathing room before
+ * the control/field that follows it. Generic adjacency rule so any block placed
+ * directly after a section's description picks up the gap (e.g. an editable
+ * markdown field under "Agent Instructions"). */
+.section > .description + * {
+  margin-top: 0.7rem;
+}
+
 .section-title-row {
   display: inline-flex;
   align-items: center;

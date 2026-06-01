@@ -21,6 +21,7 @@
 /* ss-orbit chrome (cockpit silhouette — shape tokens in tokens/shape.css) */
 @import "./components/topbar-btn.css";
 @import "./components/topbar-search.css";
+@import "./components/topbar-notes.css";
 @import "./components/topbar-chip.css";
 @import "./components/menu-flyout.css";
 @import "./components/create-flyout.css";

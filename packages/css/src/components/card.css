@@ -12,6 +12,22 @@
  *   feature  — confident teal, default "second-in-command"
  *   task     — slate bezel, thinnest ring, shallowest shadow
  *   bug      — red bezel, punchier ring; defects feel urgent
+ *
+ * Glow palette (non-semantic, decorative) — a free color border/glow that
+ * reads like the "Nebula pad" media card: a 1px hued border + a soft flat ring.
+ * Lighter than the kanban bezel above; lives under the same data-variant
+ * attribute, prefixed `glow-` so it never collides with the semantic types:
+ *
+ *   <article class="card" data-variant="glow-green">…</article>
+ *
+ * Glow colors: teal · green · amber · coral · blue · cyan · indigo · purple ·
+ * violet. Each just remaps --type-rgb; the shared `[data-variant^="glow-"]`
+ * rule paints the border + ring.
+ *
+ * Selected (.selected / [data-selected]) — instead of a static outline, the
+ * card hosts the ARC sweep ring (button-arc.css technique): a masked,
+ * animated rim that glows in the card's own hue. Works on any card, typed or
+ * glow or plain.
  */
 
 .card {
@@ -34,10 +50,58 @@
   filter: brightness(1.02) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.06));
 }
 
+/* Selected = the ARC sweep ring (button-arc.css technique): a masked,
+ * animated rim that glows in the card's own hue (--type-rgb, falling back to
+ * the teal accent). Hosted on ::after behind the card so it hugs the radius. */
 .card.selected,
 .card[data-selected] {
-  outline: 4px solid rgba(var(--accent-rgb), 0.18);
-  outline-offset: -1px;
+  isolation: isolate;
+  --ring-rgb: var(--type-rgb, var(--accent-rgb));
+}
+
+.card.selected::after,
+.card[data-selected]::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  background: linear-gradient(
+    160deg,
+    transparent 0%,
+    rgba(var(--ring-rgb), 0) 15%,
+    rgba(var(--ring-rgb), 0.95) 20%,
+    rgba(var(--ring-rgb), 0.55) 25%,
+    transparent 35%,
+    transparent 40%,
+    rgba(var(--ring-rgb), 0) 55%,
+    rgba(var(--ring-rgb), 0.95) 60%,
+    rgba(var(--ring-rgb), 0.55) 65%,
+    transparent 75%,
+    transparent 80%,
+    rgba(var(--ring-rgb), 0) 95%,
+    rgba(var(--ring-rgb), 0.95) 100%
+  );
+  background-size: 300% 300%;
+  animation: arc-sweep 2.23s linear infinite;
+  /* Subtract the content box so only the rim paints. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.selected::after,
+  .card[data-selected]::after {
+    animation: none;
+  }
 }
 
 /* Shared bezel formula — all typed cards inherit; --type-rgb plus a few
@@ -89,6 +153,28 @@
   --type-ring-a: 0.22;
   --type-bg-a: 0.06;
 }
+
+/* ---------- Glow palette — the "Nebula pad" look as a free color ----------
+ *
+ * Lighter than the bezel: a 1px hued border + a soft flat ring, exactly the
+ * media-card selected treatment generalized across the palette. The shared
+ * prefix rule paints; each color rule just remaps the --type-rgb channel.
+ * --type-rgb tokens are concrete channels, stable across themes, so the same
+ * declarations read correctly in light and dark. */
+.card[data-variant^="glow-"] {
+  border: 1px solid rgba(var(--type-rgb), 0.55);
+  box-shadow: 0 0 0 3px rgba(var(--type-rgb), 0.14);
+}
+
+.card[data-variant="glow-teal"]   { --type-rgb: var(--accent-rgb); }
+.card[data-variant="glow-green"]  { --type-rgb: var(--green-rgb); }
+.card[data-variant="glow-amber"]  { --type-rgb: var(--amber-rgb); }
+.card[data-variant="glow-coral"]  { --type-rgb: var(--coral-rgb); }
+.card[data-variant="glow-blue"]   { --type-rgb: var(--blue-rgb); }
+.card[data-variant="glow-cyan"]   { --type-rgb: var(--cyan-rgb); }
+.card[data-variant="glow-indigo"] { --type-rgb: var(--indigo-rgb); }
+.card[data-variant="glow-purple"] { --type-rgb: var(--purple-rgb); }
+.card[data-variant="glow-violet"] { --type-rgb: var(--violet-rgb); }
 
 /* ---------- Dark theme ---------- */
 
@@ -163,6 +249,15 @@
     rgba(var(--cosmos-rgb), 0.92);
 }
 
+/* Glow palette in dark — same hued ring, with a touch more ring presence and
+ * a drop shadow restored so the card still seats against the starfield. */
+[data-theme="dark"] .card[data-variant^="glow-"] {
+  border: 1px solid rgba(var(--type-rgb), 0.55);
+  box-shadow:
+    0 0 0 3px rgba(var(--type-rgb), 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .card {
     border-color: rgba(var(--starlight-rgb), 0.12);
@@ -224,5 +319,11 @@
     background:
       linear-gradient(135deg, rgba(var(--coral-rgb), 0.07), rgba(var(--cosmos-rgb), 0) 65%),
       rgba(var(--cosmos-rgb), 0.92);
+  }
+  :root:not([data-theme="light"]) .card[data-variant^="glow-"] {
+    border: 1px solid rgba(var(--type-rgb), 0.55);
+    box-shadow:
+      0 0 0 3px rgba(var(--type-rgb), 0.2),
+      0 8px 20px rgba(0, 0, 0, 0.25);
   }
 }
