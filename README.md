@@ -22,7 +22,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for what's in each version.
 
 ```bash
 pnpm install
-pnpm dev          # starts web-demo on http://localhost:5173
+pnpm dev          # starts web-demo on http://localhost:13730
 pnpm docs:dev     # starts Starlight docs
 ```
 

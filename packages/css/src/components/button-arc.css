@@ -138,6 +138,7 @@ button:where(:not([data-variant="command"]):not([data-variant="plus"]):not([data
   button[data-variant="arc"][data-loading]::after,
   button[data-variant="arc"][data-arc="comet"]::after,
   button[data-variant="arc"][data-arc="holo"]::after,
+  button[data-variant="arc"][data-arc="binary"]::after,
   button[data-variant="arc-star"],
   button[data-variant="arc-hex"],
   button[data-variant="arc-shield"] {
@@ -591,8 +592,41 @@ button[data-variant="arc"][data-arc="holo"]:active::after {
   to { filter: hue-rotate(360deg); }
 }
 
+/* ---------- Binary — twin spark pair sweeps the rim, same direction ---------
+ *
+ * Like comet but with TWO arc segments fixed on the same rotating conic ring,
+ * so they orbit the rim together — reads as a pair of "stars" chasing each
+ * other around in the same direction. Same geometry as the outer ring of the
+ * `bstar` CTA, but on the regular arc surface and without an inner sweep.
+ *
+ *   <button data-variant="arc" data-arc="binary">Pair</button>
+ */
+button[data-variant="arc"][data-arc="binary"]::after {
+  opacity: 0.85;
+  background: conic-gradient(
+    from var(--arc-spin),
+    transparent 0deg,
+    var(--arc-c0) 18deg,
+    var(--arc-c1) 40deg,
+    var(--arc-c2) 62deg,
+    transparent 120deg,
+    transparent 180deg,
+    var(--arc-c0) 198deg,
+    var(--arc-c1) 220deg,
+    var(--arc-c2) 242deg,
+    transparent 300deg,
+    transparent 360deg
+  );
+  animation: arc-spin calc(var(--arc-duration) * 1.2) linear infinite;
+}
+button[data-variant="arc"][data-arc="binary"]:hover::after,
+button[data-variant="arc"][data-arc="binary"]:focus-visible::after,
+button[data-variant="arc"][data-arc="binary"]:active::after {
+  opacity: 1;
+}
+
 /* ---------- Status tints — the rim color carries meaning -------------------
- *   <button data-variant="arc" data-arc="success|danger|info">…</button>
+ *   <button data-variant="arc" data-arc="success|warning|danger|info">…</button>
  */
 button[data-variant="arc"][data-arc="success"] {
   /* No --green token yet — placeholder literal, swap when one lands. */
@@ -603,6 +637,11 @@ button[data-variant="arc"][data-arc="info"] {
   --arc-c1: rgba(var(--blue-rgb), 0.95);
   --arc-c2: rgba(var(--cyan-rgb), 0.9);
 }
+button[data-variant="arc"][data-arc="warning"] {
+  --arc-c1: rgba(var(--amber-rgb), 0.95);
+  --arc-c2: rgba(var(--gold-rgb, 250, 176, 5), 0.9);
+  --arc-duration: 1.7s;        /* mid-tempo: attention, not alarm */
+}
 button[data-variant="arc"][data-arc="danger"] {
   --arc-c1: rgba(var(--red-rgb), 0.95);
   --arc-c2: rgba(var(--amber-rgb), 0.9);
@@ -612,6 +651,7 @@ button[data-variant="arc"][data-arc="danger"] {
 /* Always-on rim (like holo): visible & sweeping at rest, brighter on hover.
  * Color stays fixed — no hue cycle — so the semantic meaning holds. */
 button[data-variant="arc"][data-arc="success"]::after,
+button[data-variant="arc"][data-arc="warning"]::after,
 button[data-variant="arc"][data-arc="danger"]::after,
 button[data-variant="arc"][data-arc="info"]::after {
   opacity: 0.6;
@@ -620,6 +660,9 @@ button[data-variant="arc"][data-arc="info"]::after {
 button[data-variant="arc"][data-arc="success"]:hover::after,
 button[data-variant="arc"][data-arc="success"]:focus-visible::after,
 button[data-variant="arc"][data-arc="success"]:active::after,
+button[data-variant="arc"][data-arc="warning"]:hover::after,
+button[data-variant="arc"][data-arc="warning"]:focus-visible::after,
+button[data-variant="arc"][data-arc="warning"]:active::after,
 button[data-variant="arc"][data-arc="danger"]:hover::after,
 button[data-variant="arc"][data-arc="danger"]:focus-visible::after,
 button[data-variant="arc"][data-arc="danger"]:active::after,

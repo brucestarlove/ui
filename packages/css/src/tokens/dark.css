@@ -94,6 +94,10 @@
   --orbit-phantom-border: rgba(255, 255, 255, 0.22);
   --orbit-phantom-bg: rgba(0, 0, 0, 0.08);
 
-  --scrollbar-thumb: rgba(var(--starlight-rgb), 0.3);
-  --scrollbar-thumb-hover: rgba(var(--starlight-rgb), 0.5);
+  /* Scrollbar — light blue (sky) thumb fading into cyan, the bright end of the
+   * progress/slider fill. */
+  --scrollbar-thumb: rgba(125, 211, 252, 0.55);
+  --scrollbar-thumb-hover: rgba(125, 211, 252, 0.78);
+  --scrollbar-track: transparent;
+  --scrollbar-thumb-2-rgb: var(--cyan-rgb);
 }

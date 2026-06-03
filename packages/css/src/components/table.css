@@ -1,6 +1,6 @@
 /* Starscape v3 — data table.
  *
- *   <div class="table-wrap scroll-themed">
+ *   <div class="table-wrap">
  *     <table class="table" data-zebra>
  *       <thead><tr><th>Name</th><th data-numeric>Usage</th></tr></thead>
  *       <tbody><tr><td>…</td><td data-numeric>1,204</td></tr></tbody>

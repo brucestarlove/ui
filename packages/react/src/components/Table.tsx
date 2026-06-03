@@ -21,7 +21,7 @@ export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> 
 export const Table = React.forwardRef<HTMLTableElement, TableProps>(
   function Table({ zebra, density = 'comfortable', wrapClassName, className, children, ...rest }, ref) {
     return (
-      <div className={cx('table-wrap', 'scroll-themed', wrapClassName)}>
+      <div className={cx('table-wrap', wrapClassName)}>
         <table
           ref={ref}
           className={cx('table', className)}

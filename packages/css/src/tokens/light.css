@@ -153,10 +153,11 @@
   --orbit-phantom-border: rgba(29, 37, 40, 0.14);
   --orbit-phantom-bg: rgba(29, 37, 40, 0.03);
 
-  /* Scrollbar. */
+  /* Scrollbar — teal thumb fading into deep blue (the charged-fill language). */
   --scrollbar-thumb: rgba(var(--accent-rgb), 0.45);
   --scrollbar-thumb-hover: rgba(var(--accent-rgb), 0.65);
   --scrollbar-track: transparent;
+  --scrollbar-thumb-2-rgb: var(--blue-rgb);
 
   /* Native <select> chevron alignment. */
   --select-chevron-pad-x: 0.55rem;

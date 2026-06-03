@@ -342,20 +342,19 @@ function Topbar({
           >
             {theme.resolved === 'dark' ? (
               <svg className="topbar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <circle cx="12" cy="12" r="4.5" />
-                <path d="M12 2v2.2M12 19.8V22M3.5 12H5.7M18.3 12h2.2M5.6 5.6l1.5 1.5M16.9 16.9l1.5 1.5M5.6 18.4l1.5-1.5M16.9 7.1l1.5-1.5" />
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             ) : (
               <svg className="topbar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                <circle cx="12" cy="12" r="4.5" />
+                <path d="M12 2v2.2M12 19.8V22M3.5 12H5.7M18.3 12h2.2M5.6 5.6l1.5 1.5M16.9 16.9l1.5 1.5M5.6 18.4l1.5-1.5M16.9 7.1l1.5-1.5" />
               </svg>
             )}
           </button>
 
           <button
             type="button"
-            className="topbar-btn topbar-ctl-shrink"
-            data-variant="ghost"
+            className="topbar-btn ghost topbar-ctl-shrink"
             onClick={settings.open}
             {...settings.triggerProps}
           >
@@ -596,19 +595,21 @@ function ArcLabLane() {
   const [loading, setLoading] = useState(false);
   const note = { color: 'var(--muted)', fontSize: '0.78rem' } as const;
   return (
-    <EpicAccordion title="ARC lab" count={10}>
+    <EpicAccordion title="ARC lab" count={11}>
       <div className="demo-row" style={{ alignItems: 'center' }}>
         <button data-variant="arc">arc</button>
         <button data-variant="cta" data-cta="bstar">bstar</button>
         <button data-variant="arc" data-arc="comet">comet</button>
         <button data-variant="arc" data-arc="trace">trace</button>
         <button data-variant="arc" data-arc="holo">holo</button>
+        <button data-variant="arc" data-arc="binary">binary</button>
       </div>
       <div className="demo-row" style={{ alignItems: 'center' }}>
         <button data-variant="arc" data-arc="success">success</button>
+        <button data-variant="arc" data-arc="warning">warning</button>
         <button data-variant="arc" data-arc="danger">danger</button>
         <button data-variant="arc" data-arc="info">info</button>
-        <span style={note}>semantic rim tints — danger runs faster</span>
+        <span style={note}>semantic rim tints — warning mid-tempo, danger fastest</span>
       </div>
       <div className="demo-row" style={{ alignItems: 'center' }}>
         <button data-variant="arc-star" aria-label="Favorite" />
@@ -668,7 +669,7 @@ function FormFieldsLane() {
       <div className="lane-body lane-stack">
         <div className="form-row">
           <label htmlFor="demo-name">Display name</label>
-          <input id="demo-name" placeholder="Bruce Skywalker" defaultValue="Bruce Skywalker" />
+          <input id="demo-name" placeholder="Bruce Starlove" defaultValue="Bruce Starlove" />
           <span className="form-help">Visible to teammates.</span>
         </div>
 
@@ -819,7 +820,7 @@ function UniversalCardsLane() {
             <div className="avatar" data-size="lg" data-color="violet">AS</div>
             <div style={{ minWidth: 0 }}>
               <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Aeva Skywalker</h4>
-              <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>aeva@orbit.dev · principal engineer</p>
+              <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.78rem' }}>aeva@starscape.app · principal engineer</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
@@ -1626,13 +1627,13 @@ function ToastsLane() {
       </header>
       <div className="lane-body lane-stack">
         <div className="demo-row">
-          <button data-variant="ghost" onClick={() => toast.message('Heads up', { description: 'Just letting you know.' })}>
+          <button data-variant="arc" onClick={() => toast.message('Heads up', { description: 'Just letting you know.' })}>
             message
           </button>
-          <button data-variant="ghost" onClick={() => toast.info('Sync started', { description: 'Indexing 1,204 documents.' })}>info</button>
-          <button data-variant="ghost" onClick={() => toast.success('Published', { description: 'Visible to everyone in your org.' })}>success</button>
-          <button data-variant="ghost" onClick={() => toast.warning('Rate limited', { description: 'Backing off for 30 seconds.' })}>warning</button>
-          <button data-variant="ghost" onClick={() => toast.error('Could not save', { description: 'Check your connection and try again.' })}>error</button>
+          <button data-variant="arc" data-arc="info" onClick={() => toast.info('Sync started', { description: 'Indexing 1,204 documents.' })}>info</button>
+          <button data-variant="arc" data-arc="success" onClick={() => toast.success('Published', { description: 'Visible to everyone in your org.' })}>success</button>
+          <button data-variant="arc" data-arc="warning" onClick={() => toast.warning('Rate limited', { description: 'Backing off for 30 seconds.' })}>warning</button>
+          <button data-variant="arc" data-arc="danger" onClick={() => toast.error('Could not save', { description: 'Check your connection and try again.' })}>error</button>
         </div>
         <div className="demo-row">
           <button onClick={() => toast.promise(
@@ -2261,7 +2262,7 @@ function TableLane() {
         <span className="badge">{rows.length}</span>
       </header>
       <div className="lane-body">
-        <div className="table-wrap scroll-themed">
+        <div className="table-wrap">
           <table className="table" data-zebra>
             <thead>
               <tr>
@@ -2390,7 +2391,7 @@ import "@starlove/ui/components/button";`;
               }}
             >Copy</button>
           </figcaption>
-          <pre className="scroll-themed" data-numbered>
+          <pre data-numbered>
             <code>{lines.map((l, i) => (
               <span className="line" key={i}>{l || ' '}</span>
             ))}</code>
@@ -2413,7 +2414,6 @@ function ScrollbarLane() {
       </header>
       <div className="lane-body">
         <div
-          className="scroll-themed"
           style={{
             maxHeight: '8rem', overflow: 'auto', padding: 'var(--space-4)',
             border: '1px solid var(--line)', borderRadius: 12,
@@ -2421,8 +2421,8 @@ function ScrollbarLane() {
           }}
         >
           <p style={{ marginTop: 0 }}>
-            <code>.scroll-themed</code> tints the scrollbar with the accent token —
-            teal-ish in light, starlight in dark. Scroll this box to see it.
+            Every scrollbar is themed globally — no opt-in class needed. The thumb
+            is teal in light, light blue in dark. Scroll this box to see it.
           </p>
           {Array.from({ length: 12 }, (_, i) => (
             <p key={i} style={{ margin: '0 0 0.6rem' }}>

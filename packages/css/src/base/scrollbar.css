@@ -1,34 +1,44 @@
-/* Starscape v3 — themed scrollbars (Firefox + WebKit).
- * Applied via the .starscape-scrollbar class so consumers can opt scrollables
- * in deliberately. Body scrollbars stay the OS default.
+/* Starscape v3 — themed scrollbars (Firefox + WebKit), applied globally.
+ * Covers the browser/body scrollbar and every nested scroll area so the
+ * accent gradient is consistent everywhere — no opt-in class required.
+ * `.starscape-scrollbar` is kept as a back-compat alias; the global rules
+ * already cover it.
+ *
+ * Both gradient stops are token-driven (--scrollbar-thumb plus
+ * --scrollbar-thumb-2-rgb) so the fill flips with the theme: teal→blue in
+ * light, cyan→violet in dark (see tokens/{light,dark,system}.css).
+ *
+ * Components that deliberately hide their scrollbar (scrollbar-width: none +
+ * a scoped ::-webkit-scrollbar { display:none }) stay hidden — those scoped
+ * rules out-specify these element/pseudo-element globals.
  */
-.starscape-scrollbar {
+html {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-.starscape-scrollbar::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-.starscape-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
   border-radius: 999px;
 }
 
-.starscape-scrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--scrollbar-thumb), rgba(var(--blue-rgb), 0.5));
+  background: linear-gradient(90deg, var(--scrollbar-thumb), rgba(var(--scrollbar-thumb-2-rgb), 0.5));
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-.starscape-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(90deg, var(--scrollbar-thumb-hover), rgba(var(--blue-rgb), 0.65));
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, var(--scrollbar-thumb-hover), rgba(var(--scrollbar-thumb-2-rgb), 0.65));
   background-clip: padding-box;
 }
 
-.starscape-scrollbar::-webkit-scrollbar-corner {
+::-webkit-scrollbar-corner {
   background: transparent;
 }

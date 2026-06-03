@@ -43,7 +43,6 @@ export const CodeBlock = React.forwardRef<HTMLElement, CodeBlockProps>(
           </figcaption>
         )}
         <pre
-          className="scroll-themed"
           data-numbered={numbered ? '' : undefined}
           data-wrap={wrap ? '' : undefined}
         >

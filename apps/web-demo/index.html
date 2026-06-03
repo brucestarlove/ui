@@ -60,7 +60,7 @@
         );
         background-size: 50px 50px;
         will-change: transform;
-        animation: loader-drift 20s linear infinite;
+        animation: starscape-loader-drift 20s linear infinite;
       }
       .loader.is-hiding {
         opacity: 0;
@@ -78,8 +78,8 @@
         backface-visibility: hidden;
         will-change: transform;
         animation:
-          loader-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both,
-          loader-breathe 3s ease-in-out 0.6s infinite;
+          starscape-loader-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+          starscape-loader-breathe 3s ease-in-out 0.6s infinite;
       }
       .loader__label {
         margin: 0;
@@ -89,15 +89,15 @@
         letter-spacing: 0.5px;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
-      @keyframes loader-drift {
+      @keyframes starscape-loader-drift {
         from { transform: translate(0, 0); }
         to   { transform: translate(-50px, -50px); }
       }
-      @keyframes loader-grow {
+      @keyframes starscape-loader-grow {
         from { transform: scale(0) translateZ(0); opacity: 0; }
         to   { transform: scale(1) translateZ(0); opacity: 1; }
       }
-      @keyframes loader-breathe {
+      @keyframes starscape-loader-breathe {
         0%, 100% { transform: scale(1) translateZ(0); }
         50%      { transform: scale(1.06) translateZ(0); }
       }
@@ -106,14 +106,14 @@
           animation: none;
         }
         :root:not([data-motion='full']) .loader__logo {
-          animation: loader-breathe 3s ease-in-out infinite;
+          animation: starscape-loader-breathe 3s ease-in-out infinite;
         }
       }
       [data-motion='reduce'] .loader::before {
         animation: none;
       }
       [data-motion='reduce'] .loader__logo {
-        animation: loader-breathe 3s ease-in-out infinite;
+        animation: starscape-loader-breathe 3s ease-in-out infinite;
       }
     </style>
   </head>

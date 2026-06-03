@@ -1,8 +1,19 @@
 /* Starscape v3 — Sonner toast styling.
  *
- * Sonner exposes its visual look via CSS custom properties on its top-level
- * [data-sonner-toaster] element. We override them per type, with light and
- * dark variants matching the Starscape palette.
+ * Borrows the visual recipe from `.card[data-variant^="glow-"]`:
+ *   - 1px hued border at the toast's semantic color
+ *   - 3px outer ring of the same hue at low alpha
+ *   - depth drop shadow on top
+ *
+ * The hue is carried on a single `--type-rgb` channel per `[data-type]`, so
+ * the same border + ring declarations read correctly in light and dark
+ * themes (the channel itself is theme-stable).
+ *
+ * Sonner exposes its fill / text colors via CSS custom properties on its
+ * top-level [data-sonner-toaster] element (--normal-*, --success-*, --info-*,
+ * --warning-*, --error-* bg/border/text triplets). We still set those for the
+ * fill + text, but override the toast's *border* and *box-shadow* directly so
+ * the glow ring can paint.
  *
  * Usage with the React layer:
  *
@@ -12,14 +23,11 @@
  *
  *   <Toaster richColors closeButton />
  *
- * Sonner's <Toaster theme="light|dark"> sets a data-theme attribute on the
- * toaster element, so the rules below pick the right mode automatically.
- *
- * Reference: Sonner uses --normal-*, --success-*, --info-*, --warning-*,
- * --error-* triplets (bg / border / text) on [data-sonner-toaster].
+ * Sonner's <Toaster theme="light|dark"> sets data-theme on the toaster
+ * element, so the rules below pick the right mode automatically.
  */
 
-/* ---------- Light (default) ---------- */
+/* ---------- Fill + text triplets (light, default) ---------- */
 [data-sonner-toaster] {
   --normal-bg: rgba(var(--paper-rgb), 0.96);
   --normal-border: var(--line);
@@ -42,23 +50,75 @@
   --error-text: #991b1b;
 }
 
+/* ---------- Glow recipe on every toast ----------
+ * Same shape as `.card[data-variant^="glow-"]`: a 1px hued border with an
+ * additional 3px tinted ring, plus a soft drop shadow for depth. The hue is
+ * varied per [data-type] by remapping --type-rgb. */
 [data-sonner-toaster] [data-sonner-toast] {
-  border-radius: 12px;
+  position: relative;                  /* anchor for the close button */
+  padding: 0.9rem 2.6rem 0.9rem 1rem;  /* room for the close button on the right */
+  border-radius: 14px;
+  border: 1px solid rgba(var(--type-rgb, var(--starlight-rgb)), 0.5) !important;
+  background: var(--normal-bg);
+  color: var(--normal-text);
   font-family: var(--font-stack);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 0 0 3px rgba(var(--type-rgb, var(--starlight-rgb)), 0.14),
+    0 10px 28px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  --type-rgb: var(--starlight-rgb);
 }
 
-/* Close button: hidden until the toast is hovered/focused, then reveals with
- * a neutral v3 palette. Sonner's richColors mode otherwise paints the close
- * button in the toast's type color (e.g. dark-green X on dark-green bg for a
- * success toast), which leaves it visually empty. We override per-type with a
- * higher-specificity selector so neutrals win regardless of toast type/theme.
+[data-sonner-toaster] [data-sonner-toast][data-type="success"] { --type-rgb: var(--green-rgb); }
+[data-sonner-toaster] [data-sonner-toast][data-type="info"]    { --type-rgb: var(--blue-rgb); }
+[data-sonner-toaster] [data-sonner-toast][data-type="warning"] { --type-rgb: var(--amber-rgb); }
+[data-sonner-toaster] [data-sonner-toast][data-type="error"]   { --type-rgb: var(--coral-rgb); }
+
+/* ---------- Close button — bare X, top-right, hidden until hover ----------
+ *
+ * Sonner positions its close button on the LEFT by default with inline
+ * `left: 0` styles, and `richColors` paints it with a hued chip
+ * (background + border) that rendered as a tall oval. We strip the chip
+ * entirely: no background, no border — just the X glyph, hue-tinted via
+ * `color`. Positioned top-right with `!important` so Sonner's inline
+ * styles can't win, square so the icon sits dead-center, and invisible
+ * at rest, revealing on toast hover/focus (the calmer Starscape grammar).
+ *
+ * The two selectors share one block so this also out-specifies Sonner's
+ * `[data-rich-colors='true'][data-sonner-toast][data-type='...'] [data-close-button]`
+ * chip rule across every toast type.
  */
+[data-sonner-toaster] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
 [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
+  position: absolute !important;
+  top: 0.6rem !important;
+  right: 0.6rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 0;
+  padding: 0;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0;
+  color: rgba(var(--type-rgb, var(--starlight-rgb)), 0.85);
   cursor: var(--sl-cursor-link, pointer);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 140ms ease, background 140ms ease, border-color 140ms ease;
+  transition:
+    opacity 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+[data-sonner-toaster] [data-sonner-toast] [data-close-button] svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
 [data-sonner-toaster] [data-sonner-toast]:hover [data-close-button],
@@ -67,60 +127,65 @@
   pointer-events: auto;
 }
 
-/* Neutral palette — light. Specificity beats sonner's
- * [data-rich-colors='true'][data-sonner-toast][data-type='...'] [data-close-button]
- * so success/info/warning/error all share the same readable close button.
- */
-[data-sonner-toaster] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
-[data-sonner-toaster] [data-sonner-toast] [data-close-button] {
-  background: rgba(var(--paper-rgb), 0.98);
-  border-color: var(--line);
-  color: var(--ink);
+[data-sonner-toaster] [data-sonner-toast] [data-close-button]:hover {
+  color: rgba(var(--type-rgb, var(--starlight-rgb)), 1);
+  transform: scale(1.12);
 }
 
-/* Neutral palette — dark. */
+/* Dark theme — brighten the bare glyph for contrast against the starfield. */
 [data-sonner-toaster][data-theme='dark'] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
 [data-sonner-toaster][data-theme='dark'] [data-sonner-toast] [data-close-button],
 [data-theme='dark'] [data-sonner-toaster] [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
 [data-theme='dark'] [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
-  background: rgba(var(--cosmos-rgb), 0.96);
-  border-color: rgba(var(--starlight-rgb), 0.3);
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-sonner-toaster][data-theme='dark'] [data-sonner-toast] [data-close-button]:hover,
+[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast] [data-close-button]:hover {
+  color: rgba(255, 255, 255, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) [data-sonner-toaster]:not([data-theme='light']) [data-sonner-toast][data-rich-colors='true'][data-type] [data-close-button],
   :root:not([data-theme='light']) [data-sonner-toaster]:not([data-theme='light']) [data-sonner-toast] [data-close-button] {
-    background: rgba(var(--cosmos-rgb), 0.96);
-    border-color: rgba(var(--starlight-rgb), 0.3);
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  :root:not([data-theme='light']) [data-sonner-toaster]:not([data-theme='light']) [data-sonner-toast] [data-close-button]:hover {
+    color: rgba(255, 255, 255, 1);
   }
 }
 
-/* ---------- Dark — matches both:
- *   - Toaster prop theme="dark" (sets [data-theme="dark"])
- *   - root data-theme="dark"
+/* ---------- Dark theme — fills + glassy backdrop blur ----------
+ *
+ * Matches:
+ *   - Toaster prop theme="dark" (sets [data-theme="dark"] on the toaster)
+ *   - root [data-theme="dark"]
  *   - system dark + no [data-theme="light"]
+ *
+ * The border + ring rules above already work in dark because --type-rgb is a
+ * theme-stable channel; here we just shift the fills + add a backdrop blur,
+ * and re-paint the box-shadow with a slightly brighter ring + deeper drop
+ * shadow so the toast still seats against the starfield.
  */
 [data-sonner-toaster][data-theme="dark"],
 [data-theme="dark"] [data-sonner-toaster] {
-  --normal-bg: rgba(var(--cosmos-rgb), 0.92);
+  --normal-bg: rgba(var(--cosmos-rgb), 0.78);
   --normal-border: rgba(var(--starlight-rgb), 0.18);
   --normal-text: rgba(255, 255, 255, 0.94);
 
-  --success-bg: rgba(12, 40, 28, 0.92);
+  --success-bg: rgba(12, 40, 28, 0.82);
   --success-border: rgba(74, 222, 128, 0.25);
   --success-text: #86efac;
 
-  --info-bg: rgba(22, 33, 72, 0.92);
+  --info-bg: rgba(22, 33, 72, 0.82);
   --info-border: rgba(96, 140, 255, 0.25);
   --info-text: #93b4ff;
 
-  --warning-bg: rgba(50, 40, 12, 0.92);
+  --warning-bg: rgba(50, 40, 12, 0.82);
   --warning-border: rgba(250, 204, 21, 0.25);
   --warning-text: #fde68a;
 
-  --error-bg: rgba(55, 18, 18, 0.92);
+  --error-bg: rgba(55, 18, 18, 0.82);
   --error-border: rgba(var(--coral-rgb), 0.25);
   --error-text: #fca5a5;
 }
@@ -129,34 +194,40 @@
 [data-theme="dark"] [data-sonner-toaster] [data-sonner-toast] {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 0 3px rgba(var(--type-rgb, var(--starlight-rgb)), 0.18),
+    0 12px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) [data-sonner-toaster]:not([data-theme="light"]) {
-    --normal-bg: rgba(var(--cosmos-rgb), 0.92);
+    --normal-bg: rgba(var(--cosmos-rgb), 0.78);
     --normal-border: rgba(var(--starlight-rgb), 0.18);
     --normal-text: rgba(255, 255, 255, 0.94);
 
-    --success-bg: rgba(12, 40, 28, 0.92);
+    --success-bg: rgba(12, 40, 28, 0.82);
     --success-border: rgba(74, 222, 128, 0.25);
     --success-text: #86efac;
 
-    --info-bg: rgba(22, 33, 72, 0.92);
+    --info-bg: rgba(22, 33, 72, 0.82);
     --info-border: rgba(96, 140, 255, 0.25);
     --info-text: #93b4ff;
 
-    --warning-bg: rgba(50, 40, 12, 0.92);
+    --warning-bg: rgba(50, 40, 12, 0.82);
     --warning-border: rgba(250, 204, 21, 0.25);
     --warning-text: #fde68a;
 
-    --error-bg: rgba(55, 18, 18, 0.92);
+    --error-bg: rgba(55, 18, 18, 0.82);
     --error-border: rgba(var(--coral-rgb), 0.25);
     --error-text: #fca5a5;
   }
   :root:not([data-theme="light"]) [data-sonner-toaster]:not([data-theme="light"]) [data-sonner-toast] {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 0 0 3px rgba(var(--type-rgb, var(--starlight-rgb)), 0.18),
+      0 12px 32px rgba(0, 0, 0, 0.4),
+      0 2px 8px rgba(0, 0, 0, 0.25);
   }
 }
