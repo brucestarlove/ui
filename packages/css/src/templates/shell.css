@@ -43,3 +43,116 @@
 .page-shell[data-no-topbar] .page-shell-main {
   padding-top: clamp(1rem, 3vw, 2rem);
 }
+
+/* ---------- Board variant ----------
+ * The framed-board layout shared by the Starscape apps (ss-orbit, ss-nebula):
+ * a locked viewport (the window never scrolls) with a static top rail, an
+ * Orbit-style framed "board" that fills the space between rail and footer, and
+ * a small signature footer. Content scrolls *inside* the board, not the window.
+ *
+ *   <div class="page-shell" data-board>
+ *     <header class="topbar">…</header>
+ *     <main class="page-shell-main">
+ *       <div class="page-shell-board">…content…</div>
+ *     </main>
+ *     <footer class="frame-footer">…</footer>
+ *   </div>
+ */
+
+/* Lock the viewport so the board — not the window — owns the scroll. Scoped via
+ * :has() so only board-mode pages opt in; plain shells keep window scrolling. */
+:root:has(.page-shell[data-board]),
+:root:has(.page-shell[data-board]) body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.page-shell[data-board] {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* The rail is `position: fixed` for scroll-aware pages; the board never scrolls
+ * the window, so it sits statically in the flex column (like Orbit's top rail). */
+.page-shell[data-board] .topbar {
+  position: static;
+  flex-shrink: 0;
+}
+
+/* No reserved top gap (the rail is in-flow now); just horizontal gutters. */
+.page-shell[data-board] .page-shell-main {
+  display: flex;
+  min-height: 0;
+  padding: 0 clamp(0.6rem, 1.5vw, 1rem);
+}
+
+/* The framed board: a 1px outline with rounded corners and a soft drop shadow,
+ * but a *transparent* fill so the app's themed background shows through. Content
+ * scrolls within. */
+.page-shell-board {
+  --frame-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius, 18px) + 4px);
+  background: transparent;
+  box-shadow: var(--frame-shadow);
+}
+
+[data-theme="dark"] .page-shell-board {
+  --frame-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .page-shell-board {
+    --frame-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Signature footer below the board, in document flow inside the viewport shell. */
+.frame-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.45rem clamp(0.75rem, 2vw, 1.25rem) 0.55rem;
+}
+
+.frame-footer-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.frame-footer-subtitle {
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.15;
+}
+
+.frame-footer-subtitle em {
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .page-shell[data-board] .page-shell-main {
+    padding-inline: 0.35rem;
+  }
+
+  .page-shell-board {
+    padding: clamp(0.75rem, 4vw, 1.25rem);
+    border-inline: 0;
+    border-radius: 0;
+  }
+
+  .frame-footer-subtitle {
+    display: none;
+  }
+}

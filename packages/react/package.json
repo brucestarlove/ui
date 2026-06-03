@@ -1,6 +1,6 @@
 {
   "name": "@starlove/ui-react",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Starscape v3 — React layer: typed component wrappers + theme/motion/disclosure hooks for @starlove/ui",
   "type": "module",
   "license": "MIT",
@@ -61,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@starlove/ui": "^3.3.0"
+    "@starlove/ui": "^3.3.1"
   },
   "devDependencies": {
     "@types/react": "catalog:",

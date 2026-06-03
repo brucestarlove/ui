@@ -7,8 +7,16 @@ export interface PageShellProps extends React.HTMLAttributes<HTMLDivElement> {
   topbar?: React.ReactNode;
   /** Mount the animated `<Starscape>` background behind the content. */
   background?: boolean;
+  /**
+   * Framed-board layout (the ss-orbit / ss-nebula shell): lock the viewport,
+   * keep the topbar static, and wrap content in an Orbit-style framed `.page-shell-board`
+   * that fills the space between rail and footer and scrolls internally.
+   */
+  board?: boolean;
   /** Rendered after `<main>` — handy for a `<Toaster>` or page footer. */
   footer?: React.ReactNode;
+  /** Extra class on the inner `.page-shell-board` (board mode only). */
+  boardClassName?: string;
   /** Render the "skip to content" link (default true). */
   skipLink?: boolean;
   /** Visible label for the skip link. */
@@ -37,11 +45,13 @@ export const PageShell = React.forwardRef<HTMLDivElement, PageShellProps>(
     {
       topbar,
       background = false,
+      board = false,
       footer,
       skipLink = true,
       skipLinkLabel = 'Skip to content',
       mainId = 'main',
       mainClassName,
+      boardClassName,
       className,
       children,
       ...rest
@@ -53,6 +63,7 @@ export const PageShell = React.forwardRef<HTMLDivElement, PageShellProps>(
         ref={ref}
         className={cx('page-shell', className)}
         data-no-topbar={topbar == null ? '' : undefined}
+        data-board={board ? '' : undefined}
         {...rest}
       >
         {skipLink && (
@@ -63,7 +74,11 @@ export const PageShell = React.forwardRef<HTMLDivElement, PageShellProps>(
         {background && <Starscape />}
         {topbar}
         <main id={mainId} tabIndex={-1} className={cx('page-shell-main', mainClassName)}>
-          {children}
+          {board ? (
+            <div className={cx('page-shell-board', boardClassName)}>{children}</div>
+          ) : (
+            children
+          )}
         </main>
         {footer}
       </div>
