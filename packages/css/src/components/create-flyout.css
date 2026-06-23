@@ -129,7 +129,7 @@ button.create-flyout-close::after {
 .create-flyout-form {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: var(--add-control-stack-gap);
 }
 
 .create-flyout-form input[type="text"],

@@ -17,7 +17,7 @@
   min-width: 0;
   max-width: var(--topbar-notes-max-width, 600px);
   padding: 0;
-  color: var(--muted);
+  color: var(--topbar-notes-color, var(--ink));
   font: inherit;
   font-size: 0.82rem;
   font-weight: 650;

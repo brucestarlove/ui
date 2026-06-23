@@ -22,4 +22,5 @@
   --field-pad-y: 0.62rem;
   --field-pad-x: 0.8rem;
   --row-gap: 0.4rem;        /* density of stacked rows/lists */
+  --add-control-stack-gap: 0.55rem; /* stacked field + action button rows */
 }

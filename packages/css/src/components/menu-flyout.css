@@ -152,7 +152,7 @@
 .menu-flyout-form {
   display: flex;
   flex-direction: column;
-  gap: var(--row-gap);
+  gap: var(--add-control-stack-gap);
 }
 
 .menu-flyout-form input {
